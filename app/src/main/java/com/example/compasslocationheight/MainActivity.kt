@@ -1,4 +1,10 @@
+
 package com.example.compasslocationheight
+
+// Nötige Imports, die hinzugefügt wurden
+import android.content.Context
+import android.hardware.SensorManager
+// Ende der neuen Imports
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,8 +20,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.compasslocationheight.ui.theme.CompassLocationHeightTheme
 
 class MainActivity : ComponentActivity() {
+
+    // --- NEUE ZEILE 1 ---
+    // Variable für den Sensor-Manager auf Klassenebene deklariert.
+    private lateinit var sensorManager: SensorManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // --- NEUE ZEILE 2 ---
+        // Der Sensor-Manager wird initialisiert, sobald die App startet.
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
         enableEdgeToEdge()
         setContent {
             CompassLocationHeightTheme {
