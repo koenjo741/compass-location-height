@@ -22,7 +22,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+// WICHTIG: Dieser Import wird für .sp benötigt
+import androidx.compose.ui.unit.sp
 import com.example.compasslocationheight.ui.theme.CompassLocationHeightTheme
+
+// DIESE ZEILE WURDE ENTFERNT: val sp: TextUnit
 
 class MainActivity : ComponentActivity(), SensorEventListener {
 
@@ -42,7 +46,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        // HIER IST DIE KORREKTUR
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
 
         enableEdgeToEdge()
@@ -92,7 +95,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 var currentAzimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
                 currentAzimuth = (currentAzimuth + 360) % 360
 
-                val filterFactor = 0.97f
+                val filterFactor = 0.96f
 
                 val diff = Math.abs(smoothedAzimuth - currentAzimuth)
 
@@ -125,7 +128,8 @@ fun CompassDisplay(azimuth: Float, modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val degrees = azimuth.toInt()
-        Text(text = "$degrees°")
+        // HIER WURDE DER PUNKT HINZUGEFÜGT
+        Text(text = "$degrees°", fontSize = 110.sp)
     }
 }
 
