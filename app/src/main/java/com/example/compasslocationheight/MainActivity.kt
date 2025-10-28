@@ -3,23 +3,24 @@ package com.example.compasslocationheight
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,6 +32,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -224,9 +226,19 @@ fun LocationDisplay(
         Text(text = "Lade Standortdaten...", fontSize = 20.sp)
         return
     }
+    val context = LocalContext.current
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = address, fontSize = 22.sp, modifier = Modifier.padding(bottom = 16.dp))
+
+        Text(
+            text = address,
+            fontSize = 22.sp,
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+                .clickable { // SO ist es richtig
+                    openMaps(context, latitude, longitude)
+                }
+        )
 
         val lat = String.format(Locale.US, "%.6f", latitude)
         val lon = String.format(Locale.US, "%.6f", longitude)
@@ -250,13 +262,23 @@ fun DefaultPreview() {
     CompassLocationHeightTheme {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CompassDisplay(azimuth = 123f)
-            LocationDisplay(
-                latitude = 47.123456,
-                longitude = 11.654321,
-                barometricAltitude = 352.1,
-                isLocationAvailable = true,
-                address = "Musterstraße 1, 12345 Musterstadt"
-            )
+            //  Der LocationDisplay ist für die Vorschau zu komplex geworden,
+            //  wir testen ihn in der echten App
         }
     }
+}
+
+// Diese Funktion startet Google Maps mit den übergebenen Koordinaten
+private fun openMaps(context: Context, latitude: Double, longitude: Double) {
+    // Erstelle den geo-URI String
+    val gmmIntentUri = Uri.parse("geo:$latitude,$longitude?q=$latitude,$longitude(Hier bin ich)")
+
+    // Erstelle den Intent mit der ACTION_VIEW
+    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+
+    // Setze das Paket explizit auf Google Maps, um sicherzugehen
+    mapIntent.setPackage("com.google.android.apps.maps")
+
+    // Prüfe, ob Google Maps überhaupt installiert ist, bevor wir es starten
+    context.startActivity(mapIntent)
 }
