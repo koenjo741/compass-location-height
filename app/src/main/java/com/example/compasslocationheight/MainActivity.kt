@@ -17,11 +17,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -69,10 +76,14 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var hasLocationPermission by mutableStateOf(false)
     var gpsLatitude by mutableDoubleStateOf(0.0)
     var gpsLongitude by mutableDoubleStateOf(0.0)
-    var gpsAltitude by mutableDoubleStateOf(0.0)
     var isLocationAvailable by mutableStateOf(false)
     var barometricAltitude by mutableDoubleStateOf(0.0)
     var addressText by mutableStateOf("Suche Adresse...")
+
+    // Wasserwaage States
+    var pitch by mutableFloatStateOf(0f)
+    var roll by mutableFloatStateOf(0f)
+
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) { hasLocationPermission = true; startLocationUpdates() }
@@ -93,7 +104,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 p0.lastLocation?.let { location ->
                     gpsLatitude = location.latitude
                     gpsLongitude = location.longitude
-                    gpsAltitude = location.altitude
                     isLocationAvailable = true
                     getAddressFromCoordinates(location.latitude, location.longitude)
                 }
@@ -104,7 +114,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         setContent { UserInterface() }
         checkLocationPermission()
     }
-
     private fun getAddressFromCoordinates(latitude: Double, longitude: Double) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -161,17 +170,24 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (event == null) return
-        if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) gravity = event.values
-        if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) geomagnetic = event.values
+
+        if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+            gravity = event.values
+            // Wasserwaage-Werte aktualisieren
+            roll = event.values[0]
+            pitch = event.values[1]
+        }
+        if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) { geomagnetic = event.values }
         if (event.sensor.type == Sensor.TYPE_PRESSURE) {
             val pressureValue = event.values[0]
             val altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue)
             barometricAltitude = altitude.toDouble()
         }
+
         if (gravity != null && geomagnetic != null) {
             val r = FloatArray(9)
             val i = FloatArray(9)
-            if (SensorManager.getRotationMatrix(r, i, gravity, geomagnetic)) {
+            if (SensorManager.getRotationMatrix(r, i, gravity!!, geomagnetic!!)) {
                 val orientation = FloatArray(3)
                 SensorManager.getOrientation(r, orientation)
                 var currentAzimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
@@ -196,10 +212,13 @@ fun MainActivity.UserInterface() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Column(
                 modifier = Modifier.fillMaxSize().padding(innerPadding),
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                CompassDisplay(azimuth = azimuth, modifier = Modifier.padding(bottom = 32.dp))
+                CompassDisplay(azimuth = azimuth)
+
+                BubbleLevel(pitch = pitch, roll = roll)
+
                 if (hasLocationPermission) {
                     LocationDisplay(
                         latitude = gpsLatitude,
@@ -213,6 +232,27 @@ fun MainActivity.UserInterface() {
         }
     }
 }
+
+@Composable
+fun BubbleLevel(pitch: Float, roll: Float, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(150.dp)
+            .background(Color.DarkGray, shape = CircleShape)
+            .border(2.dp, Color.LightGray, shape = CircleShape)
+    ) {
+        Box(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .offset(x = (-roll * 10).dp, y = (pitch * 10).dp) // Multiplizieren, um die Bewegung sichtbarer zu machen
+                .size(30.dp)
+                .background(Color.Green, shape = CircleShape)
+                .border(1.dp, Color.White, shape = CircleShape)
+
+        )
+    }
+}
+
 
 @Composable
 fun LocationDisplay(
@@ -229,13 +269,12 @@ fun LocationDisplay(
     val context = LocalContext.current
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
         Text(
             text = address,
             fontSize = 22.sp,
             modifier = Modifier
                 .padding(bottom = 16.dp)
-                .clickable { // SO ist es richtig
+                .clickable {
                     openMaps(context, latitude, longitude)
                 }
         )
@@ -262,23 +301,13 @@ fun DefaultPreview() {
     CompassLocationHeightTheme {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CompassDisplay(azimuth = 123f)
-            //  Der LocationDisplay ist für die Vorschau zu komplex geworden,
-            //  wir testen ihn in der echten App
         }
     }
 }
 
-// Diese Funktion startet Google Maps mit den übergebenen Koordinaten
 private fun openMaps(context: Context, latitude: Double, longitude: Double) {
-    // Erstelle den geo-URI String
-    val gmmIntentUri = Uri.parse("geo:$latitude,$longitude?q=$latitude,$longitude(Hier bin ich)")
-
-    // Erstelle den Intent mit der ACTION_VIEW
+    val gmmIntentUri = Uri.parse("geo:$latitude,$longitude?q=$latitude,$longitude(Mein Standort)")
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-
-    // Setze das Paket explizit auf Google Maps, um sicherzugehen
     mapIntent.setPackage("com.google.android.apps.maps")
-
-    // Prüfe, ob Google Maps überhaupt installiert ist, bevor wir es starten
     context.startActivity(mapIntent)
 }
