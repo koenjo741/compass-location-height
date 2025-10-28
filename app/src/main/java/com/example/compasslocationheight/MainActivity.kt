@@ -8,6 +8,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.location.Geocoder
 import android.os.Bundle
 import android.os.Looper
 import androidx.activity.ComponentActivity
@@ -16,7 +17,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.compasslocationheight.ui.theme.CompassLocationHeightTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -39,35 +43,38 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 class MainActivity : ComponentActivity(), SensorEventListener {
 
+    // Manager & Sensoren
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private var magnetometer: Sensor? = null
     private var pressureSensor: Sensor? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+
+    // Rohdaten & UI States
     private var gravity: FloatArray? = null
     private var geomagnetic: FloatArray? = null
     var azimuth by mutableFloatStateOf(0f)
     private var smoothedAzimuth = 0f
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationCallback: LocationCallback
     var hasLocationPermission by mutableStateOf(false)
     var gpsLatitude by mutableDoubleStateOf(0.0)
     var gpsLongitude by mutableDoubleStateOf(0.0)
     var gpsAltitude by mutableDoubleStateOf(0.0)
     var isLocationAvailable by mutableStateOf(false)
     var barometricAltitude by mutableDoubleStateOf(0.0)
+    var addressText by mutableStateOf("Suche Adresse...")
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) {
-                hasLocationPermission = true
-                startLocationUpdates()
-            }
-        }
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) { hasLocationPermission = true; startLocationUpdates() }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,13 +85,15 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         pressureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
-                for (location in p0.locations){
+                p0.lastLocation?.let { location ->
                     gpsLatitude = location.latitude
                     gpsLongitude = location.longitude
                     gpsAltitude = location.altitude
                     isLocationAvailable = true
+                    getAddressFromCoordinates(location.latitude, location.longitude)
                 }
             }
         }
@@ -94,27 +103,41 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         checkLocationPermission()
     }
 
+    private fun getAddressFromCoordinates(latitude: Double, longitude: Double) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val geocoder = Geocoder(this@MainActivity, Locale.GERMANY)
+                @Suppress("DEPRECATION")
+                val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+                val address = addresses?.firstOrNull()?.let { addr ->
+                    val street = addr.thoroughfare ?: ""
+                    val number = addr.subThoroughfare ?: ""
+                    val postal = addr.postalCode ?: ""
+                    val city = addr.locality ?: ""
+                    "$street $number, $postal $city".trim().trim(',')
+                } ?: "Adresse nicht gefunden"
+                withContext(Dispatchers.Main) { addressText = address }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) { addressText = "Fehler bei Adresssuche" }
+            }
+        }
+    }
+
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
-        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
-            .setWaitForAccurateLocation(false)
-            .setMinUpdateIntervalMillis(1000)
-            .build()
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000).build()
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }
 
     private fun checkLocationPermission() {
         when {
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
-                hasLocationPermission = true
-                startLocationUpdates()
+                hasLocationPermission = true; startLocationUpdates()
             }
             shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
                 requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
-            else -> {
-                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            }
+            else -> requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
 
@@ -179,13 +202,11 @@ fun MainActivity.UserInterface() {
                     LocationDisplay(
                         latitude = gpsLatitude,
                         longitude = gpsLongitude,
-                        gpsAltitude = gpsAltitude,
                         barometricAltitude = barometricAltitude,
-                        isLocationAvailable = isLocationAvailable
+                        isLocationAvailable = isLocationAvailable,
+                        address = addressText
                     )
-                } else {
-                    Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp)
-                }
+                } else { Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp) }
             }
         }
     }
@@ -195,22 +216,26 @@ fun MainActivity.UserInterface() {
 fun LocationDisplay(
     latitude: Double,
     longitude: Double,
-    gpsAltitude: Double,
     barometricAltitude: Double,
-    isLocationAvailable: Boolean
+    isLocationAvailable: Boolean,
+    address: String
 ) {
     if (!isLocationAvailable) {
         Text(text = "Lade Standortdaten...", fontSize = 20.sp)
         return
     }
-    val lat = String.format(Locale.US, "%.6f", latitude)
-    val lon = String.format(Locale.US, "%.6f", longitude)
-    val altGps = String.format(Locale.US, "%.1f", gpsAltitude)
-    val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
 
-    Text(text = "Breitengrad: $lat", fontSize = 20.sp)
-    Text(text = "Längengrad: $lon", fontSize = 20.sp)
-    Text(text = "Höhe (Baro): $altBaro m", fontSize = 20.sp)
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = address, fontSize = 22.sp, modifier = Modifier.padding(bottom = 16.dp))
+
+        val lat = String.format(Locale.US, "%.6f", latitude)
+        val lon = String.format(Locale.US, "%.6f", longitude)
+        val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
+
+        Text(text = "Breite: $lat", fontSize = 16.sp)
+        Text(text = "Länge: $lon", fontSize = 16.sp)
+        Text(text = "Höhe: $altBaro m", fontSize = 16.sp)
+    }
 }
 
 @Composable
@@ -225,7 +250,13 @@ fun DefaultPreview() {
     CompassLocationHeightTheme {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CompassDisplay(azimuth = 123f)
-            LocationDisplay(latitude = 47.123456, longitude = 11.654321, gpsAltitude = 550.5, barometricAltitude = 455.2, isLocationAvailable = true)
+            LocationDisplay(
+                latitude = 47.123456,
+                longitude = 11.654321,
+                barometricAltitude = 352.1,
+                isLocationAvailable = true,
+                address = "Musterstraße 1, 12345 Musterstadt"
+            )
         }
     }
 }
