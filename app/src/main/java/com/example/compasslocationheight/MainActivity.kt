@@ -43,31 +43,34 @@ import java.util.Locale
 
 class MainActivity : ComponentActivity(), SensorEventListener {
 
+    // Manager & Sensoren
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private var magnetometer: Sensor? = null
     private var pressureSensor: Sensor? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+
+    // Rohdaten & UI States
     private var gravity: FloatArray? = null
     private var geomagnetic: FloatArray? = null
     var azimuth by mutableFloatStateOf(0f)
     private var smoothedAzimuth = 0f
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationCallback: LocationCallback
     var hasLocationPermission by mutableStateOf(false)
     var gpsLatitude by mutableDoubleStateOf(0.0)
     var gpsLongitude by mutableDoubleStateOf(0.0)
     var gpsAltitude by mutableDoubleStateOf(0.0)
     var isLocationAvailable by mutableStateOf(false)
-    var barometricAltitude by mutableDoubleStateOf(0.0)
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) {
-                hasLocationPermission = true
-                startLocationUpdates()
-            }
-        }
+    // Fusions-Logik
+    var fusedAltitude by mutableDoubleStateOf(0.0)
+    private var altitudeOffset by mutableDoubleStateOf(0.0)
+    var isCalibrated by mutableStateOf(false)
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) { hasLocationPermission = true; startLocationUpdates() }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,12 +81,13 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         pressureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
-                for (location in p0.locations){
+                p0.lastLocation?.let { location ->
                     gpsLatitude = location.latitude
                     gpsLongitude = location.longitude
-                    gpsAltitude = location.altitude
+                    gpsAltitude = location.altitude // Nehmen Sie einfach den Wert; keinen Schutz
                     isLocationAvailable = true
                 }
             }
@@ -122,10 +126,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
         sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI)
         sensorManager.registerListener(this, pressureSensor, SensorManager.SENSOR_DELAY_UI)
-
-        if (hasLocationPermission) {
-            startLocationUpdates()
-        }
+        if (hasLocationPermission) { startLocationUpdates() }
     }
 
     override fun onPause() {
@@ -134,22 +135,28 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-    }
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (event == null) return
 
-        if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-            gravity = event.values
-        }
-        if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
-            geomagnetic = event.values
-        }
+        if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) { gravity = event.values }
+        if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) { geomagnetic = event.values }
+
         if (event.sensor.type == Sensor.TYPE_PRESSURE) {
-            val pressureValue = event.values[0]
-            val altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue)
-            barometricAltitude = altitude.toDouble()
+            val currentPressure = event.values[0]
+            val barometricAltitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, currentPressure)
+
+            if (!isCalibrated && gpsAltitude != 0.0 && currentPressure != 0.0f) {
+                altitudeOffset = gpsAltitude - barometricAltitude
+                isCalibrated = true
+            }
+
+            if(isCalibrated) {
+                fusedAltitude = barometricAltitude + altitudeOffset
+            } else {
+                fusedAltitude = barometricAltitude.toDouble()
+            }
         }
 
         if (gravity != null && geomagnetic != null) {
@@ -165,10 +172,9 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 val diff = Math.abs(smoothedAzimuth - currentAzimuth)
                 if (diff > 180) {
                     if (smoothedAzimuth > currentAzimuth) {
-                        smoothedAzimuth += (360 - diff) * (1 - filterFactor)
-                    } else {
-                        smoothedAzimuth -= (360 - diff) * (1 - filterFactor)
-                    }
+                        smoothedAzimuth += (360 - diff) * (1 - filterFactor) }
+                    else {
+                        smoothedAzimuth -= (360 - diff) * (1 - filterFactor) }
                 } else {
                     smoothedAzimuth = (smoothedAzimuth * filterFactor) + (currentAzimuth * (1 - filterFactor))
                 }
@@ -194,9 +200,9 @@ fun MainActivity.UserInterface() {
                     LocationDisplay(
                         latitude = gpsLatitude,
                         longitude = gpsLongitude,
-                        gpsAltitude = gpsAltitude,
-                        barometricAltitude = barometricAltitude,
-                        isLocationAvailable = isLocationAvailable
+                        fusedAltitude = fusedAltitude,
+                        isLocationAvailable = isLocationAvailable,
+                        isCalibrated = isCalibrated
                     )
                 } else {
                     Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp)
@@ -210,23 +216,26 @@ fun MainActivity.UserInterface() {
 fun LocationDisplay(
     latitude: Double,
     longitude: Double,
-    gpsAltitude: Double,
-    barometricAltitude: Double,
-    isLocationAvailable: Boolean
+    fusedAltitude: Double,
+    isLocationAvailable: Boolean,
+    isCalibrated: Boolean
 ) {
     if (!isLocationAvailable) {
-        Text(text = "Lade Standortdaten...", fontSize = 20.sp)
-        return
+        Text(text = "Lade Standortdaten...", fontSize = 20.sp); return
     }
+
     val lat = String.format(Locale.US, "%.6f", latitude)
     val lon = String.format(Locale.US, "%.6f", longitude)
-    val altGps = String.format(Locale.US, "%.1f", gpsAltitude)
-    val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
 
     Text(text = "Breitengrad: $lat", fontSize = 20.sp)
     Text(text = "Längengrad: $lon", fontSize = 20.sp)
-    Text(text = "Höhe (GPS): $altGps m", fontSize = 20.sp)
-    Text(text = "Höhe (Baro): $altBaro m", fontSize = 20.sp)
+
+    if (isLocationAvailable && !isCalibrated) {
+        Text(text = "Kalibriere Höhe...", fontSize = 20.sp)
+    } else {
+        val altFused = String.format(Locale.US, "%.1f", fusedAltitude)
+        Text(text = "Höhe: $altFused m", fontSize = 20.sp)
+    }
 }
 
 @Composable
@@ -241,7 +250,7 @@ fun DefaultPreview() {
     CompassLocationHeightTheme {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CompassDisplay(azimuth = 123f)
-            LocationDisplay(latitude = 47.123456, longitude = 11.654321, gpsAltitude = 550.5, barometricAltitude = 455.2, isLocationAvailable = true)
+            LocationDisplay(latitude = 47.123456, longitude = 11.654321, fusedAltitude = 550.5, isLocationAvailable = true, isCalibrated = true)
         }
     }
 }
