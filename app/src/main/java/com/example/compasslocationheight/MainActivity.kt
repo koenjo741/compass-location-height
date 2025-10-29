@@ -243,24 +243,24 @@ fun MainActivity.UserInterface() {
 fun CompassHeader(azimuth: Float) {
     val degrees = azimuth.toInt()
     val cardinal = degreesToCardinalDirection(degrees)
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            text = buildAnnotatedString {
-                append("$degrees° ")
-                pushStyle(TextStyle(fontWeight = FontWeight.Bold).toSpanStyle())
-                append(cardinal)
-                pop()
-            },
-            color = AppColors.HeadingBlue,
-            fontSize = 48.sp
-        )
-        Text(text = "$degrees", color = AppColors.HeadingBlue, fontSize = 24.sp)
-    }
+
+    // 4) Nur noch eine Text-Zeile
+    Text(
+        text = buildAnnotatedString {
+            append("$degrees° ")
+            pushStyle(TextStyle(fontWeight = FontWeight.Bold).toSpanStyle())
+            append(cardinal)
+            pop()
+        },
+        color = AppColors.HeadingBlue,
+        fontSize = 48.sp,
+        modifier = Modifier.padding(top = 24.dp) // Etwas Abstand nach oben
+    )
 }
 
 
 fun DrawScope.drawTextCustom(textMeasurer: androidx.compose.ui.text.TextMeasurer, text: String, center: Offset, radius: Float, angleDegrees: Float, style: TextStyle) {
-    val angleRad = Math.toRadians(angleDegrees.toDouble())
+    val angleRad = Math.toRadians(angleDegrees.toDouble() - 90) // UI-Koordinatensystem korrigieren
     val textLayoutResult = textMeasurer.measure(text, style)
     val textWidth = textLayoutResult.size.width
     val textHeight = textLayoutResult.size.height
@@ -275,15 +275,16 @@ fun CompassRose(azimuth: Float, modifier: Modifier = Modifier) {
         val radius = size.minDimension / 2
         val center = this.center
 
+        // --- SCHICHT 1: Die rotierende Scheibe ---
         rotate(degrees = -azimuth) {
-            // Grad-Striche
+
+            // Striche zeichnen (Logik unverändert)
             for (i in 0 until 360 step 5) {
                 val angleInRad = Math.toRadians(i.toDouble())
                 val isMajorLine = i % 30 == 0
                 val isCardinal = i % 90 == 0
 
-                // 3) Linien um 20% verlängert
-                val lineLength = if (isCardinal) 48f else 30f // war 40f / 25f
+                val lineLength = if (isCardinal) 48f else 30f
                 val color = AppColors.FloralWhite.copy(alpha = if (isMajorLine) 1f else 0.5f)
                 val strokeWidth = if (isMajorLine) 4f else 2f
 
@@ -296,33 +297,39 @@ fun CompassRose(azimuth: Float, modifier: Modifier = Modifier) {
                     y = radius * sin(angleInRad).toFloat() + center.y
                 )
                 drawLine(color, start = startOffset, end = endOffset, strokeWidth = strokeWidth)
-
-                // 4) Gradzahlen alle 30 Grad
-                if (isMajorLine && i != 0 && i != 90 && i != 180 && i != 270) {
-                    drawTextCustom(
-                        textMeasurer = textMeasurer,
-                        text = i.toString(),
-                        center = center,
-                        radius = radius * 0.70f, // etwas weiter innen
-                        angleDegrees = i.toFloat(),
-                        style = TextStyle(color = AppColors.FloralWhite.copy(alpha = 0.7f), fontSize = 16.sp)
-                    )
-                }
             }
 
-            // 2) Farben für W, S, E angepasst
+            // Buchstaben N, O, S, W zeichnen (drehen sich mit)
             val textRadius = radius * 0.82f
             val textSize = 24.sp * 1.15f
+
+            // 1) Farben für W, S, E explizit gesetzt auf FloralWhite
             val textStyleN = TextStyle(color = AppColors.HeadingBlue, fontSize = textSize, fontWeight = FontWeight.Bold)
-            val textStyleOthers = TextStyle(color = AppColors.FloralWhite, fontSize = textSize, fontWeight = FontWeight.SemiBold) // Verwendet jetzt die richtige Farbe
+            val textStyleOthers = TextStyle(color = AppColors.FloralWhite, fontSize = textSize, fontWeight = FontWeight.SemiBold)
 
             drawTextCustom(textMeasurer, "N", center, textRadius, 270f, textStyleN)
             drawTextCustom(textMeasurer, "E", center, textRadius, 0f, textStyleOthers)
             drawTextCustom(textMeasurer, "S", center, textRadius, 90f, textStyleOthers)
             drawTextCustom(textMeasurer, "W", center, textRadius, 180f, textStyleOthers)
 
-            // Nord-Markierung (längerer Strich ist jetzt im Haupt-Loop)
-            drawLine(AppColors.NorthRed, start=Offset(center.x,0f), end=Offset(center.x, 48f), strokeWidth=8f) // angepasst an neue Länge
+            // Nord-Markierung (roter Strich)
+            drawLine(AppColors.NorthRed, start=Offset(center.x,0f), end=Offset(center.x, 48f), strokeWidth=8f)
+        }
+
+        // --- SCHICHT 2: Die aufrechten Gradzahlen (NICHT im rotate-Block) ---
+        // 3) Gradzahlen, die immer aufrecht stehen
+        for(i in 0 until 360 step 30) {
+            val angleRad = Math.toRadians(i.toDouble() - azimuth - 90.0) // Korrektur um Azimuth und 90°
+            if (i != 0 && i != 90 && i != 180 && i != 270) { // Lass die Himmelsrichtungen aus
+                drawTextCustom(
+                    textMeasurer,
+                    i.toString(),
+                    center,
+                    radius * 0.7f,
+                    (i.toFloat() - azimuth), // Position rotiert, Text nicht
+                    TextStyle(color = AppColors.FloralWhite.copy(alpha = 0.7f), fontSize = 16.sp)
+                )
+            }
         }
     }
 }
@@ -333,21 +340,22 @@ fun CompassOverlay(pitch: Float, roll: Float, modifier: Modifier = Modifier) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             val canvasWidth = size.width
 
-            // 5) Blaues Dreieck als fixer Zeiger, jetzt größer
+            // 5) Blaues Dreieck, jetzt größer und über dem Kreis
             val path = Path().apply {
-                moveTo(canvasWidth / 2, 0f)         // Spitze bleibt
-                lineTo(canvasWidth / 2 - 25, 50f) // Breiter und länger
-                lineTo(canvasWidth / 2 + 25, 50f) // Breiter und länger
+                moveTo(canvasWidth / 2, -15f)        // Spitze steht jetzt über (y=-15)
+                lineTo(canvasWidth / 2 - 35, 60f) // Deutlich größer
+                lineTo(canvasWidth / 2 + 35, 60f) // Deutlich größer
                 close()
             }
             drawPath(path, color = AppColors.HeadingBlue)
 
-            // 1) Grünes Fadenkreuz, jetzt größer
-            drawLine(AppColors.CrosshairGreen, start=Offset(center.x - 80, center.y), end=Offset(center.x + 80, center.y), strokeWidth=3f)
-            drawLine(AppColors.CrosshairGreen, start=Offset(center.x, center.y - 80), end=Offset(center.x, center.y + 80), strokeWidth=3f)
+            // 2) Grünes Fadenkreuz, nochmal vergrößert
+            val crosshairLength = 96f // war 80
+            drawLine(AppColors.CrosshairGreen, start=Offset(center.x - crosshairLength, center.y), end=Offset(center.x + crosshairLength, center.y), strokeWidth=3f)
+            drawLine(AppColors.CrosshairGreen, start=Offset(center.x, center.y - crosshairLength), end=Offset(center.x, center.y + crosshairLength), strokeWidth=3f)
         }
 
-        // Orangefarbener Punkt (Wasserwaage) - unverändert
+        // Orangefarbener Punkt (unverändert)
         Box(
             modifier = Modifier
                 .align(Alignment.Center)
