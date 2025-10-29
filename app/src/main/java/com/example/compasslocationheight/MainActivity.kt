@@ -17,48 +17,50 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.*
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.compasslocationheight.ui.theme.CompassLocationHeightTheme
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
+import com.google.android.gms.location.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
+import kotlin.math.cos
+import kotlin.math.sin
+
+object AppColors {
+    val HeadingBlue = Color(0xFF1E90FF)
+    val NorthRed = Color(0xFFFE0000)
+    val CrosshairGreen = Color(0xFF33FF33)
+    val BubbleOrange = Color(0xFFFF9933)
+    val FloralWhite = Color(0xFFFFFFA)
+}
 
 class MainActivity : ComponentActivity(), SensorEventListener {
-
     // Manager & Sensoren
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
@@ -79,11 +81,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var isLocationAvailable by mutableStateOf(false)
     var barometricAltitude by mutableDoubleStateOf(0.0)
     var addressText by mutableStateOf("Suche Adresse...")
-
-    // Wasserwaage States
     var pitch by mutableFloatStateOf(0f)
     var roll by mutableFloatStateOf(0f)
-
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) { hasLocationPermission = true; startLocationUpdates() }
@@ -98,7 +97,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         pressureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
                 p0.lastLocation?.let { location ->
@@ -114,6 +112,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         setContent { UserInterface() }
         checkLocationPermission()
     }
+
     private fun getAddressFromCoordinates(latitude: Double, longitude: Double) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -136,19 +135,22 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
-        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000).build()
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000).build()
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }
 
     private fun checkLocationPermission() {
         when {
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
-                hasLocationPermission = true; startLocationUpdates()
+                hasLocationPermission = true
+                startLocationUpdates()
             }
             shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
                 requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
-            else -> requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            else -> {
+                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
         }
     }
 
@@ -170,10 +172,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (event == null) return
-
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
             gravity = event.values
-            // Wasserwaage-Werte aktualisieren
             roll = event.values[0]
             pitch = event.values[1]
         }
@@ -183,7 +183,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             val altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue)
             barometricAltitude = altitude.toDouble()
         }
-
         if (gravity != null && geomagnetic != null) {
             val r = FloatArray(9)
             val i = FloatArray(9)
@@ -193,31 +192,36 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 var currentAzimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
                 currentAzimuth = (currentAzimuth + 360) % 360
                 val filterFactor = 0.97f
-                val diff = Math.abs(smoothedAzimuth - currentAzimuth)
-                if (diff > 180) {
-                    if (smoothedAzimuth > currentAzimuth) smoothedAzimuth += (360 - diff) * (1 - filterFactor)
-                    else smoothedAzimuth -= (360 - diff) * (1 - filterFactor)
-                } else {
-                    smoothedAzimuth = (smoothedAzimuth * filterFactor) + (currentAzimuth * (1 - filterFactor))
-                }
+                smoothedAzimuth = (smoothedAzimuth * filterFactor) + (currentAzimuth * (1 - filterFactor))
                 smoothedAzimuth %= 360
-                if (azimuth.toInt() != smoothedAzimuth.toInt()) azimuth = smoothedAzimuth
+                if (azimuth.toInt() != smoothedAzimuth.toInt()) {
+                    azimuth = smoothedAzimuth
+                }
             }
         }
     }
 }
+
+fun degreesToCardinalDirection(degrees: Int): String {
+    val directions = arrayOf("N", "NNO", "NO", "ONO", "O", "OSO", "SO", "SSO", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
+    return directions[((degrees + 11.25) / 22.5).toInt() % 16]
+}
+
 @Composable
 fun MainActivity.UserInterface() {
-    CompassLocationHeightTheme {
+    CompassLocationHeightTheme(darkTheme = true) {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Column(
-                modifier = Modifier.fillMaxSize().padding(innerPadding),
+                modifier = Modifier.fillMaxSize().padding(innerPadding).background(Color.Black),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                CompassDisplay(azimuth = azimuth)
+                CompassHeader(azimuth = azimuth)
 
-                BubbleLevel(pitch = pitch, roll = roll)
+                Box(contentAlignment = Alignment.Center) {
+                    CompassRose(azimuth = azimuth)
+                    CompassOverlay(pitch = pitch, roll = roll)
+                }
 
                 if (hasLocationPermission) {
                     LocationDisplay(
@@ -227,80 +231,147 @@ fun MainActivity.UserInterface() {
                         isLocationAvailable = isLocationAvailable,
                         address = addressText
                     )
-                } else { Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp) }
+                } else {
+                    Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White)
+                }
             }
         }
     }
 }
 
 @Composable
-fun BubbleLevel(pitch: Float, roll: Float, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .size(150.dp)
-            .background(Color.DarkGray, shape = CircleShape)
-            .border(2.dp, Color.LightGray, shape = CircleShape)
-    ) {
+fun CompassHeader(azimuth: Float) {
+    val degrees = azimuth.toInt()
+    val cardinal = degreesToCardinalDirection(degrees)
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = buildAnnotatedString {
+                append("$degrees° ")
+                pushStyle(TextStyle(fontWeight = FontWeight.Bold).toSpanStyle())
+                append(cardinal)
+                pop()
+            },
+            color = AppColors.HeadingBlue,
+            fontSize = 48.sp
+        )
+        Text(text = "$degrees", color = AppColors.HeadingBlue, fontSize = 24.sp)
+    }
+}
+
+@Composable
+fun CompassRose(azimuth: Float, modifier: Modifier = Modifier) {
+    val textMeasurer = rememberTextMeasurer()
+    Canvas(modifier = modifier.size(300.dp)) {
+        val radius = size.minDimension / 2
+        val center = this.center
+
+        rotate(degrees = -azimuth) {
+            for (i in 0 until 360 step 5) {
+                val angleInRad = Math.toRadians(i.toDouble())
+                val isMajorLine = i % 30 == 0
+                val isCardinal = i % 90 == 0
+
+                val lineLength = if (isCardinal) 40f else 25f
+                val color = AppColors.FloralWhite.copy(alpha = if (isMajorLine) 1f else 0.5f)
+                val strokeWidth = if (isMajorLine) 4f else 2f
+
+                val startOffset = Offset(
+                    x = (radius - lineLength) * cos(angleInRad).toFloat() + center.x,
+                    y = (radius - lineLength) * sin(angleInRad).toFloat() + center.y
+                )
+                val endOffset = Offset(
+                    x = radius * cos(angleInRad).toFloat() + center.x,
+                    y = radius * sin(angleInRad).toFloat() + center.y
+                )
+
+                drawLine(color, start = startOffset, end = endOffset, strokeWidth = strokeWidth)
+            }
+
+            val textRadius = radius * 0.82f
+            val textSize = 24.sp * 1.15f
+            val textStyleN = TextStyle(color = AppColors.HeadingBlue, fontSize = textSize, fontWeight = FontWeight.Bold)
+            val textStyleOthers = TextStyle(color = AppColors.FloralWhite, fontSize = textSize, fontWeight = FontWeight.SemiBold)
+
+            drawTextCustom(textMeasurer, "N", center, textRadius, 270f, textStyleN)
+            drawTextCustom(textMeasurer, "E", center, textRadius, 0f, textStyleOthers)
+            drawTextCustom(textMeasurer, "S", center, textRadius, 90f, textStyleOthers)
+            drawTextCustom(textMeasurer, "W", center, textRadius, 180f, textStyleOthers)
+
+            drawLine(AppColors.NorthRed, start=Offset(center.x,0f), end=Offset(center.x, 40f), strokeWidth=8f)
+        }
+    }
+}
+
+fun DrawScope.drawTextCustom(textMeasurer: androidx.compose.ui.text.TextMeasurer, text: String, center: Offset, radius: Float, angleDegrees: Float, style: TextStyle) {
+    val angleRad = Math.toRadians(angleDegrees.toDouble())
+    val textLayoutResult = textMeasurer.measure(text, style)
+    val textWidth = textLayoutResult.size.width
+    val textHeight = textLayoutResult.size.height
+    val x = center.x + radius * cos(angleRad).toFloat() - textWidth / 2
+    val y = center.y + radius * sin(angleRad).toFloat() - textHeight / 2
+    drawText(textLayoutResult, topLeft = Offset(x, y))
+}
+
+@Composable
+fun CompassOverlay(pitch: Float, roll: Float, modifier: Modifier = Modifier) {
+    Box(modifier = modifier.size(300.dp), contentAlignment = Alignment.Center) {
+
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            // Korrekter Zugriff auf die Größe der Leinwand
+            val canvasWidth = size.width
+            val canvasHeight = size.height
+
+            // Blaues Dreieck als fixer Zeiger oben
+            val path = Path().apply {
+                moveTo(canvasWidth / 2, 0f)
+                lineTo(canvasWidth / 2 - 15, 30f)
+                lineTo(canvasWidth / 2 + 15, 30f)
+                close()
+            }
+            drawPath(path, color = AppColors.HeadingBlue)
+
+            // Grünes Fadenkreuz
+            drawLine(AppColors.CrosshairGreen, start=Offset(center.x - 40, center.y), end=Offset(center.x + 40, center.y), strokeWidth=3f)
+            drawLine(AppColors.CrosshairGreen, start=Offset(center.x, center.y - 40), end=Offset(center.x, center.y + 40), strokeWidth=3f)
+        }
+
+        // Orangefarbener Punkt (Wasserwaage)
         Box(
             modifier = Modifier
                 .align(Alignment.Center)
-                .offset(x = (-roll * 10).dp, y = (pitch * 10).dp) // Multiplizieren, um die Bewegung sichtbarer zu machen
-                .size(30.dp)
-                .background(Color.Green, shape = CircleShape)
-                .border(1.dp, Color.White, shape = CircleShape)
-
+                .offset(x = (-roll * 10).dp, y = (pitch * 10).dp)
+                .size(25.dp)
+                .background(AppColors.BubbleOrange, shape = CircleShape)
         )
     }
 }
 
-
 @Composable
-fun LocationDisplay(
-    latitude: Double,
-    longitude: Double,
-    barometricAltitude: Double,
-    isLocationAvailable: Boolean,
-    address: String
-) {
-    if (!isLocationAvailable) {
-        Text(text = "Lade Standortdaten...", fontSize = 20.sp)
-        return
-    }
+fun LocationDisplay(latitude: Double, longitude: Double, barometricAltitude: Double, isLocationAvailable: Boolean, address: String) {
+    if (!isLocationAvailable) { Text(text = "Lade Standortdaten...", fontSize = 20.sp, color=Color.White); return }
     val context = LocalContext.current
-
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            text = address,
-            fontSize = 22.sp,
-            modifier = Modifier
-                .padding(bottom = 16.dp)
-                .clickable {
-                    openMaps(context, latitude, longitude)
-                }
-        )
-
+        Text(text = address, fontSize = 22.sp, color = Color.White, modifier = Modifier.padding(bottom = 16.dp).clickable { openMaps(context, latitude, longitude) })
         val lat = String.format(Locale.US, "%.6f", latitude)
         val lon = String.format(Locale.US, "%.6f", longitude)
         val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
-
-        Text(text = "Breite: $lat", fontSize = 16.sp)
-        Text(text = "Länge: $lon", fontSize = 16.sp)
-        Text(text = "Höhe: $altBaro m", fontSize = 16.sp)
+        Text(text = "Breite: $lat", fontSize = 16.sp, color = Color.Gray)
+        Text(text = "Länge: $lon", fontSize = 16.sp, color = Color.Gray)
+        Text(text = "Höhe: $altBaro m", fontSize = 16.sp, color = Color.Gray)
     }
 }
 
-@Composable
-fun CompassDisplay(azimuth: Float, modifier: Modifier = Modifier) {
-    val degrees = azimuth.toInt()
-    Text(text = "$degrees°", fontSize = 60.sp, modifier = modifier)
-}
-
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
 fun DefaultPreview() {
-    CompassLocationHeightTheme {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            CompassDisplay(azimuth = 123f)
+    CompassLocationHeightTheme(darkTheme = true) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceEvenly, modifier=Modifier.fillMaxSize()) {
+            CompassHeader(azimuth = 330f)
+            Box(contentAlignment = Alignment.Center){
+                CompassRose(azimuth = 330f)
+                CompassOverlay(pitch = -1.5f, roll = 2.5f)
+            }
+            LocationDisplay(latitude = 48.330967, longitude = 14.272329, barometricAltitude = 370.0, isLocationAvailable = true, address = "Teststraße 1, 4020 Linz" )
         }
     }
 }
