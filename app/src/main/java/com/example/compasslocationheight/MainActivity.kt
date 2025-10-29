@@ -217,23 +217,13 @@ fun MainActivity.UserInterface() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 CompassHeader(azimuth = azimuth)
-
                 Box(contentAlignment = Alignment.Center) {
                     CompassRose(azimuth = azimuth)
-                    CompassOverlay(pitch = pitch, roll = roll)
+                    CompassOverlay(pitch = pitch, roll = roll, azimuth = azimuth)
                 }
-
                 if (hasLocationPermission) {
-                    LocationDisplay(
-                        latitude = gpsLatitude,
-                        longitude = gpsLongitude,
-                        barometricAltitude = barometricAltitude,
-                        isLocationAvailable = isLocationAvailable,
-                        address = addressText
-                    )
-                } else {
-                    Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White)
-                }
+                    LocationDisplay(latitude = gpsLatitude, longitude = gpsLongitude, barometricAltitude = barometricAltitude, isLocationAvailable = isLocationAvailable, address = addressText)
+                } else { Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White) }
             }
         }
     }
@@ -243,8 +233,6 @@ fun MainActivity.UserInterface() {
 fun CompassHeader(azimuth: Float) {
     val degrees = azimuth.toInt()
     val cardinal = degreesToCardinalDirection(degrees)
-
-    // 4) Nur noch eine Text-Zeile
     Text(
         text = buildAnnotatedString {
             append("$degrees° ")
@@ -254,20 +242,10 @@ fun CompassHeader(azimuth: Float) {
         },
         color = AppColors.HeadingBlue,
         fontSize = 48.sp,
-        modifier = Modifier.padding(top = 24.dp) // Etwas Abstand nach oben
+        modifier = Modifier.padding(top = 24.dp)
     )
 }
 
-
-fun DrawScope.drawTextCustom(textMeasurer: androidx.compose.ui.text.TextMeasurer, text: String, center: Offset, radius: Float, angleDegrees: Float, style: TextStyle) {
-    val angleRad = Math.toRadians(angleDegrees.toDouble() - 90) // UI-Koordinatensystem korrigieren
-    val textLayoutResult = textMeasurer.measure(text, style)
-    val textWidth = textLayoutResult.size.width
-    val textHeight = textLayoutResult.size.height
-    val x = center.x + radius * cos(angleRad).toFloat() - textWidth / 2
-    val y = center.y + radius * sin(angleRad).toFloat() - textHeight / 2
-    drawText(textLayoutResult, topLeft = Offset(x, y))
-}
 @Composable
 fun CompassRose(azimuth: Float, modifier: Modifier = Modifier) {
     val textMeasurer = rememberTextMeasurer()
@@ -275,103 +253,83 @@ fun CompassRose(azimuth: Float, modifier: Modifier = Modifier) {
         val radius = size.minDimension / 2
         val center = this.center
 
-        // --- SCHICHT 1: Die rotierende Scheibe ---
         rotate(degrees = -azimuth) {
-
-            // Striche zeichnen (Logik unverändert)
             for (i in 0 until 360 step 5) {
                 val angleInRad = Math.toRadians(i.toDouble())
                 val isMajorLine = i % 30 == 0
                 val isCardinal = i % 90 == 0
-
                 val lineLength = if (isCardinal) 48f else 30f
                 val color = AppColors.FloralWhite.copy(alpha = if (isMajorLine) 1f else 0.5f)
                 val strokeWidth = if (isMajorLine) 4f else 2f
-
-                val startOffset = Offset(
-                    x = (radius - lineLength) * cos(angleInRad).toFloat() + center.x,
-                    y = (radius - lineLength) * sin(angleInRad).toFloat() + center.y
-                )
-                val endOffset = Offset(
-                    x = radius * cos(angleInRad).toFloat() + center.x,
-                    y = radius * sin(angleInRad).toFloat() + center.y
-                )
+                val startOffset = Offset(x = (radius - lineLength) * cos(angleInRad).toFloat() + center.x, y = (radius - lineLength) * sin(angleInRad).toFloat() + center.y)
+                val endOffset = Offset(x = radius * cos(angleInRad).toFloat() + center.x, y = radius * sin(angleInRad).toFloat() + center.y)
                 drawLine(color, start = startOffset, end = endOffset, strokeWidth = strokeWidth)
             }
-
-            // Buchstaben N, O, S, W zeichnen (drehen sich mit)
-            val textRadius = radius * 0.82f
-            val textSize = 24.sp * 1.15f
-
-            // 1) Farben für W, S, E explizit gesetzt auf FloralWhite
-            val textStyleN = TextStyle(color = AppColors.HeadingBlue, fontSize = textSize, fontWeight = FontWeight.Bold)
-            val textStyleOthers = TextStyle(color = AppColors.FloralWhite, fontSize = textSize, fontWeight = FontWeight.SemiBold)
-
-            drawTextCustom(textMeasurer, "N", center, textRadius, 270f, textStyleN)
-            drawTextCustom(textMeasurer, "E", center, textRadius, 0f, textStyleOthers)
-            drawTextCustom(textMeasurer, "S", center, textRadius, 90f, textStyleOthers)
-            drawTextCustom(textMeasurer, "W", center, textRadius, 180f, textStyleOthers)
-
-            // Nord-Markierung (roter Strich)
-            drawLine(AppColors.NorthRed, start=Offset(center.x,0f), end=Offset(center.x, 48f), strokeWidth=8f)
+            drawLine(AppColors.NorthRed, start = Offset(center.x, 0f), end = Offset(center.x, 48f), strokeWidth = 8f)
         }
 
-        // --- SCHICHT 2: Die aufrechten Gradzahlen (NICHT im rotate-Block) ---
-        // 3) Gradzahlen, die immer aufrecht stehen
-        for(i in 0 until 360 step 30) {
-            val angleRad = Math.toRadians(i.toDouble() - azimuth - 90.0) // Korrektur um Azimuth und 90°
-            if (i != 0 && i != 90 && i != 180 && i != 270) { // Lass die Himmelsrichtungen aus
-                drawTextCustom(
-                    textMeasurer,
-                    i.toString(),
-                    center,
-                    radius * 0.7f,
-                    (i.toFloat() - azimuth), // Position rotiert, Text nicht
-                    TextStyle(color = AppColors.FloralWhite.copy(alpha = 0.7f), fontSize = 16.sp)
-                )
+        for (i in 0 until 360 step 30) {
+            if (i % 90 != 0) {
+                drawTextCustom(textMeasurer, i.toString(), center, radius * 0.72f, (i.toFloat() - azimuth), style = TextStyle(color = AppColors.FloralWhite.copy(alpha = 0.7f), fontSize = 18.sp))
             }
         }
     }
 }
-@Composable
-fun CompassOverlay(pitch: Float, roll: Float, modifier: Modifier = Modifier) {
-    Box(modifier = modifier.size(300.dp), contentAlignment = Alignment.Center) {
 
+fun DrawScope.drawTextCustom(textMeasurer: androidx.compose.ui.text.TextMeasurer, text: String, center: Offset, radius: Float, angleDegrees: Float, style: TextStyle) {
+    val angleRad = Math.toRadians(angleDegrees.toDouble() - 90)
+    val textLayoutResult = textMeasurer.measure(text, style)
+    val textWidth = textLayoutResult.size.width
+    val textHeight = textLayoutResult.size.height
+    val x = center.x + radius * cos(angleRad).toFloat() - textWidth / 2
+    val y = center.y + radius * sin(angleRad).toFloat() - textHeight / 2
+    drawText(textLayoutResult, topLeft = Offset(x, y))
+}
+
+@Composable
+fun CompassOverlay(pitch: Float, roll: Float, azimuth: Float, modifier: Modifier = Modifier) {
+    val textMeasurer = rememberTextMeasurer()
+    Box(modifier = modifier.size(300.dp), contentAlignment = Alignment.Center) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             val canvasWidth = size.width
+            val radius = size.minDimension / 2 // RADIUS MUSS HIER DEFINIERT WERDEN
 
-            // 5) Blaues Dreieck, jetzt größer und über dem Kreis
             val path = Path().apply {
-                moveTo(canvasWidth / 2, -15f)        // Spitze steht jetzt über (y=-15)
-                lineTo(canvasWidth / 2 - 35, 60f) // Deutlich größer
-                lineTo(canvasWidth / 2 + 35, 60f) // Deutlich größer
+                moveTo(canvasWidth / 2, -15f)
+                lineTo(canvasWidth / 2 - 35, 60f)
+                lineTo(canvasWidth / 2 + 35, 60f)
                 close()
             }
             drawPath(path, color = AppColors.HeadingBlue)
 
-            // 2) Grünes Fadenkreuz, nochmal vergrößert
-            val crosshairLength = 96f // war 80
-            drawLine(AppColors.CrosshairGreen, start=Offset(center.x - crosshairLength, center.y), end=Offset(center.x + crosshairLength, center.y), strokeWidth=3f)
-            drawLine(AppColors.CrosshairGreen, start=Offset(center.x, center.y - crosshairLength), end=Offset(center.x, center.y + crosshairLength), strokeWidth=3f)
+            val crosshairLength = 96f
+            drawLine(AppColors.CrosshairGreen, start = Offset(center.x - crosshairLength, center.y), end = Offset(center.x + crosshairLength, center.y), strokeWidth = 3f)
+            drawLine(AppColors.CrosshairGreen, start = Offset(center.x, center.y - crosshairLength), end = Offset(center.x, center.y + crosshairLength), strokeWidth = 3f)
+
+            val textRadius = radius * 0.82f
+            val textSize = 24.sp * 1.15f
+            val textStyleN = TextStyle(color = AppColors.HeadingBlue, fontSize = textSize, fontWeight = FontWeight.Bold)
+            val textStyleOthers = TextStyle(color = AppColors.FloralWhite, fontSize = textSize, fontWeight = FontWeight.SemiBold)
+
+            drawTextCustom(textMeasurer, "N", center, textRadius, 270f - azimuth, textStyleN)
+            drawTextCustom(textMeasurer, "E", center, textRadius, 0f - azimuth, textStyleOthers)
+            drawTextCustom(textMeasurer, "S", center, textRadius, 90f - azimuth, textStyleOthers)
+            drawTextCustom(textMeasurer, "W", center, textRadius, 180f - azimuth, textStyleOthers)
         }
 
-        // Orangefarbener Punkt (unverändert)
         Box(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .offset(x = (-roll * 10).dp, y = (pitch * 10).dp)
-                .size(25.dp)
-                .background(AppColors.BubbleOrange, shape = CircleShape)
+            modifier = Modifier.align(Alignment.Center).offset(x = (-roll * 10).dp, y = (pitch * 10).dp).size(25.dp).background(AppColors.BubbleOrange, shape = CircleShape)
         )
     }
 }
 
 @Composable
 fun LocationDisplay(latitude: Double, longitude: Double, barometricAltitude: Double, isLocationAvailable: Boolean, address: String) {
-    if (!isLocationAvailable) { Text(text = "Lade Standortdaten...", fontSize = 20.sp, color=Color.White); return }
+    if (!isLocationAvailable) { Text(text = "Lade Standortdaten...", fontSize = 20.sp, color = Color.White); return }
     val context = LocalContext.current
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = address, fontSize = 22.sp, color = Color.White, modifier = Modifier.padding(bottom = 16.dp).clickable { openMaps(context, latitude, longitude) })
+        Text(text = address, fontSize = 22.sp, color = AppColors.FloralWhite, modifier = Modifier.padding(bottom = 16.dp).clickable { openMaps(context, latitude, longitude) })
+
         val lat = String.format(Locale.US, "%.6f", latitude)
         val lon = String.format(Locale.US, "%.6f", longitude)
         val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
@@ -385,13 +343,13 @@ fun LocationDisplay(latitude: Double, longitude: Double, barometricAltitude: Dou
 @Composable
 fun DefaultPreview() {
     CompassLocationHeightTheme(darkTheme = true) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceEvenly, modifier=Modifier.fillMaxSize()) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxSize()) {
             CompassHeader(azimuth = 330f)
-            Box(contentAlignment = Alignment.Center){
+            Box(contentAlignment = Alignment.Center) {
                 CompassRose(azimuth = 330f)
-                CompassOverlay(pitch = -1.5f, roll = 2.5f)
+                CompassOverlay(pitch = -1.5f, roll = 2.5f, azimuth = 330f)
             }
-            LocationDisplay(latitude = 48.330967, longitude = 14.272329, barometricAltitude = 370.0, isLocationAvailable = true, address = "Teststraße 1, 4020 Linz" )
+            LocationDisplay(latitude = 48.330967, longitude = 14.272329, barometricAltitude = 370.0, isLocationAvailable = true, address = "Teststraße 1, 4020 Linz")
         }
     }
 }
