@@ -269,7 +269,8 @@ fun CompassHeader(azimuth: Float) {
         },
         color = AppColors.HeadingBlue,
         fontSize = 48.sp,
-        modifier = Modifier.padding(top = 24.dp)
+        fontWeight = FontWeight.Normal,
+        modifier = Modifier.padding(top = 25.dp)
     )
 }
 
@@ -322,21 +323,21 @@ fun CompassOverlay(pitch: Float, roll: Float, azimuth: Float, modifier: Modifier
             val radius = size.minDimension / 2
 
             val path = Path().apply {
-                moveTo(canvasWidth / 2, -15f)
-                lineTo(canvasWidth / 2 - 35, 60f)
-                lineTo(canvasWidth / 2 + 35, 60f)
+                moveTo(canvasWidth / 2, -150f)
+                lineTo(canvasWidth / 2 - 35, -40f)
+                lineTo(canvasWidth / 2 + 35, -40f)
                 close()
             }
-            drawPath(path, color = Color.Blue) // Ersetzt AppColors
+            drawPath(path, color = AppColors.HeadingBlue)
 
             val crosshairLength = 96f
-            drawLine(Color.Green, start = Offset(center.x - crosshairLength, center.y), end = Offset(center.x + crosshairLength, center.y), strokeWidth = 3f) // Ersetzt AppColors
-            drawLine(Color.Green, start = Offset(center.x, center.y - crosshairLength), end = Offset(center.x, center.y + crosshairLength), strokeWidth = 3f) // Ersetzt AppColors
+            drawLine(color = AppColors.CrosshairGreen, start = Offset(center.x - crosshairLength, center.y), end = Offset(center.x + crosshairLength, center.y), strokeWidth = 3f)
+            drawLine(color = AppColors.CrosshairGreen, start = Offset(center.x, center.y - crosshairLength), end = Offset(center.x, center.y + crosshairLength), strokeWidth = 3f)
 
             val textRadius = radius * 0.82f
             val textSize = 24.sp * 1.15f
-            val textStyleN = TextStyle(color = Color.Blue, fontSize = textSize, fontWeight = FontWeight.Bold) // Ersetzt AppColors
-            val textStyleOthers = TextStyle(color = Color.White, fontSize = textSize, fontWeight = FontWeight.SemiBold) // Ersetzt AppColors
+            val textStyleN = TextStyle(color = AppColors.HeadingBlue, fontSize = textSize, fontWeight = FontWeight.Bold)
+            val textStyleOthers = TextStyle(AppColors.FloralWhite, fontSize = textSize, fontWeight = FontWeight.SemiBold)
 
             drawTextCustom(textMeasurer, "N", center, textRadius, 270f - azimuth, textStyleN)
             drawTextCustom(textMeasurer, "E", center, textRadius, 0f - azimuth, textStyleOthers)
@@ -363,7 +364,7 @@ fun LocationDisplay(
     if (!isLocationAvailable) { Text(text = "Lade Standortdaten...", fontSize = 20.sp, color = Color.White); return }
     val context = LocalContext.current
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = address, fontSize = 22.sp, color = Color.White, modifier = Modifier.padding(bottom = 16.dp).clickable { openMaps(context, latitude, longitude) })
+        Text(text = address, fontSize = 22.sp, color = AppColors.FloralWhite, modifier = Modifier.padding(bottom = 16.dp).clickable { openMaps(context, latitude, longitude) })
 
         val lat = String.format(Locale.US, "%.6f", latitude)
         val lon = String.format(Locale.US, "%.6f", longitude)
