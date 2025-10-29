@@ -58,7 +58,7 @@ object AppColors {
     val NorthRed = Color(0xFFFE0000)
     val CrosshairGreen = Color(0xFF33FF33)
     val BubbleOrange = Color(0xFFFF9933)
-    val FloralWhite = Color(0xFFFFFFA)
+    val FloralWhite = Color(0xFFFFFAF0)
 }
 
 class MainActivity : ComponentActivity(), SensorEventListener {
