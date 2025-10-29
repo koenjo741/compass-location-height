@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -52,6 +53,9 @@ import java.util.Locale
 import kotlin.math.cos
 import kotlin.math.sin
 import androidx.compose.ui.graphics.toArgb
+import java.text.SimpleDateFormat
+import java.util.Date
+import kotlinx.coroutines.delay
 
 object AppColors {
     val HeadingBlue = Color(0xFF1E90FF)
@@ -82,6 +86,11 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var isLocationAvailable by mutableStateOf(false)
     var barometricAltitude by mutableDoubleStateOf(0.0)
     var addressText by mutableStateOf("Suche Adresse...")
+
+    var currentDate by mutableStateOf("")
+
+    var currentTime by mutableStateOf("")
+
     var pitch by mutableFloatStateOf(0f)
     var roll by mutableFloatStateOf(0f)
 
@@ -202,7 +211,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         }
     }
 }
-
 fun degreesToCardinalDirection(degrees: Int): String {
     val directions = arrayOf("N", "NNO", "NO", "ONO", "O", "OSO", "SO", "SSO", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
     return directions[((degrees + 11.25) / 22.5).toInt() % 16]
@@ -210,10 +218,20 @@ fun degreesToCardinalDirection(degrees: Int): String {
 
 @Composable
 fun MainActivity.UserInterface() {
+    // Die Zeit-Logik
+    LaunchedEffect(Unit) {
+        while (true) {
+            val now = Date()
+            currentDate = SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY).format(now)
+            currentTime = SimpleDateFormat("HH:mm:ss", Locale.GERMANY).format(now)
+            delay(1000)
+        }
+    }
+
     CompassLocationHeightTheme(darkTheme = true) {
         Scaffold(modifier = Modifier.fillMaxSize().background(Color.Black)) { innerPadding ->
             Column(
-                modifier = Modifier.fillMaxSize().padding(innerPadding).background(Color.Black),
+                modifier = Modifier.fillMaxSize().padding(innerPadding),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -223,7 +241,15 @@ fun MainActivity.UserInterface() {
                     CompassOverlay(pitch = pitch, roll = roll, azimuth = azimuth)
                 }
                 if (hasLocationPermission) {
-                    LocationDisplay(latitude = gpsLatitude, longitude = gpsLongitude, barometricAltitude = barometricAltitude, isLocationAvailable = isLocationAvailable, address = addressText)
+                    LocationDisplay(
+                        latitude = gpsLatitude,
+                        longitude = gpsLongitude,
+                        barometricAltitude = barometricAltitude,
+                        isLocationAvailable = isLocationAvailable,
+                        address = addressText,
+                        currentDate = currentDate,
+                        currentTime = currentTime
+                    )
                 } else { Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White) }
             }
         }
@@ -260,18 +286,18 @@ fun CompassRose(azimuth: Float, modifier: Modifier = Modifier) {
                 val isMajorLine = i % 30 == 0
                 val isCardinal = i % 90 == 0
                 val lineLength = if (isCardinal) 48f else 30f
-                val color = AppColors.FloralWhite.copy(alpha = if (isMajorLine) 1f else 0.5f)
+                val color = Color.White.copy(alpha = if (isMajorLine) 1f else 0.5f) // Ersetzt AppColors
                 val strokeWidth = if (isMajorLine) 4f else 2f
                 val startOffset = Offset(x = (radius - lineLength) * cos(angleInRad).toFloat() + center.x, y = (radius - lineLength) * sin(angleInRad).toFloat() + center.y)
                 val endOffset = Offset(x = radius * cos(angleInRad).toFloat() + center.x, y = radius * sin(angleInRad).toFloat() + center.y)
                 drawLine(color, start = startOffset, end = endOffset, strokeWidth = strokeWidth)
             }
-            drawLine(AppColors.NorthRed, start = Offset(center.x, 0f), end = Offset(center.x, 48f), strokeWidth = 8f)
+            drawLine(Color.Red, start = Offset(center.x, 0f), end = Offset(center.x, 48f), strokeWidth = 8f) // Ersetzt AppColors
         }
 
         for (i in 0 until 360 step 30) {
             if (i % 90 != 0) {
-                drawTextCustom(textMeasurer, i.toString(), center, radius * 0.72f, (i.toFloat() - azimuth), style = TextStyle(color = AppColors.FloralWhite.copy(alpha = 0.7f), fontSize = 18.sp))
+                drawTextCustom(textMeasurer, i.toString(), center, radius * 0.72f, (i.toFloat() - azimuth), style = TextStyle(color = Color.White.copy(alpha = 0.7f), fontSize = 18.sp)) // Ersetzt AppColors
             }
         }
     }
@@ -301,18 +327,16 @@ fun CompassOverlay(pitch: Float, roll: Float, azimuth: Float, modifier: Modifier
                 lineTo(canvasWidth / 2 + 35, 60f)
                 close()
             }
-            drawPath(path, color = AppColors.HeadingBlue)
+            drawPath(path, color = Color.Blue) // Ersetzt AppColors
 
             val crosshairLength = 96f
-            drawLine(AppColors.CrosshairGreen, start = Offset(center.x - crosshairLength, center.y), end = Offset(center.x + crosshairLength, center.y), strokeWidth = 3f)
-            drawLine(AppColors.CrosshairGreen, start = Offset(center.x, center.y - crosshairLength), end = Offset(center.x, center.y + crosshairLength), strokeWidth = 3f)
+            drawLine(Color.Green, start = Offset(center.x - crosshairLength, center.y), end = Offset(center.x + crosshairLength, center.y), strokeWidth = 3f) // Ersetzt AppColors
+            drawLine(Color.Green, start = Offset(center.x, center.y - crosshairLength), end = Offset(center.x, center.y + crosshairLength), strokeWidth = 3f) // Ersetzt AppColors
 
             val textRadius = radius * 0.82f
             val textSize = 24.sp * 1.15f
-            val textStyleN = TextStyle(color = AppColors.HeadingBlue, fontSize = textSize, fontWeight = FontWeight.Bold)
-
-            // Definitiver Stil für die anderen Buchstaben
-            val textStyleOthers = TextStyle(color = Color.Yellow, fontSize = textSize, fontWeight = FontWeight.SemiBold)
+            val textStyleN = TextStyle(color = Color.Blue, fontSize = textSize, fontWeight = FontWeight.Bold) // Ersetzt AppColors
+            val textStyleOthers = TextStyle(color = Color.White, fontSize = textSize, fontWeight = FontWeight.SemiBold) // Ersetzt AppColors
 
             drawTextCustom(textMeasurer, "N", center, textRadius, 270f - azimuth, textStyleN)
             drawTextCustom(textMeasurer, "E", center, textRadius, 0f - azimuth, textStyleOthers)
@@ -321,17 +345,25 @@ fun CompassOverlay(pitch: Float, roll: Float, azimuth: Float, modifier: Modifier
         }
 
         Box(
-            modifier = Modifier.align(Alignment.Center).offset(x = (-roll * 10).dp, y = (pitch * 10).dp).size(25.dp).background(AppColors.BubbleOrange, shape = CircleShape)
+            modifier = Modifier.align(Alignment.Center).offset(x = (-roll * 10).dp, y = (pitch * 10).dp).size(25.dp).background(Color(0xFFFF9933), shape = CircleShape) // Ersetzt AppColors
         )
     }
 }
 
 @Composable
-fun LocationDisplay(latitude: Double, longitude: Double, barometricAltitude: Double, isLocationAvailable: Boolean, address: String) {
+fun LocationDisplay(
+    latitude: Double,
+    longitude: Double,
+    barometricAltitude: Double,
+    isLocationAvailable: Boolean,
+    address: String,
+    currentDate: String,
+    currentTime: String
+) {
     if (!isLocationAvailable) { Text(text = "Lade Standortdaten...", fontSize = 20.sp, color = Color.White); return }
     val context = LocalContext.current
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = address, fontSize = 22.sp, color = AppColors.FloralWhite, modifier = Modifier.padding(bottom = 16.dp).clickable { openMaps(context, latitude, longitude) })
+        Text(text = address, fontSize = 22.sp, color = Color.White, modifier = Modifier.padding(bottom = 16.dp).clickable { openMaps(context, latitude, longitude) })
 
         val lat = String.format(Locale.US, "%.6f", latitude)
         val lon = String.format(Locale.US, "%.6f", longitude)
@@ -339,6 +371,11 @@ fun LocationDisplay(latitude: Double, longitude: Double, barometricAltitude: Dou
         Text(text = "Breite: $lat", fontSize = 16.sp, color = Color.Gray)
         Text(text = "Länge: $lon", fontSize = 16.sp, color = Color.Gray)
         Text(text = "Höhe: $altBaro m", fontSize = 16.sp, color = Color.Gray)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Datum: $currentDate", fontSize = 16.sp, color = Color.Gray)
+        Text(text = "Zeit: $currentTime", fontSize = 16.sp, color = Color.Gray)
     }
 }
 
@@ -352,7 +389,15 @@ fun DefaultPreview() {
                 CompassRose(azimuth = 330f)
                 CompassOverlay(pitch = -1.5f, roll = 2.5f, azimuth = 330f)
             }
-            LocationDisplay(latitude = 48.330967, longitude = 14.272329, barometricAltitude = 370.0, isLocationAvailable = true, address = "Teststraße 1, 4020 Linz")
+            LocationDisplay(
+                latitude = 48.330967,
+                longitude = 14.272329,
+                barometricAltitude = 370.0,
+                isLocationAvailable = true,
+                address = "Teststraße 1, 4020 Linz",
+                currentDate = "29.10.2025",
+                currentTime = "23:59:59"
+            )
         }
     }
 }
