@@ -51,6 +51,7 @@ import kotlinx.coroutines.withContext
 import java.util.Locale
 import kotlin.math.cos
 import kotlin.math.sin
+import androidx.compose.ui.graphics.toArgb
 
 object AppColors {
     val HeadingBlue = Color(0xFF1E90FF)
@@ -108,7 +109,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             }
         }
 
-        enableEdgeToEdge()
+        window.statusBarColor = Color.Black.toArgb()
         setContent { UserInterface() }
         checkLocationPermission()
     }
@@ -210,7 +211,7 @@ fun degreesToCardinalDirection(degrees: Int): String {
 @Composable
 fun MainActivity.UserInterface() {
     CompassLocationHeightTheme(darkTheme = true) {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Scaffold(modifier = Modifier.fillMaxSize().background(Color.Black)) { innerPadding ->
             Column(
                 modifier = Modifier.fillMaxSize().padding(innerPadding).background(Color.Black),
                 verticalArrangement = Arrangement.SpaceEvenly,
