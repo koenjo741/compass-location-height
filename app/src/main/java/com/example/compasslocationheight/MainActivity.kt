@@ -293,7 +293,7 @@ fun CompassOverlay(pitch: Float, roll: Float, azimuth: Float, modifier: Modifier
     Box(modifier = modifier.size(300.dp), contentAlignment = Alignment.Center) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             val canvasWidth = size.width
-            val radius = size.minDimension / 2 // RADIUS MUSS HIER DEFINIERT WERDEN
+            val radius = size.minDimension / 2
 
             val path = Path().apply {
                 moveTo(canvasWidth / 2, -15f)
@@ -310,7 +310,9 @@ fun CompassOverlay(pitch: Float, roll: Float, azimuth: Float, modifier: Modifier
             val textRadius = radius * 0.82f
             val textSize = 24.sp * 1.15f
             val textStyleN = TextStyle(color = AppColors.HeadingBlue, fontSize = textSize, fontWeight = FontWeight.Bold)
-            val textStyleOthers = TextStyle(color = AppColors.FloralWhite, fontSize = textSize, fontWeight = FontWeight.SemiBold)
+
+            // Definitiver Stil für die anderen Buchstaben
+            val textStyleOthers = TextStyle(color = Color.Yellow, fontSize = textSize, fontWeight = FontWeight.SemiBold)
 
             drawTextCustom(textMeasurer, "N", center, textRadius, 270f - azimuth, textStyleN)
             drawTextCustom(textMeasurer, "E", center, textRadius, 0f - azimuth, textStyleOthers)
