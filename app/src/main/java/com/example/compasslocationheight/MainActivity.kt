@@ -274,6 +274,26 @@ fun CompassHeader(azimuth: Float) {
     )
 }
 
+
+
+fun DrawScope.drawTextCustom(
+    textMeasurer: androidx.compose.ui.text.TextMeasurer,
+    text: String,
+    center: Offset,
+    radius: Float,
+    angleDegrees: Float,
+    style: TextStyle
+) {
+    // angleDegrees ist hier ein Canvas-Winkel: 0° = Rechts, 90° = Unten, 180° = Links, 270° = Oben
+    val angleRad = Math.toRadians(angleDegrees.toDouble())
+    val textLayoutResult = textMeasurer.measure(text, style)
+    val textWidth = textLayoutResult.size.width
+    val textHeight = textLayoutResult.size.height
+    val x = center.x + radius * cos(angleRad).toFloat() - textWidth / 2
+    val y = center.y + radius * sin(angleRad).toFloat() - textHeight / 2
+    drawText(textLayoutResult, topLeft = Offset(x, y))
+}
+
 @Composable
 fun CompassRose(azimuth: Float, modifier: Modifier = Modifier) {
     val textMeasurer = rememberTextMeasurer()
@@ -281,37 +301,60 @@ fun CompassRose(azimuth: Float, modifier: Modifier = Modifier) {
         val radius = size.minDimension / 2
         val center = this.center
 
+        // Rotierende Ebene: dreht die Kompassmarkierungen gegensinnig zum Azimut
         rotate(degrees = -azimuth) {
+            // Zeichne alle Grad-Striche
             for (i in 0 until 360 step 5) {
                 val angleInRad = Math.toRadians(i.toDouble())
                 val isMajorLine = i % 30 == 0
                 val isCardinal = i % 90 == 0
+
                 val lineLength = if (isCardinal) 48f else 30f
-                val color = Color.White.copy(alpha = if (isMajorLine) 1f else 0.5f) // Ersetzt AppColors
+                val color = AppColors.FloralWhite.copy(alpha = if (isMajorLine) 1f else 0.5f)
                 val strokeWidth = if (isMajorLine) 4f else 2f
-                val startOffset = Offset(x = (radius - lineLength) * cos(angleInRad).toFloat() + center.x, y = (radius - lineLength) * sin(angleInRad).toFloat() + center.y)
-                val endOffset = Offset(x = radius * cos(angleInRad).toFloat() + center.x, y = radius * sin(angleInRad).toFloat() + center.y)
+
+                val startOffset = Offset(
+                    x = (radius - lineLength) * cos(angleInRad).toFloat() + center.x,
+                    y = (radius - lineLength) * sin(angleInRad).toFloat() + center.y
+                )
+                val endOffset = Offset(
+                    x = radius * cos(angleInRad).toFloat() + center.x,
+                    y = radius * sin(angleInRad).toFloat() + center.y
+                )
+
                 drawLine(color, start = startOffset, end = endOffset, strokeWidth = strokeWidth)
             }
-            drawLine(Color.Red, start = Offset(center.x, 0f), end = Offset(center.x, 48f), strokeWidth = 8f) // Ersetzt AppColors
+
+            // Zeichne den roten Strich für Norden (oben, also bei 270°)
+            val northAngleRad = Math.toRadians(-90.0)
+            val startNorth = Offset(
+                x = (radius - 48f) * cos(northAngleRad).toFloat() + center.x,
+                y = (radius - 48f) * sin(northAngleRad).toFloat() + center.y
+            )
+            val endNorth = Offset(
+                x = radius * cos(northAngleRad).toFloat() + center.x,
+                y = radius * sin(northAngleRad).toFloat() + center.y
+            )
+            drawLine(AppColors.NorthRed, start = startNorth, end = endNorth, strokeWidth = 8f)
         }
 
+        // Nicht-rotierende Ebene für die Gradzahlen (bleibt fix)
         for (i in 0 until 360 step 30) {
             if (i % 90 != 0) {
-                drawTextCustom(textMeasurer, i.toString(), center, radius * 0.72f, (i.toFloat() - azimuth), style = TextStyle(color = Color.White.copy(alpha = 0.7f), fontSize = 18.sp)) // Ersetzt AppColors
+                drawTextCustom(
+                    textMeasurer,
+                    i.toString(),
+                    center,
+                    radius * 0.72f,
+                    (i.toFloat() - azimuth),
+                    style = TextStyle(
+                        color = AppColors.FloralWhite.copy(alpha = 0.7f),
+                        fontSize = 18.sp
+                    )
+                )
             }
         }
     }
-}
-
-fun DrawScope.drawTextCustom(textMeasurer: androidx.compose.ui.text.TextMeasurer, text: String, center: Offset, radius: Float, angleDegrees: Float, style: TextStyle) {
-    val angleRad = Math.toRadians(angleDegrees.toDouble() - 90)
-    val textLayoutResult = textMeasurer.measure(text, style)
-    val textWidth = textLayoutResult.size.width
-    val textHeight = textLayoutResult.size.height
-    val x = center.x + radius * cos(angleRad).toFloat() - textWidth / 2
-    val y = center.y + radius * sin(angleRad).toFloat() - textHeight / 2
-    drawText(textLayoutResult, topLeft = Offset(x, y))
 }
 
 @Composable
@@ -337,7 +380,7 @@ fun CompassOverlay(pitch: Float, roll: Float, azimuth: Float, modifier: Modifier
             val textRadius = radius * 0.82f
             val textSize = 24.sp * 1.15f
             val textStyleN = TextStyle(color = AppColors.HeadingBlue, fontSize = textSize, fontWeight = FontWeight.Bold)
-            val textStyleOthers = TextStyle(AppColors.FloralWhite, fontSize = textSize, fontWeight = FontWeight.SemiBold)
+            val textStyleOthers = TextStyle(color = AppColors.FloralWhite, fontSize = textSize, fontWeight = FontWeight.SemiBold)
 
             drawTextCustom(textMeasurer, "N", center, textRadius, 270f - azimuth, textStyleN)
             drawTextCustom(textMeasurer, "E", center, textRadius, 0f - azimuth, textStyleOthers)
