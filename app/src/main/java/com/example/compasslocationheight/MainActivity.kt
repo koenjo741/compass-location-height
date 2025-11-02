@@ -68,13 +68,16 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private var pressureSensor: Sensor? = null
-    private var rotationVectorSensor: Sensor? = null // NEU
+    private var rotationVectorSensor: Sensor? = null
+    private var magnetometer: Sensor? = null // Für die Genauigkeits-Ampel
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
 
     // Rohdaten & UI States
     var azimuth by mutableFloatStateOf(0f)
     private var smoothedAzimuth = 0f
+    private var isFirstValue = true // Für die neue Glättung
 
     var hasLocationPermission by mutableStateOf(false)
     var gpsLatitude by mutableDoubleStateOf(0.0)
@@ -86,8 +89,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var currentTime by mutableStateOf("")
     var pitch by mutableFloatStateOf(0f)
     var roll by mutableFloatStateOf(0f)
-
     var magnetometerAccuracy by mutableIntStateOf(0)
+
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) { hasLocationPermission = true; startLocationUpdates() }
     }
@@ -98,7 +101,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         pressureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)
-        rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) // NEU
+        rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationCallback = object : LocationCallback() {
@@ -116,6 +120,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         setContent { UserInterface() }
         checkLocationPermission()
     }
+
     private fun getAddressFromCoordinates(latitude: Double, longitude: Double) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -158,7 +163,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         super.onResume()
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
         sensorManager.registerListener(this, pressureSensor, SensorManager.SENSOR_DELAY_UI)
-        sensorManager.registerListener(this, rotationVectorSensor, SensorManager.SENSOR_DELAY_UI) // NEU
+        sensorManager.registerListener(this, rotationVectorSensor, SensorManager.SENSOR_DELAY_UI)
+        sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI) // Ampel-Sensor
         if (hasLocationPermission) { startLocationUpdates() }
     }
 
@@ -167,10 +173,10 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         sensorManager.unregisterListener(this)
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
+
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        // Wir interessieren uns nur für die Genauigkeit des ROTATION_VECTOR,
-        // da dieser den Magnetometer-Wert intern verwendet.
-        if (sensor?.type == Sensor.TYPE_ROTATION_VECTOR) {
+        // Die Ampel lauscht jetzt auf die Genauigkeit des Magnetometers
+        if (sensor?.type == Sensor.TYPE_MAGNETIC_FIELD) {
             magnetometerAccuracy = accuracy
         }
     }
@@ -178,32 +184,48 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         if (event == null) return
 
-        if (event.sensor.type == Sensor.TYPE_ROTATION_VECTOR) {
-            val rotationMatrix = FloatArray(9)
-            SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
-            val orientation = FloatArray(3)
-            SensorManager.getOrientation(rotationMatrix, orientation)
-            var currentAzimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
-            currentAzimuth = (currentAzimuth + 360) % 360
+        when (event.sensor.type) {
+            Sensor.TYPE_ROTATION_VECTOR -> {
+                val rotationMatrix = FloatArray(9)
+                SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
+                val orientation = FloatArray(3)
+                SensorManager.getOrientation(rotationMatrix, orientation)
 
-            val filterFactor = 0.97f
-            smoothedAzimuth = (smoothedAzimuth * filterFactor) + (currentAzimuth * (1 - filterFactor))
-            smoothedAzimuth %= 360
+                var currentAzimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
+                currentAzimuth = (currentAzimuth + 180 + 360) % 360
 
-            azimuth = smoothedAzimuth
-        }
+                // Verbesserte Glättung, die das "Nord-Zittern" verhindert
+                if (isFirstValue) {
+                    smoothedAzimuth = currentAzimuth
+                    isFirstValue = false
+                } else {
+                    var diff = currentAzimuth - smoothedAzimuth
+                    if (diff > 180f) diff -= 360f
+                    else if (diff < -180f) diff += 360f
 
-        if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-            roll = event.values[0]
-            pitch = event.values[1]
-        }
+                    smoothedAzimuth = (smoothedAzimuth + diff * 0.1f) % 360f
+                    if (smoothedAzimuth < 0) smoothedAzimuth += 360f
+                }
 
-        if (event.sensor.type == Sensor.TYPE_PRESSURE) {
-            val altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, event.values[0])
-            barometricAltitude = altitude.toDouble()
+                azimuth = smoothedAzimuth
+            }
+
+            Sensor.TYPE_ACCELEROMETER -> {
+                roll = event.values[0]
+                pitch = event.values[1]
+            }
+
+            Sensor.TYPE_PRESSURE -> {
+                val altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, event.values[0])
+                barometricAltitude = altitude.toDouble()
+            }
         }
     }
 }
+
+// --- ALLE UI-FUNKTIONEN BLEIBEN EXAKT GLEICH WIE VORHER ---
+// (Ich füge sie hier komplett ein, um Fehler zu vermeiden)
+
 fun degreesToCardinalDirection(degrees: Int): String {
     val directions = arrayOf("N", "NNO", "NO", "ONO", "O", "OSO", "SO", "SSO", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
     return directions[((degrees + 11.25) / 22.5).toInt() % 16]
@@ -211,7 +233,6 @@ fun degreesToCardinalDirection(degrees: Int): String {
 
 @Composable
 fun MainActivity.UserInterface() {
-    // Die Zeit-Logik bleibt hier
     LaunchedEffect(Unit) {
         while (true) {
             val now = Date()
@@ -223,15 +244,7 @@ fun MainActivity.UserInterface() {
 
     CompassLocationHeightTheme(darkTheme = true) {
         Scaffold(modifier = Modifier.fillMaxSize().background(Color.Black)) { innerPadding ->
-
-            // Box-Container, um Elemente übereinander zu legen (z.B. die Ampel)
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-            ) {
-
-                // Der bisherige Inhalt unserer App
+            Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.SpaceEvenly,
@@ -252,17 +265,11 @@ fun MainActivity.UserInterface() {
                             currentDate = currentDate,
                             currentTime = currentTime
                         )
-                    } else {
-                        Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White)
-                    }
+                    } else { Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White) }
                 }
-
-                // Die neue Kalibrierungs-Ampel
                 AccuracyIndicator(
                     accuracy = magnetometerAccuracy,
-                    modifier = Modifier
-                        .align(Alignment.TopStart) // Oben links
-                        .padding(16.dp) // Mit Abstand zum Rand
+                    modifier = Modifier.align(Alignment.TopStart).padding(16.dp)
                 )
             }
         }
@@ -294,89 +301,47 @@ fun CompassRose(azimuth: Float, modifier: Modifier = Modifier) {
         val center = this.center
 
         rotate(degrees = -azimuth) {
-            // Zeichne alle normalen Striche
             for (i in 0 until 360 step 5) {
                 val angleInRad = Math.toRadians(i.toDouble())
                 val isMajorLine = i % 30 == 0
                 val isCardinal = i % 90 == 0
-
                 val lineLength = if (isCardinal) 48f else 30f
                 val color = AppColors.FloralWhite.copy(alpha = if (isMajorLine) 1f else 0.5f)
                 val strokeWidth = if (isMajorLine) 4f else 2f
-
-                val startOffset = Offset(
-                    x = center.x + (radius - lineLength) * sin(angleInRad).toFloat(),
-                    y = center.y - (radius - lineLength) * cos(angleInRad).toFloat()
-                )
-                val endOffset = Offset(
-                    x = center.x + radius * sin(angleInRad).toFloat(),
-                    y = center.y - radius * cos(angleInRad).toFloat()
-                )
+                val startOffset = Offset(x = center.x + (radius - lineLength) * sin(angleInRad).toFloat(), y = center.y - (radius - lineLength) * cos(angleInRad).toFloat())
+                val endOffset = Offset(x = center.x + radius * sin(angleInRad).toFloat(), y = center.y - radius * cos(angleInRad).toFloat())
                 drawLine(color, start = startOffset, end = endOffset, strokeWidth = strokeWidth)
             }
-
-            // Roter Strich für Norden (0°)
             val northAngleInRad = Math.toRadians(0.0)
             val northLineLength = 48f
-            drawLine(
-                color = AppColors.NorthRed,
-                start = Offset(
-                    x = center.x + (radius - northLineLength) * sin(northAngleInRad).toFloat(),
-                    y = center.y - (radius - northLineLength) * cos(northAngleInRad).toFloat()
-                ),
-                end = Offset(
-                    x = center.x + radius * sin(northAngleInRad).toFloat(),
-                    y = center.y - radius * cos(northAngleInRad).toFloat()
-                ),
-                strokeWidth = 8f
-            )
+            drawLine(color = AppColors.NorthRed, start = Offset(x = center.x + (radius - northLineLength) * sin(northAngleInRad).toFloat(), y = center.y - (radius - northLineLength) * cos(northAngleInRad).toFloat()), end = Offset(x = center.x + radius * sin(northAngleInRad).toFloat(), y = center.y - radius * cos(northAngleInRad).toFloat()), strokeWidth = 8f)
         }
-
-        // Himmelsrichtungen und Gradzahlen AUßERHALB der Rotation zeichnen
-        // aber mit Positionsberechnung basierend auf dem Azimuth
         val directionRadius = radius * 0.82f
         val numberRadius = radius * 0.72f
         val textSize = 24.sp * 1.15f
         val numberTextSize = 18.sp
-
         val textStyleN = TextStyle(color = AppColors.NorthRed, fontSize = textSize, fontWeight = FontWeight.Bold)
         val textStyleOthers = TextStyle(color = AppColors.FloralWhite, fontSize = textSize, fontWeight = FontWeight.SemiBold)
         val numberStyle = TextStyle(color = AppColors.FloralWhite.copy(alpha = 0.7f), fontSize = numberTextSize)
-
-        // Himmelsrichtungen zeichnen (außerhalb der Rotation für aufrechte Darstellung)
         drawTextCustom(textMeasurer, "N", center, directionRadius, 0f - azimuth, textStyleN)
         drawTextCustom(textMeasurer, "E", center, directionRadius, 90f - azimuth, textStyleOthers)
         drawTextCustom(textMeasurer, "S", center, directionRadius, 180f - azimuth, textStyleOthers)
         drawTextCustom(textMeasurer, "W", center, directionRadius, 270f - azimuth, textStyleOthers)
-
-        // Gradzahlen zeichnen (außerhalb der Rotation für aufrechte Darstellung)
         for (i in 0 until 360 step 30) {
             if (i % 90 != 0) {
-                drawTextCustom(
-                    textMeasurer,
-                    i.toString(),
-                    center,
-                    numberRadius,
-                    i.toFloat() - azimuth,
-                    style = numberStyle
-                )
+                drawTextCustom(textMeasurer, i.toString(), center, numberRadius, i.toFloat() - azimuth, style = numberStyle)
             }
         }
     }
 }
 
-
 fun DrawScope.drawTextCustom(textMeasurer: androidx.compose.ui.text.TextMeasurer, text: String, center: Offset, radius: Float, angleDegrees: Float, style: TextStyle) {
-    // KORREKTUR: Keine -90° Korrektur mehr, da wir die Positionierung jetzt korrekt berechnen
     val angleRad = Math.toRadians(angleDegrees.toDouble())
     val textLayoutResult = textMeasurer.measure(text, style)
     val textWidth = textLayoutResult.size.width
     val textHeight = textLayoutResult.size.height
-
-    // KORREKTUR: Konsistente Positionierung mit sin/cos
     val x = center.x + radius * sin(angleRad).toFloat() - textWidth / 2
     val y = center.y - radius * cos(angleRad).toFloat() - textHeight / 2
-
     drawText(textLayoutResult, topLeft = Offset(x, y))
 }
 
@@ -393,25 +358,11 @@ fun CompassOverlay(pitch: Float, roll: Float, modifier: Modifier = Modifier) {
             }
             drawPath(path, color = AppColors.HeadingBlue)
             val crosshairLength = 96f
-            drawLine(
-                AppColors.CrosshairGreen,
-                start = Offset(center.x - crosshairLength, center.y),
-                end = Offset(center.x + crosshairLength, center.y),
-                strokeWidth = 3f
-            )
-            drawLine(
-                AppColors.CrosshairGreen,
-                start = Offset(center.x, center.y - crosshairLength),
-                end = Offset(center.x, center.y + crosshairLength),
-                strokeWidth = 3f
-            )
+            drawLine(AppColors.CrosshairGreen, start = Offset(center.x - crosshairLength, center.y), end = Offset(center.x + crosshairLength, center.y), strokeWidth = 3f)
+            drawLine(AppColors.CrosshairGreen, start = Offset(center.x, center.y - crosshairLength), end = Offset(center.x, center.y + crosshairLength), strokeWidth = 3f)
         }
         Box(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .offset(x = (-roll * 10).dp, y = (pitch * 10).dp)
-                .size(25.dp)
-                .background(AppColors.BubbleOrange, shape = CircleShape)
+            modifier = Modifier.align(Alignment.Center).offset(x = (-roll * 10).dp, y = (pitch * 10).dp).size(25.dp).background(AppColors.BubbleOrange, shape = CircleShape)
         )
     }
 }
@@ -438,15 +389,11 @@ fun LocationDisplay(latitude: Double, longitude: Double, barometricAltitude: Dou
 @Composable
 fun DefaultPreview() {
     CompassLocationHeightTheme(darkTheme = true) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxSize()
-        ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxSize()) {
             CompassHeader(azimuth = 330f)
             Box(contentAlignment = Alignment.Center) {
                 CompassRose(azimuth = 330f)
-                CompassOverlay(pitch = -1.5f, roll = 2.5f) // azimuth Parameter entfernt
+                CompassOverlay(pitch = -1.5f, roll = 2.5f)
             }
             LocationDisplay(
                 latitude = 48.330967,
@@ -467,17 +414,15 @@ private fun openMaps(context: Context, latitude: Double, longitude: Double) {
     mapIntent.setPackage("com.google.android.apps.maps")
     context.startActivity(mapIntent)
 }
+
 @Composable
 fun AccuracyIndicator(accuracy: Int, modifier: Modifier = Modifier) {
-    // Wähle die Farbe basierend auf dem Genauigkeits-Level
     val color = when (accuracy) {
         SensorManager.SENSOR_STATUS_ACCURACY_HIGH -> Color.Green
         SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM -> Color.Yellow
-        SensorManager.SENSOR_STATUS_ACCURACY_LOW -> Color(0xFFFF8C00) // Dunkles Orange
-        else -> Color.Red // SENSOR_STATUS_UNRELIABLE oder unbekannt
+        SensorManager.SENSOR_STATUS_ACCURACY_LOW -> Color(0xFFFF8C00)
+        else -> Color.Red
     }
-
-    // Zeichne einen kleinen Kreis mit der entsprechenden Farbe
     Box(
         modifier = modifier
             .size(20.dp)
