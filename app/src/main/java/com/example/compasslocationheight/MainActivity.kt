@@ -181,6 +181,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         }
     }
 
+
     override fun onSensorChanged(event: SensorEvent?) {
         if (event == null) return
 
@@ -188,23 +189,25 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             Sensor.TYPE_ROTATION_VECTOR -> {
                 val rotationMatrix = FloatArray(9)
                 SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
+
                 val orientation = FloatArray(3)
                 SensorManager.getOrientation(rotationMatrix, orientation)
 
                 var currentAzimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
-                currentAzimuth = (currentAzimuth + 180 + 360) % 360
+                currentAzimuth = (currentAzimuth + 360) % 360
 
-                // Verbesserte Glättung, die das "Nord-Zittern" verhindert
+                // --- NEUE, VERBESSERTE GLÄTTUNGS-LOGIK ---
                 if (isFirstValue) {
                     smoothedAzimuth = currentAzimuth
                     isFirstValue = false
                 } else {
+                    // Berechne die kürzeste Distanz zwischen den Winkeln (behandelt den 359°->0° Sprung)
                     var diff = currentAzimuth - smoothedAzimuth
-                    if (diff > 180f) diff -= 360f
-                    else if (diff < -180f) diff += 360f
+                    if (diff > 180) diff -= 360
+                    else if (diff < -180) diff += 360
 
-                    smoothedAzimuth = (smoothedAzimuth + diff * 0.1f) % 360f
-                    if (smoothedAzimuth < 0) smoothedAzimuth += 360f
+                    // Wende den Filter auf die Differenz an
+                    smoothedAzimuth = (smoothedAzimuth + diff * 0.1f + 360) % 360
                 }
 
                 azimuth = smoothedAzimuth
@@ -221,7 +224,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             }
         }
     }
-}
 
 // --- ALLE UI-FUNKTIONEN BLEIBEN EXAKT GLEICH WIE VORHER ---
 // (Ich füge sie hier komplett ein, um Fehler zu vermeiden)
@@ -429,4 +431,4 @@ fun AccuracyIndicator(accuracy: Int, modifier: Modifier = Modifier) {
             .background(color, shape = CircleShape)
             .border(1.dp, Color.White, shape = CircleShape)
     )
-}
+}}
