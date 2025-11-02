@@ -49,6 +49,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var currentDate by mutableStateOf(""); var currentTime by mutableStateOf("")
     var pitch by mutableFloatStateOf(0f); var roll by mutableFloatStateOf(0f)
     var magnetometerAccuracy by mutableIntStateOf(0); var currentTemperature by mutableStateOf<Double?>(null)
+
+    var currentPressure by mutableFloatStateOf(0f)
     private var lastWeatherApiCall: Long = 0
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) { hasLocationPermission = true; startLocationUpdates() }
@@ -126,24 +128,47 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         if (event == null) return
         when (event.sensor.type) {
             Sensor.TYPE_ROTATION_VECTOR -> {
-                val rotationMatrix = FloatArray(9); SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
-                val orientation = FloatArray(3); SensorManager.getOrientation(rotationMatrix, orientation)
+                val rotationMatrix = FloatArray(9)
+                SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
+                val orientation = FloatArray(3)
+                SensorManager.getOrientation(rotationMatrix, orientation)
+
                 var currentAzimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
                 currentAzimuth = (currentAzimuth + 360) % 360
-                if (isFirstValue) { smoothedAzimuth = currentAzimuth; isFirstValue = false }
-                else {
+
+                if (isFirstValue) {
+                    smoothedAzimuth = currentAzimuth
+                    isFirstValue = false
+                } else {
                     var diff = currentAzimuth - smoothedAzimuth
-                    if (diff > 180f) diff -= 360f else if (diff < -180f) diff += 360f
+                    if (diff > 180f) diff -= 360f
+                    else if (diff < -180f) diff += 360f
+
                     smoothedAzimuth = (smoothedAzimuth + diff * 0.1f) % 360f
                     if (smoothedAzimuth < 0) smoothedAzimuth += 360f
                 }
+
                 azimuth = smoothedAzimuth
             }
-            Sensor.TYPE_ACCELEROMETER -> { roll = event.values[0]; pitch = event.values[1] }
-            Sensor.TYPE_PRESSURE -> barometricAltitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, event.values[0]).toDouble()
+
+            Sensor.TYPE_ACCELEROMETER -> {
+                roll = event.values[0]
+                pitch = event.values[1]
+            }
+
+            Sensor.TYPE_PRESSURE -> {
+                val pressureValue = event.values[0]
+                val altitude = SensorManager.getAltitude(
+                    SensorManager.PRESSURE_STANDARD_ATMOSPHERE,
+                    pressureValue
+                )
+                barometricAltitude = altitude.toDouble()
+
+                // HIER WIRD DER LUFTDRUCK GESPEICHERT
+                currentPressure = pressureValue
+            }
         }
     }
-}
 fun degreesToCardinalDirection(degrees: Int): String {
     val directions = arrayOf("N", "NNO", "NO", "ONO", "O", "OSO", "SO", "SSO", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
     return directions[((degrees + 11.25) / 22.5).toInt() % 16]
@@ -163,7 +188,7 @@ fun MainActivity.UserInterface() {
                     CompassHeader(azimuth = azimuth)
                     Box(contentAlignment = Alignment.Center) { CompassRose(azimuth = azimuth); CompassOverlay(pitch = pitch, roll = roll) }
                     if (hasLocationPermission) {
-                        LocationDisplay(latitude = gpsLatitude, longitude = gpsLongitude, barometricAltitude = barometricAltitude, isLocationAvailable = isLocationAvailable, address = addressText, currentDate = currentDate, currentTime = currentTime, currentTemperature = currentTemperature)
+                        LocationDisplay(latitude = gpsLatitude, longitude = gpsLongitude, barometricAltitude = barometricAltitude, isLocationAvailable = isLocationAvailable, address = addressText, currentDate = currentDate, currentTime = currentTime, currentTemperature = currentTemperature, currentPressure = currentPressure)
                     } else { Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White) }
                 }
                 AccuracyIndicator(accuracy = magnetometerAccuracy, modifier = Modifier.align(Alignment.TopStart).padding(16.dp))
@@ -222,46 +247,57 @@ fun CompassOverlay(pitch: Float, roll: Float, modifier: Modifier = Modifier) {
         Box(modifier = Modifier.align(Alignment.Center).offset(x = (-roll * 10).dp, y = (pitch * 10).dp).size(25.dp).background(AppColors.BubbleOrange, shape = CircleShape))
     }
 }
-@Composable
-fun LocationDisplay(
-    latitude: Double,
-    longitude: Double,
-    barometricAltitude: Double,
-    isLocationAvailable: Boolean,
-    address: String,
-    currentDate: String,
-    currentTime: String,
-    currentTemperature: Double? // NEUER PARAMETER
-) {
-    if (!isLocationAvailable) {
-        Text(text = "Lade Standortdaten...", fontSize = 20.sp, color = Color.White)
-        return
-    }
+        @Composable
+        fun LocationDisplay(
+            latitude: Double,
+            longitude: Double,
+            barometricAltitude: Double,
+            isLocationAvailable: Boolean,
+            address: String,
+            currentDate: String,
+            currentTime: String,
+            currentTemperature: Double?,
+            currentPressure: Float
+        ) {
+            if (!isLocationAvailable) {
+                Text(text = "Lade Standortdaten...", fontSize = 20.sp, color = Color.White)
+                return
+            }
 
-    val context = LocalContext.current
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = address, fontSize = 22.sp, color = AppColors.FloralWhite, modifier = Modifier.padding(bottom = 16.dp).clickable { openMaps(context, latitude, longitude) })
+            val context = LocalContext.current
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = address,
+                    fontSize = 22.sp,
+                    color = AppColors.FloralWhite,
+                    modifier = Modifier
+                        .padding(bottom = 16.dp)
+                        .clickable { openMaps(context, latitude, longitude) }
+                )
 
-        val lat = String.format(Locale.US, "%.6f", latitude)
-        val lon = String.format(Locale.US, "%.6f", longitude)
-        val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
-        Text(text = "Breite: $lat", fontSize = 16.sp, color = Color.Gray)
-        Text(text = "Länge: $lon", fontSize = 16.sp, color = Color.Gray)
-        Text(text = "Höhe: $altBaro m", fontSize = 16.sp, color = Color.Gray)
+                val lat = String.format(Locale.US, "%.6f", latitude)
+                val lon = String.format(Locale.US, "%.6f", longitude)
+                val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
+                Text(text = "Breite: $lat", fontSize = 16.sp, color = Color.Gray)
+                Text(text = "Länge: $lon", fontSize = 16.sp, color = Color.Gray)
+                Text(text = "Höhe: $altBaro m", fontSize = 16.sp, color = Color.Gray)
 
-        Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Datum: $currentDate", fontSize = 16.sp, color = Color.Gray)
-        Text(text = "Zeit: $currentTime", fontSize = 16.sp, color = Color.Gray)
+                Text(text = "Datum: $currentDate", fontSize = 16.sp, color = Color.Gray)
+                Text(text = "Zeit: $currentTime", fontSize = 16.sp, color = Color.Gray)
 
-        // Zeige die Temperatur nur an, wenn sie verfügbar ist (nicht null)
-        currentTemperature?.let { temp ->
-            val tempFormatted = String.format(Locale.US, "%.1f", temp)
-            Text(text = "Temperatur: $tempFormatted °C", fontSize = 16.sp, color = Color.Gray)
+                currentTemperature?.let { temp ->
+                    val tempFormatted = String.format(Locale.US, "%.1f", temp)
+                    Text(text = "Temperatur: $tempFormatted °C", fontSize = 16.sp, color = Color.Gray)
+                }
+
+                if (currentPressure > 0) {
+                    val pressureFormatted = String.format(Locale.US, "%.2f", currentPressure)
+                    Text(text = "Luftdruck: $pressureFormatted hPa", fontSize = 16.sp, color = Color.Gray)
+                }
+            }
         }
-
-    }
-}
 
 
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
@@ -271,7 +307,7 @@ fun DefaultPreview() {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxSize()) {
             CompassHeader(azimuth = 330f)
             Box(contentAlignment = Alignment.Center) { CompassRose(azimuth = 330f); CompassOverlay(pitch = -1.5f, roll = 2.5f) }
-            LocationDisplay(latitude = 48.330967, longitude = 14.272329, barometricAltitude = 370.0, isLocationAvailable = true, address = "Teststraße 1, 4020 Linz", currentDate = "29.10.2025", currentTime = "23:59:59", currentTemperature = 15.3)
+            LocationDisplay(latitude = 48.330967, longitude = 14.272329, barometricAltitude = 370.0, isLocationAvailable = true, address = "Teststraße 1, 4020 Linz", currentDate = "29.10.2025", currentTime = "23:59:59", currentTemperature = 15.3, currentPressure = 1013.25f)
         }
     }
 }
@@ -290,4 +326,4 @@ fun AccuracyIndicator(accuracy: Int, modifier: Modifier = Modifier) {
         else -> Color.Red
     }
     Box(modifier = modifier.size(20.dp).background(color, shape = CircleShape).border(1.dp, Color.White, shape = CircleShape))
-}
+}}
