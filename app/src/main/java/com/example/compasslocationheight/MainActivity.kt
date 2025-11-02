@@ -87,6 +87,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var pitch by mutableFloatStateOf(0f)
     var roll by mutableFloatStateOf(0f)
 
+    var magnetometerAccuracy by mutableIntStateOf(0)
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) { hasLocationPermission = true; startLocationUpdates() }
     }
@@ -166,8 +167,13 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         sensorManager.unregisterListener(this)
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        // Wir interessieren uns nur für die Genauigkeit des ROTATION_VECTOR,
+        // da dieser den Magnetometer-Wert intern verwendet.
+        if (sensor?.type == Sensor.TYPE_ROTATION_VECTOR) {
+            magnetometerAccuracy = accuracy
+        }
+    }
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (event == null) return
@@ -205,6 +211,7 @@ fun degreesToCardinalDirection(degrees: Int): String {
 
 @Composable
 fun MainActivity.UserInterface() {
+    // Die Zeit-Logik bleibt hier
     LaunchedEffect(Unit) {
         while (true) {
             val now = Date()
@@ -216,27 +223,47 @@ fun MainActivity.UserInterface() {
 
     CompassLocationHeightTheme(darkTheme = true) {
         Scaffold(modifier = Modifier.fillMaxSize().background(Color.Black)) { innerPadding ->
-            Column(
-                modifier = Modifier.fillMaxSize().padding(innerPadding),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally
+
+            // Box-Container, um Elemente übereinander zu legen (z.B. die Ampel)
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
             ) {
-                CompassHeader(azimuth = azimuth)
-                Box(contentAlignment = Alignment.Center) {
-                    CompassRose(azimuth = azimuth)
-                    CompassOverlay(pitch = pitch, roll = roll) // azimuth Parameter entfernt
+
+                // Der bisherige Inhalt unserer App
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CompassHeader(azimuth = azimuth)
+                    Box(contentAlignment = Alignment.Center) {
+                        CompassRose(azimuth = azimuth)
+                        CompassOverlay(pitch = pitch, roll = roll)
+                    }
+                    if (hasLocationPermission) {
+                        LocationDisplay(
+                            latitude = gpsLatitude,
+                            longitude = gpsLongitude,
+                            barometricAltitude = barometricAltitude,
+                            isLocationAvailable = isLocationAvailable,
+                            address = addressText,
+                            currentDate = currentDate,
+                            currentTime = currentTime
+                        )
+                    } else {
+                        Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White)
+                    }
                 }
-                if (hasLocationPermission) {
-                    LocationDisplay(
-                        latitude = gpsLatitude,
-                        longitude = gpsLongitude,
-                        barometricAltitude = barometricAltitude,
-                        isLocationAvailable = isLocationAvailable,
-                        address = addressText,
-                        currentDate = currentDate,
-                        currentTime = currentTime
-                    )
-                } else { Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White) }
+
+                // Die neue Kalibrierungs-Ampel
+                AccuracyIndicator(
+                    accuracy = magnetometerAccuracy,
+                    modifier = Modifier
+                        .align(Alignment.TopStart) // Oben links
+                        .padding(16.dp) // Mit Abstand zum Rand
+                )
             }
         }
     }
@@ -439,4 +466,22 @@ private fun openMaps(context: Context, latitude: Double, longitude: Double) {
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
     mapIntent.setPackage("com.google.android.apps.maps")
     context.startActivity(mapIntent)
+}
+@Composable
+fun AccuracyIndicator(accuracy: Int, modifier: Modifier = Modifier) {
+    // Wähle die Farbe basierend auf dem Genauigkeits-Level
+    val color = when (accuracy) {
+        SensorManager.SENSOR_STATUS_ACCURACY_HIGH -> Color.Green
+        SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM -> Color.Yellow
+        SensorManager.SENSOR_STATUS_ACCURACY_LOW -> Color(0xFFFF8C00) // Dunkles Orange
+        else -> Color.Red // SENSOR_STATUS_UNRELIABLE oder unbekannt
+    }
+
+    // Zeichne einen kleinen Kreis mit der entsprechenden Farbe
+    Box(
+        modifier = modifier
+            .size(20.dp)
+            .background(color, shape = CircleShape)
+            .border(1.dp, Color.White, shape = CircleShape)
+    )
 }
