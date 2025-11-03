@@ -47,6 +47,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.compasslocationheight.ui.theme.CompassLocationHeightTheme
 import com.google.android.gms.location.*
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.android.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -57,6 +63,8 @@ import kotlin.math.sin
 import androidx.compose.ui.graphics.toArgb
 import java.text.SimpleDateFormat
 import java.util.Date
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 object AppColors {
     val HeadingBlue = Color(0xFF1E90FF)
@@ -65,6 +73,9 @@ object AppColors {
     val BubbleOrange = Color(0xFFFF9933)
     val FloralWhite = Color(0xFFFFFAF0)
 }
+
+@Serializable data class WeatherResponse(val current_weather: CurrentWeather)
+@Serializable data class CurrentWeather(val temperature: Double)
 
 class MainActivity : ComponentActivity(), SensorEventListener {
     // Manager & Sensoren
@@ -94,6 +105,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var roll by mutableFloatStateOf(0f)
     var magnetometerAccuracy by mutableIntStateOf(0)
     var magneticDeclination by mutableFloatStateOf(0f)
+    var currentTemperature by mutableStateOf<Double?>(null)
+    private var lastWeatherApiCall: Long = 0
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) { hasLocationPermission = true; startLocationUpdates() }
@@ -117,6 +130,12 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                     isLocationAvailable = true
                     getAddressFromCoordinates(location.latitude, location.longitude)
                     updateMagneticDeclination(location.latitude, location.longitude, location.altitude)
+
+                    val now = System.currentTimeMillis()
+                    if (now - lastWeatherApiCall > 300000) { // Alle 5 Minuten
+                        getCurrentTemperature(location.latitude, location.longitude)
+                        lastWeatherApiCall = now
+                    }
                 }
             }
         }
@@ -146,14 +165,32 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         }
     }
 
+    private fun getCurrentTemperature(latitude: Double, longitude: Double) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val client = HttpClient(Android) {
+                    install(ContentNegotiation) {
+                        json(Json { ignoreUnknownKeys = true })
+                    }
+                }
+                val response: WeatherResponse = client.get("https://api.open-meteo.com/v1/forecast") {
+                    parameter("latitude", latitude)
+                    parameter("longitude", longitude)
+                    parameter("current_weather", "true")
+                }.body()
+                withContext(Dispatchers.Main) {
+                    currentTemperature = response.current_weather.temperature
+                }
+                client.close()
+            } catch (e: Exception) {
+                println("Wetter-API Fehler: ${e.message}")
+            }
+        }
+    }
+
     private fun updateMagneticDeclination(latitude: Double, longitude: Double, altitude: Double) {
         val time = System.currentTimeMillis()
-        val geomagneticField = GeomagneticField(
-            latitude.toFloat(),
-            longitude.toFloat(),
-            altitude.toFloat(),
-            time
-        )
+        val geomagneticField = GeomagneticField(latitude.toFloat(), longitude.toFloat(), altitude.toFloat(), time)
         magneticDeclination = geomagneticField.declination
     }
 
@@ -265,7 +302,8 @@ fun MainActivity.UserInterface() {
                             isLocationAvailable = isLocationAvailable,
                             address = addressText,
                             currentDate = currentDate,
-                            currentTime = currentTime
+                            currentTime = currentTime,
+                            currentTemperature = currentTemperature
                         )
                     } else { Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White) }
                 }
@@ -375,44 +413,36 @@ fun LocationDisplay(
     isLocationAvailable: Boolean,
     address: String,
     currentDate: String,
-    currentTime: String
+    currentTime: String,
+    currentTemperature: Double?
 ) {
-    if (!isLocationAvailable) {
-        Text(text = "Lade Standortdaten...", fontSize = 20.sp, color = Color.White)
-        return
-    }
-
+    if (!isLocationAvailable) { Text(text = "Lade Standortdaten...", fontSize = 20.sp, color = Color.White); return }
     val context = LocalContext.current
-
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        // HIER IST DER BUTTON-CODE WIEDER DRIN
         Text(
             text = address,
             fontSize = 20.sp,
             color = AppColors.FloralWhite,
             modifier = Modifier
                 .padding(bottom = 16.dp)
-                .border(
-                    width = 1.dp,
-                    color = Color.Gray,
-                    shape = RoundedCornerShape(16.dp)
-                )
+                .border(width = 1.dp, color = Color.Gray, shape = RoundedCornerShape(16.dp))
                 .clip(RoundedCornerShape(16.dp))
                 .clickable { openMaps(context, latitude, longitude) }
                 .padding(horizontal = 24.dp, vertical = 12.dp)
         )
-
         val lat = String.format(Locale.US, "%.6f", latitude)
         val lon = String.format(Locale.US, "%.6f", longitude)
         val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
         Text(text = "Breite: $lat", fontSize = 16.sp, color = Color.Gray)
         Text(text = "Länge: $lon", fontSize = 16.sp, color = Color.Gray)
         Text(text = "Höhe: $altBaro m", fontSize = 16.sp, color = Color.Gray)
-
         Spacer(modifier = Modifier.height(16.dp))
-
         Text(text = "Datum: $currentDate", fontSize = 16.sp, color = Color.Gray)
         Text(text = "Zeit: $currentTime", fontSize = 16.sp, color = Color.Gray)
+        currentTemperature?.let { temp ->
+            val tempFormatted = String.format(Locale.US, "%.1f", temp)
+            Text(text = "Temperatur: $tempFormatted °C", fontSize = 16.sp, color = Color.Gray)
+        }
     }
 }
 
@@ -433,7 +463,8 @@ fun DefaultPreview() {
                 isLocationAvailable = true,
                 address = "Teststraße 1, 4020 Linz",
                 currentDate = "29.10.2025",
-                currentTime = "23:59:59"
+                currentTime = "23:59:59",
+                currentTemperature = 15.3
             )
         }
     }
