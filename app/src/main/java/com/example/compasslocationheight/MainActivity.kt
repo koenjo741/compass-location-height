@@ -106,6 +106,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var magnetometerAccuracy by mutableIntStateOf(0)
     var magneticDeclination by mutableFloatStateOf(0f)
     var currentTemperature by mutableStateOf<Double?>(null)
+    var currentPressure by mutableFloatStateOf(0f) // Für die Luftdruckanzeige
     private var lastWeatherApiCall: Long = 0
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -259,8 +260,10 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 pitch = event.values[1]
             }
             Sensor.TYPE_PRESSURE -> {
-                val altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, event.values[0])
+                val pressureValue = event.values[0]
+                val altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue)
                 barometricAltitude = altitude.toDouble()
+                currentPressure = pressureValue
             }
         }
     }
@@ -303,7 +306,8 @@ fun MainActivity.UserInterface() {
                             address = addressText,
                             currentDate = currentDate,
                             currentTime = currentTime,
-                            currentTemperature = currentTemperature
+                            currentTemperature = currentTemperature,
+                            currentPressure = currentPressure
                         )
                     } else { Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White) }
                 }
@@ -414,7 +418,8 @@ fun LocationDisplay(
     address: String,
     currentDate: String,
     currentTime: String,
-    currentTemperature: Double?
+    currentTemperature: Double?,
+    currentPressure: Float
 ) {
     if (!isLocationAvailable) { Text(text = "Lade Standortdaten...", fontSize = 20.sp, color = Color.White); return }
     val context = LocalContext.current
@@ -443,6 +448,10 @@ fun LocationDisplay(
             val tempFormatted = String.format(Locale.US, "%.1f", temp)
             Text(text = "Temperatur: $tempFormatted °C", fontSize = 16.sp, color = Color.Gray)
         }
+        if (currentPressure > 0f) {
+            val pressureFormatted = String.format(Locale.US, "%.2f", currentPressure)
+            Text(text = "Luftdruck: $pressureFormatted hPa", fontSize = 16.sp, color = Color.Gray)
+        }
     }
 }
 
@@ -464,7 +473,8 @@ fun DefaultPreview() {
                 address = "Teststraße 1, 4020 Linz",
                 currentDate = "29.10.2025",
                 currentTime = "23:59:59",
-                currentTemperature = 15.3
+                currentTemperature = 15.3,
+                currentPressure = 1013.25f
             )
         }
     }
