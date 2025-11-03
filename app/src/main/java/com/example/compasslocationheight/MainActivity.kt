@@ -8,7 +8,9 @@ import androidx.activity.ComponentActivity; import androidx.activity.compose.set
 import androidx.activity.result.contract.ActivityResultContracts; import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background; import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable; import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape; import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.shape.CircleShape;
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text; import androidx.compose.runtime.*; import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier; import androidx.compose.ui.geometry.Offset; import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path; import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -27,6 +29,7 @@ import kotlin.math.cos; import kotlin.math.sin; import androidx.compose.ui.graph
 import java.text.SimpleDateFormat; import java.util.Date; import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import androidx.compose.ui.draw.clip
 
 object AppColors {
     val HeadingBlue = Color(0xFF1E90FF); val NorthRed = Color(0xFFFE0000)
@@ -268,11 +271,18 @@ fun CompassOverlay(pitch: Float, roll: Float, modifier: Modifier = Modifier) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = address,
-                    fontSize = 22.sp,
+                    fontSize = 20.sp,
                     color = AppColors.FloralWhite,
                     modifier = Modifier
                         .padding(bottom = 16.dp)
-                        .clickable { openMaps(context, latitude, longitude) }
+                        .border(
+                            width = 1.dp,
+                            color = Color.Gray,
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .clip(RoundedCornerShape(16.dp)) // ZUERST die Form schneiden
+                        .clickable { openMaps(context, latitude, longitude) } // DANN klickbar machen
+                        .padding(horizontal = 24.dp, vertical = 12.dp)
                 )
 
                 val lat = String.format(Locale.US, "%.6f", latitude)
