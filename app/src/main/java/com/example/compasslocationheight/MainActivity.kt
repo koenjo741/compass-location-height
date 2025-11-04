@@ -74,6 +74,10 @@ object AppColors {
     val FloralWhite = Color(0xFFFFFAF0)
 }
 
+enum class ThemeMode {
+    Dark, Light, Night
+}
+
 @Serializable data class WeatherResponse(val current_weather: CurrentWeather, val hourly: HourlyData)
 @Serializable data class CurrentWeather(val temperature: Double)
 @Serializable data class HourlyData(val time: List<String>, val pressure_msl: List<Double>)
@@ -109,6 +113,9 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var currentTemperature by mutableStateOf<Double?>(null)
     var currentPressure by mutableFloatStateOf(0f)
     var pressureTrend by mutableStateOf("→")
+
+    var currentThemeMode by mutableStateOf(ThemeMode.Dark)
+
     private var lastWeatherApiCall: Long = 0
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -293,7 +300,25 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         }
     }
 }
+@Composable
+fun ThemeSwitcher(currentMode: ThemeMode, onThemeChange: (ThemeMode) -> Unit, modifier: Modifier = Modifier) {
+    val nextMode = when (currentMode) {
+        ThemeMode.Dark -> ThemeMode.Light
+        ThemeMode.Light -> ThemeMode.Night
+        ThemeMode.Night -> ThemeMode.Dark
+    }
+    val nextModeIcon = when (nextMode) {
+        ThemeMode.Light -> "☀️"
+        ThemeMode.Night -> "🌙"
+        ThemeMode.Dark -> "✨"
+    }
 
+    Text(
+        text = nextModeIcon,
+        fontSize = 30.sp,
+        modifier = Modifier.clickable { onThemeChange(nextMode) }
+    )
+}
 fun degreesToCardinalDirection(degrees: Int): String {
     val directions = arrayOf("N", "NNO", "NO", "ONO", "O", "OSO", "SO", "SSO", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
     return directions[((degrees + 11.25) / 22.5).toInt() % 16]
@@ -301,6 +326,7 @@ fun degreesToCardinalDirection(degrees: Int): String {
 
 @Composable
 fun MainActivity.UserInterface() {
+    // Die Zeit-Logik
     LaunchedEffect(Unit) {
         while (true) {
             val now = Date()
@@ -309,9 +335,17 @@ fun MainActivity.UserInterface() {
             delay(1000)
         }
     }
+
     CompassLocationHeightTheme(darkTheme = true) {
         Scaffold(modifier = Modifier.fillMaxSize().background(Color.Black)) { innerPadding ->
-            Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+
+                // Hauptinhalt in der Mitte
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.SpaceEvenly,
@@ -335,9 +369,27 @@ fun MainActivity.UserInterface() {
                             currentPressure = currentPressure,
                             pressureTrend = pressureTrend
                         )
-                    } else { Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White) }
+                    } else {
+                        Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White)
+                    }
                 }
-                AccuracyIndicator(accuracy = magnetometerAccuracy, modifier = Modifier.align(Alignment.TopStart).padding(16.dp))
+
+                // Obere Leiste für Indikator und Schalter
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter)
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AccuracyIndicator(accuracy = magnetometerAccuracy)
+
+                    ThemeSwitcher(
+                        currentMode = currentThemeMode,
+                        onThemeChange = { newMode -> currentThemeMode = newMode }
+                    )
+                }
             }
         }
     }
