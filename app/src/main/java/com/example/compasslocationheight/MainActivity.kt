@@ -73,9 +73,24 @@ object AppColors {
     val BubbleOrange = Color(0xFFFF9933)
     val FloralWhite = Color(0xFFFFFAF0)
 }
+@Serializable
+data class WeatherResponse(
+    val current_weather: CurrentWeather,
+    val hourly: HourlyData // NEU
+)
 
-@Serializable data class WeatherResponse(val current_weather: CurrentWeather)
-@Serializable data class CurrentWeather(val temperature: Double)
+@Serializable
+data class CurrentWeather(
+    val temperature: Double
+)
+
+// NEUE KLASSE
+@Serializable
+data class HourlyData(
+    val time: List<String>,
+    val pressure_msl: List<Double> // pressure_msl = Luftdruck auf Meereshöhe
+)
+
 
 class MainActivity : ComponentActivity(), SensorEventListener {
     // Manager & Sensoren
@@ -178,6 +193,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                     parameter("latitude", latitude)
                     parameter("longitude", longitude)
                     parameter("current_weather", "true")
+                    parameter("hourly", "pressure_msl")
                 }.body()
                 withContext(Dispatchers.Main) {
                     currentTemperature = response.current_weather.temperature
