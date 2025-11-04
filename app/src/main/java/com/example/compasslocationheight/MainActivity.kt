@@ -73,24 +73,10 @@ object AppColors {
     val BubbleOrange = Color(0xFFFF9933)
     val FloralWhite = Color(0xFFFFFAF0)
 }
-@Serializable
-data class WeatherResponse(
-    val current_weather: CurrentWeather,
-    val hourly: HourlyData // NEU
-)
 
-@Serializable
-data class CurrentWeather(
-    val temperature: Double
-)
-
-// NEUE KLASSE
-@Serializable
-data class HourlyData(
-    val time: List<String>,
-    val pressure_msl: List<Double> // pressure_msl = Luftdruck auf Meereshöhe
-)
-
+@Serializable data class WeatherResponse(val current_weather: CurrentWeather, val hourly: HourlyData)
+@Serializable data class CurrentWeather(val temperature: Double)
+@Serializable data class HourlyData(val time: List<String>, val pressure_msl: List<Double>)
 
 class MainActivity : ComponentActivity(), SensorEventListener {
     // Manager & Sensoren
@@ -121,7 +107,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var magnetometerAccuracy by mutableIntStateOf(0)
     var magneticDeclination by mutableFloatStateOf(0f)
     var currentTemperature by mutableStateOf<Double?>(null)
-    var currentPressure by mutableFloatStateOf(0f) // Für die Luftdruckanzeige
+    var currentPressure by mutableFloatStateOf(0f)
+    var pressureTrend by mutableStateOf("→")
     private var lastWeatherApiCall: Long = 0
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -195,13 +182,35 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                     parameter("current_weather", "true")
                     parameter("hourly", "pressure_msl")
                 }.body()
+
+                val trend = calculatePressureTrend(response.hourly)
+
                 withContext(Dispatchers.Main) {
                     currentTemperature = response.current_weather.temperature
+                    pressureTrend = trend
                 }
                 client.close()
             } catch (e: Exception) {
                 println("Wetter-API Fehler: ${e.message}")
             }
+        }
+    }
+
+    private fun calculatePressureTrend(hourlyData: HourlyData): String {
+        val now = SimpleDateFormat("yyyy-MM-dd'T'HH:00", Locale.GERMANY).format(Date())
+        val currentIndex = hourlyData.time.indexOf(now)
+        if (currentIndex == -1 || currentIndex + 3 >= hourlyData.pressure_msl.size) {
+            return "→"
+        }
+        val pressureNow = hourlyData.pressure_msl[currentIndex]
+        val pressureIn3Hours = hourlyData.pressure_msl[currentIndex + 3]
+        val difference = pressureIn3Hours - pressureNow
+        return when {
+            difference > 3.5 -> "↑↑"
+            difference > 1.5 -> "↑"
+            difference < -3.5 -> "↓↓"
+            difference < -1.5 -> "↓"
+            else -> "→"
         }
     }
 
@@ -323,7 +332,8 @@ fun MainActivity.UserInterface() {
                             currentDate = currentDate,
                             currentTime = currentTime,
                             currentTemperature = currentTemperature,
-                            currentPressure = currentPressure
+                            currentPressure = currentPressure,
+                            pressureTrend = pressureTrend
                         )
                     } else { Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White) }
                 }
@@ -435,7 +445,8 @@ fun LocationDisplay(
     currentDate: String,
     currentTime: String,
     currentTemperature: Double?,
-    currentPressure: Float
+    currentPressure: Float,
+    pressureTrend: String
 ) {
     if (!isLocationAvailable) { Text(text = "Lade Standortdaten...", fontSize = 20.sp, color = Color.White); return }
     val context = LocalContext.current
@@ -466,7 +477,7 @@ fun LocationDisplay(
         }
         if (currentPressure > 0f) {
             val pressureFormatted = String.format(Locale.US, "%.2f", currentPressure)
-            Text(text = "Luftdruck: $pressureFormatted hPa", fontSize = 16.sp, color = Color.Gray)
+            Text(text = "Luftdruck: $pressureFormatted hPa $pressureTrend", fontSize = 16.sp, color = Color.Gray)
         }
     }
 }
@@ -490,7 +501,8 @@ fun DefaultPreview() {
                 currentDate = "29.10.2025",
                 currentTime = "23:59:59",
                 currentTemperature = 15.3,
-                currentPressure = 1013.25f
+                currentPressure = 1013.25f,
+                pressureTrend = "↑"
             )
         }
     }
