@@ -66,12 +66,32 @@ import java.util.Date
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
+// --- ERSETZE DAS KOMPLETTE AppColors OBJEKT HIERMIT ---
 object AppColors {
-    val HeadingBlue = Color(0xFF1E90FF)
-    val NorthRed = Color(0xFFFE0000)
+    // Dark Mode (unser bisheriger Standard)
+    val DarkBackground = Color.Black
+    val DarkText = Color(0xFFFFFAF0) // FloralWhite
+    val DarkHeading = Color(0xFF1E90FF) // Blau
+    val DarkAccent = Color(0xFFFE0000)  // Rot
+    val DarkSubtle = Color.Gray
+
+    // Light Mode
+    val LightBackground = Color.White
+    val LightText = Color.Black
+    val LightHeading = Color(0xFF0000DD) // Dunkleres Blau
+    val LightAccent = Color(0xFFCC0000)  // Dunkleres Rot
+    val LightSubtle = Color.DarkGray
+
+    // Night Mode (Rotlicht)
+    val NightBackground = Color.Black
+    val NightText = Color(0xFFB71C1C)     // Dunkles Rot
+    val NightHeading = Color(0xFF4A148C).copy(alpha = 0.7f) // Abgedunkeltes Blau -> Violettstich
+    val NightAccent = Color(0xFFF44336)   // Helles Rot
+    val NightSubtle = Color(0xFF4E342E)   // Sehr dunkles Rotbraun
+
+    // Fadenkreuz & Wasserwaage (bleiben meist gleich)
     val CrosshairGreen = Color(0xFF33FF33)
     val BubbleOrange = Color(0xFFFF9933)
-    val FloralWhite = Color(0xFFFFFAF0)
 }
 
 enum class ThemeMode {
@@ -326,7 +346,7 @@ fun degreesToCardinalDirection(degrees: Int): String {
 
 @Composable
 fun MainActivity.UserInterface() {
-    // Die Zeit-Logik
+    // Zeit-Logik, bleibt unverändert
     LaunchedEffect(Unit) {
         while (true) {
             val now = Date()
@@ -336,25 +356,68 @@ fun MainActivity.UserInterface() {
         }
     }
 
-    CompassLocationHeightTheme(darkTheme = true) {
-        Scaffold(modifier = Modifier.fillMaxSize().background(Color.Black)) { innerPadding ->
+    // --- NEUE FARB-LOGIK BASIEREND AUF DEM THEME-SCHALTER ---
+    val isDarkTheme = when (currentThemeMode) {
+        ThemeMode.Dark, ThemeMode.Night -> true
+        ThemeMode.Light -> false
+    }
+    val backgroundColor = when (currentThemeMode) {
+        ThemeMode.Light -> AppColors.LightBackground
+        else -> AppColors.DarkBackground // Gilt für Dark und Night
+    }
+    val headingColor = when (currentThemeMode) {
+        ThemeMode.Light -> AppColors.LightHeading
+        ThemeMode.Night -> AppColors.NightHeading
+        ThemeMode.Dark -> AppColors.DarkHeading
+    }
+    val textColor = when (currentThemeMode) {
+        ThemeMode.Light -> AppColors.LightText
+        ThemeMode.Night -> AppColors.NightText
+        ThemeMode.Dark -> AppColors.DarkText
+    }
+    val accentColor = when (currentThemeMode) {
+        ThemeMode.Light -> AppColors.LightAccent
+        ThemeMode.Night -> AppColors.NightAccent
+        ThemeMode.Dark -> AppColors.DarkAccent
+    }
+    val subtleColor = when (currentThemeMode) {
+        ThemeMode.Light -> AppColors.LightSubtle
+        ThemeMode.Night -> AppColors.NightSubtle
+        ThemeMode.Dark -> AppColors.DarkSubtle
+    }
 
+    // Das App-Theme wird jetzt dynamisch gesteuert
+    CompassLocationHeightTheme(darkTheme = isDarkTheme) {
+        Scaffold(modifier = Modifier.fillMaxSize().background(backgroundColor)) { innerPadding ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
             ) {
-
-                // Hauptinhalt in der Mitte
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.SpaceEvenly,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    CompassHeader(azimuth = azimuth, magneticDeclination = magneticDeclination)
+                    // Die Farben werden jetzt als Parameter übergeben
+                    CompassHeader(
+                        azimuth = azimuth,
+                        magneticDeclination = magneticDeclination,
+                        color = headingColor
+                    )
                     Box(contentAlignment = Alignment.Center) {
-                        CompassRose(azimuth = azimuth, magneticDeclination = magneticDeclination)
-                        CompassOverlay(pitch = pitch, roll = roll)
+                        CompassRose(
+                            azimuth = azimuth,
+                            magneticDeclination = magneticDeclination,
+                            textColor = textColor,
+                            accentColor = accentColor,
+                            subtleColor = subtleColor
+                        )
+                        CompassOverlay(
+                            pitch = pitch,
+                            roll = roll,
+                            headingColor = headingColor
+                        )
                     }
                     if (hasLocationPermission) {
                         LocationDisplay(
@@ -367,36 +430,36 @@ fun MainActivity.UserInterface() {
                             currentTime = currentTime,
                             currentTemperature = currentTemperature,
                             currentPressure = currentPressure,
-                            pressureTrend = pressureTrend
+                            pressureTrend = pressureTrend,
+                            textColor = textColor,
+                            subtleColor = subtleColor
                         )
                     } else {
-                        Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = Color.White)
+                        Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = textColor)
                     }
                 }
-
-                // Obere Leiste für Indikator und Schalter
-                Row(
+                // HIER WIRD DER ACCURACY INDICATOR (PUNKT) AUF TOP-RECHTS VERSCHOBEN
+                AccuracyIndicator(
+                    accuracy = magnetometerAccuracy,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.TopCenter)
-                        .padding(horizontal = 16.dp, vertical = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    AccuracyIndicator(accuracy = magnetometerAccuracy)
-
-                    ThemeSwitcher(
-                        currentMode = currentThemeMode,
-                        onThemeChange = { newMode -> currentThemeMode = newMode }
-                    )
-                }
+                        .align(Alignment.TopEnd) // <-- GEÄNDERT von TopStart
+                        .padding(16.dp)
+                )
+                // DER THEME SWITCHER (EMOJI) WIRD AUF TOP-LINKS VERSCHOBEN
+                ThemeSwitcher(
+                    currentMode = currentThemeMode,
+                    onThemeChange = { newMode -> currentThemeMode = newMode },
+                    modifier = Modifier
+                        .align(Alignment.TopStart) // <-- GEÄNDERT von TopEnd
+                        .padding(16.dp)
+                )
             }
         }
     }
 }
 
 @Composable
-fun CompassHeader(azimuth: Float, magneticDeclination: Float) {
+fun CompassHeader(azimuth: Float, magneticDeclination: Float, color: Color) { // Nimmt die Farbe als Parameter
     val trueAzimuth = (azimuth - magneticDeclination + 360) % 360
     val degrees = trueAzimuth.toInt()
     val cardinal = degreesToCardinalDirection(degrees)
@@ -407,14 +470,20 @@ fun CompassHeader(azimuth: Float, magneticDeclination: Float) {
             append(cardinal)
             pop()
         },
-        color = AppColors.HeadingBlue,
+        color = color, // <-- HIER IST DIE ÄNDERUNG
         fontSize = 48.sp,
         modifier = Modifier.padding(top = 24.dp)
     )
 }
 
 @Composable
-fun CompassRose(azimuth: Float, magneticDeclination: Float) {
+fun CompassRose(
+    azimuth: Float,
+    magneticDeclination: Float,
+    textColor: Color,
+    accentColor: Color,
+    subtleColor: Color
+) {
     val trueAzimuth = azimuth - magneticDeclination
     val textMeasurer = rememberTextMeasurer()
     Canvas(modifier = Modifier.size(300.dp)) {
@@ -426,7 +495,7 @@ fun CompassRose(azimuth: Float, magneticDeclination: Float) {
                 val isMajorLine = i % 30 == 0
                 val isCardinal = i % 90 == 0
                 val lineLength = if (isCardinal) 48f else if (isMajorLine) 36f else 30f
-                val color = AppColors.FloralWhite.copy(alpha = if (isMajorLine) 1f else 0.5f)
+                val color = textColor.copy(alpha = if (isMajorLine) 1f else 0.5f) // Verwendet textColor
                 val strokeWidth = if (isMajorLine) 4f else 2f
                 val startOffset = Offset(x = center.x + (radius - lineLength) * sin(angleInRad).toFloat(), y = center.y - (radius - lineLength) * cos(angleInRad).toFloat())
                 val endOffset = Offset(x = center.x + radius * sin(angleInRad).toFloat(), y = center.y - radius * cos(angleInRad).toFloat())
@@ -434,15 +503,16 @@ fun CompassRose(azimuth: Float, magneticDeclination: Float) {
             }
             val northAngleInRad = Math.toRadians(0.0)
             val northLineLength = 48f
-            drawLine(color = AppColors.NorthRed, start = Offset(x = center.x + (radius - northLineLength) * sin(northAngleInRad).toFloat(), y = center.y - (radius - northLineLength) * cos(northAngleInRad).toFloat()), end = Offset(x = center.x + radius * sin(northAngleInRad).toFloat(), y = center.y - radius * cos(northAngleInRad).toFloat()), strokeWidth = 8f)
+            drawLine(color = accentColor, start = Offset(x = center.x + (radius - northLineLength) * sin(northAngleInRad).toFloat(), y = center.y - (radius - northLineLength) * cos(northAngleInRad).toFloat()), end = Offset(x = center.x + radius * sin(northAngleInRad).toFloat(), y = center.y - radius * cos(northAngleInRad).toFloat()), strokeWidth = 8f) // Verwendet accentColor
         }
         val directionRadius = radius * 0.82f
         val numberRadius = radius * 0.72f
         val textSize = 24.sp * 1.15f
         val numberTextSize = 18.sp
-        val textStyleN = TextStyle(color = AppColors.NorthRed, fontSize = textSize, fontWeight = FontWeight.Bold)
-        val textStyleOthers = TextStyle(color = AppColors.FloralWhite, fontSize = textSize, fontWeight = FontWeight.SemiBold)
-        val numberStyle = TextStyle(color = AppColors.FloralWhite.copy(alpha = 0.7f), fontSize = numberTextSize)
+        val textStyleN = TextStyle(color = accentColor, fontSize = textSize, fontWeight = FontWeight.Bold)
+        val textStyleOthers = TextStyle(color = textColor, fontSize = textSize, fontWeight = FontWeight.SemiBold) // Verwendet textColor
+        val numberStyle = TextStyle(color = textColor.copy(alpha = 0.7f), fontSize = numberTextSize) // Verwendet textColor
+
         drawTextCustom(textMeasurer, "N", center, directionRadius, 0f - trueAzimuth, textStyleN)
         drawTextCustom(textMeasurer, "E", center, directionRadius, 90f - trueAzimuth, textStyleOthers)
         drawTextCustom(textMeasurer, "S", center, directionRadius, 180f - trueAzimuth, textStyleOthers)
@@ -466,8 +536,8 @@ fun DrawScope.drawTextCustom(textMeasurer: androidx.compose.ui.text.TextMeasurer
 }
 
 @Composable
-fun CompassOverlay(pitch: Float, roll: Float, modifier: Modifier = Modifier) {
-    Box(modifier = modifier.size(300.dp), contentAlignment = Alignment.Center) {
+fun CompassOverlay(pitch: Float, roll: Float, headingColor: Color) {
+    Box(modifier = Modifier.size(300.dp), contentAlignment = Alignment.Center) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             val canvasWidth = size.width
             val path = Path().apply {
@@ -476,13 +546,18 @@ fun CompassOverlay(pitch: Float, roll: Float, modifier: Modifier = Modifier) {
                 lineTo(canvasWidth / 2 + 35, 60f)
                 close()
             }
-            drawPath(path, color = AppColors.HeadingBlue)
+            drawPath(path, color = headingColor) // Verwendet die übergebene Farbe
+
             val crosshairLength = 96f
             drawLine(AppColors.CrosshairGreen, start = Offset(center.x - crosshairLength, center.y), end = Offset(center.x + crosshairLength, center.y), strokeWidth = 3f)
             drawLine(AppColors.CrosshairGreen, start = Offset(center.x, center.y - crosshairLength), end = Offset(center.x, center.y + crosshairLength), strokeWidth = 3f)
         }
         Box(
-            modifier = Modifier.align(Alignment.Center).offset(x = (-roll * 10).dp, y = (pitch * 10).dp).size(25.dp).background(AppColors.BubbleOrange, shape = CircleShape)
+            modifier = Modifier
+                .align(Alignment.Center)
+                .offset(x = (-roll * 10).dp, y = (pitch * 10).dp)
+                .size(25.dp)
+                .background(AppColors.BubbleOrange, shape = CircleShape)
         )
     }
 }
@@ -498,38 +573,53 @@ fun LocationDisplay(
     currentTime: String,
     currentTemperature: Double?,
     currentPressure: Float,
-    pressureTrend: String
+    pressureTrend: String,
+    textColor: Color,
+    subtleColor: Color
 ) {
-    if (!isLocationAvailable) { Text(text = "Lade Standortdaten...", fontSize = 20.sp, color = Color.White); return }
+    if (!isLocationAvailable) {
+        Text(text = "Lade Standortdaten...", fontSize = 20.sp, color = textColor)
+        return
+    }
+
     val context = LocalContext.current
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = address,
             fontSize = 20.sp,
-            color = AppColors.FloralWhite,
+            color = textColor, // Verwendet die übergebene Textfarbe
             modifier = Modifier
                 .padding(bottom = 16.dp)
-                .border(width = 1.dp, color = Color.Gray, shape = RoundedCornerShape(16.dp))
+                .border(
+                    width = 1.dp,
+                    color = subtleColor, // Verwendet die übergebene "subtile" Farbe
+                    shape = RoundedCornerShape(16.dp)
+                )
                 .clip(RoundedCornerShape(16.dp))
                 .clickable { openMaps(context, latitude, longitude) }
                 .padding(horizontal = 24.dp, vertical = 12.dp)
         )
+
         val lat = String.format(Locale.US, "%.6f", latitude)
         val lon = String.format(Locale.US, "%.6f", longitude)
         val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
-        Text(text = "Breite: $lat", fontSize = 16.sp, color = Color.Gray)
-        Text(text = "Länge: $lon", fontSize = 16.sp, color = Color.Gray)
-        Text(text = "Höhe: $altBaro m", fontSize = 16.sp, color = Color.Gray)
+        Text(text = "Breite: $lat", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
+        Text(text = "Länge: $lon", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
+        Text(text = "Höhe: $altBaro m", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
+
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Datum: $currentDate", fontSize = 16.sp, color = Color.Gray)
-        Text(text = "Zeit: $currentTime", fontSize = 16.sp, color = Color.Gray)
+
+        Text(text = "Datum: $currentDate", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
+        Text(text = "Zeit: $currentTime", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
+
         currentTemperature?.let { temp ->
             val tempFormatted = String.format(Locale.US, "%.1f", temp)
-            Text(text = "Temperatur: $tempFormatted °C", fontSize = 16.sp, color = Color.Gray)
+            Text(text = "Temperatur: $tempFormatted °C", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
         }
+
         if (currentPressure > 0f) {
             val pressureFormatted = String.format(Locale.US, "%.2f", currentPressure)
-            Text(text = "Luftdruck: $pressureFormatted hPa $pressureTrend", fontSize = 16.sp, color = Color.Gray)
+            Text(text = "Luftdruck: $pressureFormatted hPa $pressureTrend", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
         }
     }
 }
@@ -538,12 +628,34 @@ fun LocationDisplay(
 @Composable
 fun DefaultPreview() {
     CompassLocationHeightTheme(darkTheme = true) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxSize()) {
-            CompassHeader(azimuth = 330f, magneticDeclination = 4f)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // Übergib die Dummy-Farbe für den Dark Mode
+            CompassHeader(
+                azimuth = 330f,
+                magneticDeclination = 4f,
+                color = AppColors.DarkHeading
+            )
             Box(contentAlignment = Alignment.Center) {
-                CompassRose(azimuth = 330f, magneticDeclination = 4f)
-                CompassOverlay(pitch = -1.5f, roll = 2.5f)
+                // Übergib die Dummy-Farben für den Dark Mode
+                CompassRose(
+                    azimuth = 330f,
+                    magneticDeclination = 4f,
+                    textColor = AppColors.DarkText,
+                    accentColor = AppColors.DarkAccent,
+                    subtleColor = AppColors.DarkSubtle
+                )
+                // Übergib die Dummy-Farbe für den Dark Mode
+                CompassOverlay(
+                    pitch = -1.5f,
+                    roll = 2.5f,
+                    headingColor = AppColors.DarkHeading
+                )
             }
+            // Übergib die Dummy-Farben für den Dark Mode
             LocationDisplay(
                 latitude = 48.330967,
                 longitude = 14.272329,
@@ -554,7 +666,9 @@ fun DefaultPreview() {
                 currentTime = "23:59:59",
                 currentTemperature = 15.3,
                 currentPressure = 1013.25f,
-                pressureTrend = "↑"
+                pressureTrend = "↑",
+                textColor = AppColors.DarkText,
+                subtleColor = AppColors.DarkSubtle
             )
         }
     }
