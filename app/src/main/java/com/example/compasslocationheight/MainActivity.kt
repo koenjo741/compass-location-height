@@ -85,7 +85,7 @@ object AppColors {
     // Night Mode (Rotlicht)
     val NightBackground = Color.Black
     val NightText = Color(0xFFB71C1C)     // Dunkles Rot
-    val NightHeading = Color(0xFF4A148C).copy(alpha = 0.7f) // Abgedunkeltes Blau -> Violettstich
+    val NightHeading = Color(0xFF0045F5).copy(alpha = 0.7f) // Abgedunkeltes Blau -> Violettstich
     val NightAccent = Color(0xFFF44336)   // Helles Rot
     val NightSubtle = Color(0xFF4E342E)   // Sehr dunkles Rotbraun
 
@@ -346,7 +346,6 @@ fun degreesToCardinalDirection(degrees: Int): String {
 
 @Composable
 fun MainActivity.UserInterface() {
-    // Zeit-Logik, bleibt unverändert
     LaunchedEffect(Unit) {
         while (true) {
             val now = Date()
@@ -356,14 +355,13 @@ fun MainActivity.UserInterface() {
         }
     }
 
-    // --- NEUE FARB-LOGIK BASIEREND AUF DEM THEME-SCHALTER ---
     val isDarkTheme = when (currentThemeMode) {
         ThemeMode.Dark, ThemeMode.Night -> true
         ThemeMode.Light -> false
     }
     val backgroundColor = when (currentThemeMode) {
         ThemeMode.Light -> AppColors.LightBackground
-        else -> AppColors.DarkBackground // Gilt für Dark und Night
+        else -> AppColors.DarkBackground
     }
     val headingColor = when (currentThemeMode) {
         ThemeMode.Light -> AppColors.LightHeading
@@ -386,7 +384,6 @@ fun MainActivity.UserInterface() {
         ThemeMode.Dark -> AppColors.DarkSubtle
     }
 
-    // Das App-Theme wird jetzt dynamisch gesteuert
     CompassLocationHeightTheme(darkTheme = isDarkTheme) {
         Scaffold(modifier = Modifier.fillMaxSize().background(backgroundColor)) { innerPadding ->
             Box(
@@ -399,7 +396,6 @@ fun MainActivity.UserInterface() {
                     verticalArrangement = Arrangement.SpaceEvenly,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // Die Farben werden jetzt als Parameter übergeben
                     CompassHeader(
                         azimuth = azimuth,
                         magneticDeclination = magneticDeclination,
@@ -438,21 +434,20 @@ fun MainActivity.UserInterface() {
                         Text(text = "Standort Erlaubnis benötigt", fontSize = 20.sp, color = textColor)
                     }
                 }
-                // HIER WIRD DER ACCURACY INDICATOR (PUNKT) AUF TOP-RECHTS VERSCHOBEN
-                AccuracyIndicator(
-                    accuracy = magnetometerAccuracy,
+                Row(
                     modifier = Modifier
-                        .align(Alignment.TopEnd) // <-- GEÄNDERT von TopStart
-                        .padding(16.dp)
-                )
-                // DER THEME SWITCHER (EMOJI) WIRD AUF TOP-LINKS VERSCHOBEN
-                ThemeSwitcher(
-                    currentMode = currentThemeMode,
-                    onThemeChange = { newMode -> currentThemeMode = newMode },
-                    modifier = Modifier
-                        .align(Alignment.TopStart) // <-- GEÄNDERT von TopEnd
-                        .padding(16.dp)
-                )
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter)
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AccuracyIndicator(accuracy = magnetometerAccuracy)
+                    ThemeSwitcher(
+                        currentMode = currentThemeMode,
+                        onThemeChange = { newMode -> currentThemeMode = newMode }
+                    )
+                }
             }
         }
     }
