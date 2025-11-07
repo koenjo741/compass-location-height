@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">CompassLocationHeight</string>
+
+    <!-- LocationDisplay Texts -->
+    <string name="loading_location">Lade Standortdaten...</string>
+    <string name="address_not_found">Adresse nicht gefunden</string>
+    <string name="address_search_error">Fehler bei Adresssuche</string>
+    <string name="location_permission_needed">Standort Erlaubnis benötigt</string>
+
+    <!-- %1$s ist ein Platzhalter für eine Variable (z.B. die Gradzahl) -->
+    <string name="latitude_label">Breite: %1$s</string>
+    <string name="longitude_label">Länge: %1$s</string>
+    <string name="altitude_label">Höhe: %1$s m</string>
+    <string name="date_label">Datum: %1$s</string>
+    <string name="time_label">Zeit: %1$s</string>
+    <string name="temperature_label">Temperatur: %1$s °C</string>
+    <string name="pressure_label">Luftdruck: %1$s hPa %2$s</string>
+
 </resources>
