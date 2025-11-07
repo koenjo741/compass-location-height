@@ -50,6 +50,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compasslocationheight.ui.theme.CompassLocationHeightTheme
+import androidx.activity.viewModels
 
 // --- AppColors OBJEKT ---
 object AppColors {
@@ -88,6 +89,7 @@ enum class ThemeMode {
 @Serializable data class HourlyData(val time: List<String>, val pressure_msl: List<Double>)
 
 class MainActivity : ComponentActivity(), SensorEventListener {
+    private val settingsViewModel: SettingsViewModel by viewModels()
     // Manager & Sensoren
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
@@ -118,8 +120,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var currentTemperature by mutableStateOf<Double?>(null)
     var currentPressure by mutableFloatStateOf(0f)
     var pressureTrend by mutableStateOf("→")
-
-    var currentThemeMode by mutableStateOf(ThemeMode.Dark)
 
     private var lastWeatherApiCall: Long = 0
 
@@ -159,32 +159,37 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         }
 
         window.statusBarColor = Color.Black.toArgb()
-        // --- NEUER setContent BLOCK ---
+
+        // --- NEUER setContent BLOCK in MainActivity.kt ---
         setContent {
-            // 1. Der NavController ist das Gehirn der Navigation. Er merkt sich, auf welcher Seite wir sind.
             val navController = rememberNavController()
 
-            // 2. Wir berechnen die Farben hier zentral, damit wir sie an alle Seiten weitergeben können.
-            val backgroundColor = when (currentThemeMode) {
+            // NEU: Wir holen den Theme-Zustand direkt aus dem ViewModel
+            val currentTheme = settingsViewModel.themeMode
+
+            val backgroundColor = when (currentTheme) {
                 ThemeMode.Light -> AppColors.LightBackground
                 else -> AppColors.DarkBackground
             }
-            val textColor = when (currentThemeMode) {
+            val textColor = when (currentTheme) {
                 ThemeMode.Light -> AppColors.LightText
                 ThemeMode.Night -> AppColors.NightText
                 ThemeMode.Dark -> AppColors.DarkText
             }
-            val isDarkTheme = when (currentThemeMode) {
+            val isDarkTheme = when (currentTheme) {
                 ThemeMode.Dark, ThemeMode.Night -> true
                 ThemeMode.Light -> false
             }
 
             CompassLocationHeightTheme(darkTheme = isDarkTheme) {
-                // 3. Der NavHost ist der Container, der die aktuell ausgewählte Seite anzeigt.
                 NavHost(navController = navController, startDestination = "compass") {
-                    // Wir definieren jede Seite (Screen) mit einem eindeutigen Namen ("route")
                     composable("compass") {
-                        CompassScreen(navController = navController) // Wir übergeben den Controller an den CompassScreen
+                        // NEU: Wir übergeben den aktuellen Theme-Modus und die Funktion zum Ändern
+                        CompassScreen(
+                            navController = navController,
+                            currentThemeMode = currentTheme,
+                            onThemeChange = { newTheme -> settingsViewModel.setTheme(newTheme) }
+                        )
                     }
                     composable("settings") {
                         SettingsScreen(backgroundColor = backgroundColor, textColor = textColor)
@@ -195,7 +200,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 }
             }
         }
-        // --- ENDE NEUER setContent BLOCK ---
 
         checkLocationPermission()
     }

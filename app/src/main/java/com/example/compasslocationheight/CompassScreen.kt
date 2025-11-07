@@ -62,9 +62,14 @@ import java.util.Locale
 import kotlin.math.cos
 import kotlin.math.sin
 import android.hardware.SensorManager
+import androidx.navigation.NavController
 
 @Composable
-fun MainActivity.CompassScreen(navController: androidx.navigation.NavController) {
+fun MainActivity.CompassScreen(
+    navController: NavController,
+    currentThemeMode: ThemeMode,
+    onThemeChange: (ThemeMode) -> Unit
+) {
     LaunchedEffect(Unit) {
         while (true) {
             val now = Date()
@@ -193,7 +198,7 @@ fun MainActivity.CompassScreen(navController: androidx.navigation.NavController)
                         }
                         ThemeSwitcher(
                             currentMode = currentThemeMode,
-                            onThemeChange = { newMode -> currentThemeMode = newMode }
+                            onThemeChange = onThemeChange
                         )
                     }
                 }
