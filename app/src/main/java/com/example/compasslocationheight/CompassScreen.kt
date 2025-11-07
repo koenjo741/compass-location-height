@@ -1,7 +1,8 @@
-// --- CompassScreen.kt ---
-
 package com.example.compasslocationheight
 
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.IconButton
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -63,7 +64,7 @@ import kotlin.math.sin
 import android.hardware.SensorManager
 
 @Composable
-fun MainActivity.CompassScreen() { // <-- Umbenannt von UserInterface zu CompassScreen
+fun MainActivity.CompassScreen(navController: androidx.navigation.NavController) {
     LaunchedEffect(Unit) {
         while (true) {
             val now = Date()
@@ -171,10 +172,30 @@ fun MainActivity.CompassScreen() { // <-- Umbenannt von UserInterface zu Compass
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AccuracyIndicator(accuracy = magnetometerAccuracy)
-                    ThemeSwitcher(
-                        currentMode = currentThemeMode,
-                        onThemeChange = { newMode -> currentThemeMode = newMode }
-                    )
+
+                    // Wrapper Row für die Icons rechts
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        // NEU: Button zu den Einstellungen
+                        IconButton(onClick = { navController.navigate("settings") }) {
+                            Icon(
+                                imageVector = Icons.Filled.Settings,
+                                contentDescription = "Einstellungen öffnen",
+                                tint = headingColor // Passt sich dem Theme an
+                            )
+                        }
+                        // NEU: Button zur Info-Seite
+                        IconButton(onClick = { navController.navigate("about") }) {
+                            Icon(
+                                imageVector = Icons.Filled.Info,
+                                contentDescription = "Info-Seite öffnen",
+                                tint = headingColor // Passt sich dem Theme an
+                            )
+                        }
+                        ThemeSwitcher(
+                            currentMode = currentThemeMode,
+                            onThemeChange = { newMode -> currentThemeMode = newMode }
+                        )
+                    }
                 }
             }
         }

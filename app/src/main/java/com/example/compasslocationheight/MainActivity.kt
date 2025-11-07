@@ -46,6 +46,10 @@ import kotlinx.serialization.json.Json
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.compasslocationheight.ui.theme.CompassLocationHeightTheme
 
 // --- AppColors OBJEKT ---
 object AppColors {
@@ -155,9 +159,46 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         }
 
         window.statusBarColor = Color.Black.toArgb()
-        setContent { CompassScreen() } // <-- HIER WIRD DIE NEUE FUNKTION AUFGERUFEN
-    }
+        // --- NEUER setContent BLOCK ---
+        setContent {
+            // 1. Der NavController ist das Gehirn der Navigation. Er merkt sich, auf welcher Seite wir sind.
+            val navController = rememberNavController()
 
+            // 2. Wir berechnen die Farben hier zentral, damit wir sie an alle Seiten weitergeben können.
+            val backgroundColor = when (currentThemeMode) {
+                ThemeMode.Light -> AppColors.LightBackground
+                else -> AppColors.DarkBackground
+            }
+            val textColor = when (currentThemeMode) {
+                ThemeMode.Light -> AppColors.LightText
+                ThemeMode.Night -> AppColors.NightText
+                ThemeMode.Dark -> AppColors.DarkText
+            }
+            val isDarkTheme = when (currentThemeMode) {
+                ThemeMode.Dark, ThemeMode.Night -> true
+                ThemeMode.Light -> false
+            }
+
+            CompassLocationHeightTheme(darkTheme = isDarkTheme) {
+                // 3. Der NavHost ist der Container, der die aktuell ausgewählte Seite anzeigt.
+                NavHost(navController = navController, startDestination = "compass") {
+                    // Wir definieren jede Seite (Screen) mit einem eindeutigen Namen ("route")
+                    composable("compass") {
+                        CompassScreen(navController = navController) // Wir übergeben den Controller an den CompassScreen
+                    }
+                    composable("settings") {
+                        SettingsScreen(backgroundColor = backgroundColor, textColor = textColor)
+                    }
+                    composable("about") {
+                        AboutScreen(backgroundColor = backgroundColor, textColor = textColor)
+                    }
+                }
+            }
+        }
+        // --- ENDE NEUER setContent BLOCK ---
+
+        checkLocationPermission()
+    }
     private fun getAddressFromCoordinates(latitude: Double, longitude: Double) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
