@@ -21,12 +21,35 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.NightsStay
+import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,39 +57,48 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.*
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.compasslocationheight.ui.theme.CompassLocationHeightTheme
-import com.google.android.gms.location.*
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.android.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.serialization.kotlinx.json.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.android.Android
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 import kotlin.math.cos
 import kotlin.math.sin
-import androidx.compose.ui.graphics.toArgb
-import java.text.SimpleDateFormat
-import java.util.Date
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 
-// --- ERSETZE DAS KOMPLETTE AppColors OBJEKT HIERMIT ---
+// --- AppColors OBJEKT ---
 object AppColors {
     // Dark Mode (unser bisheriger Standard)
     val DarkBackground = Color.Black
@@ -84,7 +116,7 @@ object AppColors {
 
     // Night Mode (Rotlicht)
     val NightBackground = Color.Black
-    val NightText = Color(0xFFB71C1C)     // Dunkles Rot
+    val NightText = Color(0xFFB71C1C) // Dunkles Rot
     val NightHeading = Color(0xFF0045F5).copy(alpha = 0.7f) // Abgedunkeltes Blau -> Violettstich
     val NightAccent = Color(0xFFF44336)   // Helles Rot
     val NightSubtle = Color(0xFF4E342E)   // Sehr dunkles Rotbraun
@@ -123,6 +155,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var gpsLongitude by mutableDoubleStateOf(0.0)
     var isLocationAvailable by mutableStateOf(false)
     var barometricAltitude by mutableDoubleStateOf(0.0)
+    // KORREKTUR: String-Literal repariert
     var addressText by mutableStateOf("Suche Adresse...")
     var currentDate by mutableStateOf("")
     var currentTime by mutableStateOf("")
@@ -139,7 +172,10 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     private var lastWeatherApiCall: Long = 0
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-        if (isGranted) { hasLocationPermission = true; startLocationUpdates() }
+        if (isGranted) {
+            hasLocationPermission = true
+            startLocationUpdates()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -157,6 +193,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 p0.lastLocation?.let { location ->
                     gpsLatitude = location.latitude
                     gpsLongitude = location.longitude
+                    // KORREKTUR: Zeilenumbruch entfernt
                     isLocationAvailable = true
                     getAddressFromCoordinates(location.latitude, location.longitude)
                     updateMagneticDeclination(location.latitude, location.longitude, location.altitude)
@@ -179,6 +216,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val geocoder = Geocoder(this@MainActivity, Locale.GERMANY)
+
                 @Suppress("DEPRECATION")
                 val addresses = geocoder.getFromLocation(latitude, longitude, 1)
                 val address = addresses?.firstOrNull()?.let { addr ->
@@ -188,6 +226,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                     val city = addr.locality ?: ""
                     "$street $number, $postal $city".trim().trim(',')
                 } ?: "Adresse nicht gefunden"
+
                 withContext(Dispatchers.Main) { addressText = address }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) { addressText = "Fehler bei Adresssuche" }
@@ -320,25 +359,43 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         }
     }
 }
+
 @Composable
 fun ThemeSwitcher(currentMode: ThemeMode, onThemeChange: (ThemeMode) -> Unit, modifier: Modifier = Modifier) {
+    // 1. Definiere den nächsten Modus
     val nextMode = when (currentMode) {
         ThemeMode.Dark -> ThemeMode.Light
         ThemeMode.Light -> ThemeMode.Night
         ThemeMode.Night -> ThemeMode.Dark
     }
-    val nextModeIcon = when (nextMode) {
-        ThemeMode.Light -> "☀️"
-        ThemeMode.Night -> "🌙"
-        ThemeMode.Dark -> "✨"
+
+    // 2. Wähle das Icon, das den *aktuellen* Modus repräsentiert
+    val currentModeIcon = when (currentMode) {
+        ThemeMode.Light -> Icons.Filled.WbSunny
+        ThemeMode.Night -> Icons.Filled.NightsStay
+        ThemeMode.Dark -> Icons.Filled.DarkMode
     }
 
-    Text(
-        text = nextModeIcon,
-        fontSize = 30.sp,
-        modifier = Modifier.clickable { onThemeChange(nextMode) }
+    // 3. Wähle die Icon-Farbe basierend auf dem aktuellen Modus
+    val iconColor = when (currentMode) {
+        // KORREKTUR: Hinzufügen des Alpha-Kanals (0xFF) für volle Deckkraft
+        ThemeMode.Light -> Color(0xFFFFD700) // Jetzt ist es opak Goldgelb
+        ThemeMode.Night -> AppColors.NightHeading
+        ThemeMode.Dark -> AppColors.DarkHeading
+    }
+
+    Icon(
+        imageVector = currentModeIcon,
+        contentDescription = "Aktueller Modus: $currentMode. Klicke, um zu $nextMode zu wechseln",
+        tint = iconColor,
+        modifier = Modifier
+            .size(30.dp)
+            .clickable {
+                onThemeChange(nextMode)
+            }
     )
 }
+
 fun degreesToCardinalDirection(degrees: Int): String {
     val directions = arrayOf("N", "NNO", "NO", "ONO", "O", "OSO", "SO", "SSO", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
     return directions[((degrees + 11.25) / 22.5).toInt() % 16]
@@ -355,10 +412,29 @@ fun MainActivity.UserInterface() {
         }
     }
 
+    // --- NEU: Statusleisten-Anpassung ---
+    val context = LocalContext.current
+    val window = (context as ComponentActivity).window
+    val view = LocalView.current
+
     val isDarkTheme = when (currentThemeMode) {
         ThemeMode.Dark, ThemeMode.Night -> true
         ThemeMode.Light -> false
     }
+
+    // SideEffect passt die Statusbar-Icons an, sobald sich das Theme ändert
+    SideEffect {
+        // isAppearanceLightStatusBars = true bedeutet, die Icons werden HELL (weiß) dargestellt.
+        // isAppearanceLightStatusBars = false bedeutet, die Icons werden DUNKEL (schwarz) dargestellt.
+        // Im Light Mode (isDarkTheme = false) wollen wir DUNKLE Icons, also setzen wir es auf TRUE.
+        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDarkTheme
+
+        // Stellt sicher, dass die Statusbar transparent ist, damit der App-Hintergrund sichtbar ist
+        // und die Statusbar-Icons korrekt eingefärbt werden.
+        window.statusBarColor = android.graphics.Color.TRANSPARENT
+    }
+    // --- ENDE Statusleisten-Anpassung ---
+
     val backgroundColor = when (currentThemeMode) {
         ThemeMode.Light -> AppColors.LightBackground
         else -> AppColors.DarkBackground
@@ -454,7 +530,7 @@ fun MainActivity.UserInterface() {
 }
 
 @Composable
-fun CompassHeader(azimuth: Float, magneticDeclination: Float, color: Color) { // Nimmt die Farbe als Parameter
+fun CompassHeader(azimuth: Float, magneticDeclination: Float, color: Color) {
     val trueAzimuth = (azimuth - magneticDeclination + 360) % 360
     val degrees = trueAzimuth.toInt()
     val cardinal = degreesToCardinalDirection(degrees)
@@ -465,7 +541,7 @@ fun CompassHeader(azimuth: Float, magneticDeclination: Float, color: Color) { //
             append(cardinal)
             pop()
         },
-        color = color, // <-- HIER IST DIE ÄNDERUNG
+        color = color,
         fontSize = 48.sp,
         modifier = Modifier.padding(top = 24.dp)
     )
@@ -490,7 +566,7 @@ fun CompassRose(
                 val isMajorLine = i % 30 == 0
                 val isCardinal = i % 90 == 0
                 val lineLength = if (isCardinal) 48f else if (isMajorLine) 36f else 30f
-                val color = textColor.copy(alpha = if (isMajorLine) 1f else 0.5f) // Verwendet textColor
+                val color = textColor.copy(alpha = if (isMajorLine) 1f else 0.5f)
                 val strokeWidth = if (isMajorLine) 4f else 2f
                 val startOffset = Offset(x = center.x + (radius - lineLength) * sin(angleInRad).toFloat(), y = center.y - (radius - lineLength) * cos(angleInRad).toFloat())
                 val endOffset = Offset(x = center.x + radius * sin(angleInRad).toFloat(), y = center.y - radius * cos(angleInRad).toFloat())
@@ -498,15 +574,15 @@ fun CompassRose(
             }
             val northAngleInRad = Math.toRadians(0.0)
             val northLineLength = 48f
-            drawLine(color = accentColor, start = Offset(x = center.x + (radius - northLineLength) * sin(northAngleInRad).toFloat(), y = center.y - (radius - northLineLength) * cos(northAngleInRad).toFloat()), end = Offset(x = center.x + radius * sin(northAngleInRad).toFloat(), y = center.y - radius * cos(northAngleInRad).toFloat()), strokeWidth = 8f) // Verwendet accentColor
+            drawLine(color = accentColor, start = Offset(x = center.x + (radius - northLineLength) * sin(northAngleInRad).toFloat(), y = center.y - (radius - northLineLength) * cos(northAngleInRad).toFloat()), end = Offset(x = center.x + radius * sin(northAngleInRad).toFloat(), y = center.y - radius * cos(northAngleInRad).toFloat()), strokeWidth = 8f)
         }
         val directionRadius = radius * 0.82f
         val numberRadius = radius * 0.72f
         val textSize = 24.sp * 1.15f
         val numberTextSize = 18.sp
         val textStyleN = TextStyle(color = accentColor, fontSize = textSize, fontWeight = FontWeight.Bold)
-        val textStyleOthers = TextStyle(color = textColor, fontSize = textSize, fontWeight = FontWeight.SemiBold) // Verwendet textColor
-        val numberStyle = TextStyle(color = textColor.copy(alpha = 0.7f), fontSize = numberTextSize) // Verwendet textColor
+        val textStyleOthers = TextStyle(color = textColor, fontSize = textSize, fontWeight = FontWeight.SemiBold)
+        val numberStyle = TextStyle(color = textColor.copy(alpha = 0.7f), fontSize = numberTextSize)
 
         drawTextCustom(textMeasurer, "N", center, directionRadius, 0f - trueAzimuth, textStyleN)
         drawTextCustom(textMeasurer, "E", center, directionRadius, 90f - trueAzimuth, textStyleOthers)
@@ -541,7 +617,7 @@ fun CompassOverlay(pitch: Float, roll: Float, headingColor: Color) {
                 lineTo(canvasWidth / 2 + 35, 60f)
                 close()
             }
-            drawPath(path, color = headingColor) // Verwendet die übergebene Farbe
+            drawPath(path, color = headingColor)
 
             val crosshairLength = 96f
             drawLine(AppColors.CrosshairGreen, start = Offset(center.x - crosshairLength, center.y), end = Offset(center.x + crosshairLength, center.y), strokeWidth = 3f)
@@ -582,12 +658,12 @@ fun LocationDisplay(
         Text(
             text = address,
             fontSize = 20.sp,
-            color = textColor, // Verwendet die übergebene Textfarbe
+            color = textColor,
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .border(
                     width = 1.dp,
-                    color = subtleColor, // Verwendet die übergebene "subtile" Farbe
+                    color = subtleColor,
                     shape = RoundedCornerShape(16.dp)
                 )
                 .clip(RoundedCornerShape(16.dp))
@@ -598,77 +674,28 @@ fun LocationDisplay(
         val lat = String.format(Locale.US, "%.6f", latitude)
         val lon = String.format(Locale.US, "%.6f", longitude)
         val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
-        Text(text = "Breite: $lat", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
-        Text(text = "Länge: $lon", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
-        Text(text = "Höhe: $altBaro m", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
+        Text(text = "Breite: $lat", fontSize = 16.sp, color = subtleColor)
+        Text(text = "Länge: $lon", fontSize = 16.sp, color = subtleColor)
+        Text(text = "Höhe: $altBaro m", fontSize = 16.sp, color = subtleColor)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Datum: $currentDate", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
-        Text(text = "Zeit: $currentTime", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
+        Text(text = "Datum: $currentDate", fontSize = 16.sp, color = subtleColor)
+        Text(text = "Zeit: $currentTime", fontSize = 16.sp, color = subtleColor)
 
         currentTemperature?.let { temp ->
             val tempFormatted = String.format(Locale.US, "%.1f", temp)
-            Text(text = "Temperatur: $tempFormatted °C", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
+            Text(text = "Temperatur: $tempFormatted °C", fontSize = 16.sp, color = subtleColor)
         }
 
         if (currentPressure > 0f) {
             val pressureFormatted = String.format(Locale.US, "%.2f", currentPressure)
-            Text(text = "Luftdruck: $pressureFormatted hPa $pressureTrend", fontSize = 16.sp, color = subtleColor) // Verwendet die übergebene "subtile" Farbe
+            Text(text = "Luftdruck: $pressureFormatted hPa $pressureTrend", fontSize = 16.sp, color = subtleColor)
         }
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF000000)
-@Composable
-fun DefaultPreview() {
-    CompassLocationHeightTheme(darkTheme = true) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            // Übergib die Dummy-Farbe für den Dark Mode
-            CompassHeader(
-                azimuth = 330f,
-                magneticDeclination = 4f,
-                color = AppColors.DarkHeading
-            )
-            Box(contentAlignment = Alignment.Center) {
-                // Übergib die Dummy-Farben für den Dark Mode
-                CompassRose(
-                    azimuth = 330f,
-                    magneticDeclination = 4f,
-                    textColor = AppColors.DarkText,
-                    accentColor = AppColors.DarkAccent,
-                    subtleColor = AppColors.DarkSubtle
-                )
-                // Übergib die Dummy-Farbe für den Dark Mode
-                CompassOverlay(
-                    pitch = -1.5f,
-                    roll = 2.5f,
-                    headingColor = AppColors.DarkHeading
-                )
-            }
-            // Übergib die Dummy-Farben für den Dark Mode
-            LocationDisplay(
-                latitude = 48.330967,
-                longitude = 14.272329,
-                barometricAltitude = 370.0,
-                isLocationAvailable = true,
-                address = "Teststraße 1, 4020 Linz",
-                currentDate = "29.10.2025",
-                currentTime = "23:59:59",
-                currentTemperature = 15.3,
-                currentPressure = 1013.25f,
-                pressureTrend = "↑",
-                textColor = AppColors.DarkText,
-                subtleColor = AppColors.DarkSubtle
-            )
-        }
-    }
-}
-
+// KORREKTUR: openMaps Funktion vervollständigt
 private fun openMaps(context: Context, latitude: Double, longitude: Double) {
     val gmmIntentUri = Uri.parse("geo:$latitude,$longitude?q=$latitude,$longitude(Mein Standort)")
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -690,4 +717,50 @@ fun AccuracyIndicator(accuracy: Int, modifier: Modifier = Modifier) {
             .background(color, shape = CircleShape)
             .border(1.dp, Color.White, shape = CircleShape)
     )
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF000000)
+@Composable
+fun DefaultPreview() {
+    CompassLocationHeightTheme(darkTheme = true) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            CompassHeader(
+                azimuth = 330f,
+                magneticDeclination = 4f,
+                color = AppColors.DarkHeading
+            )
+            Box(contentAlignment = Alignment.Center) {
+                CompassRose(
+                    azimuth = 330f,
+                    magneticDeclination = 4f,
+                    textColor = AppColors.DarkText,
+                    accentColor = AppColors.DarkAccent,
+                    subtleColor = AppColors.DarkSubtle
+                )
+                CompassOverlay(
+                    pitch = -1.5f,
+                    roll = 2.5f,
+                    headingColor = AppColors.DarkHeading
+                )
+            }
+            LocationDisplay(
+                latitude = 48.330967,
+                longitude = 14.272329,
+                barometricAltitude = 370.0,
+                isLocationAvailable = true,
+                address = "Teststraße 1, 4020 Linz",
+                currentDate = "29.10.2025",
+                currentTime = "23:59:59",
+                currentTemperature = 15.3,
+                currentPressure = 1013.25f,
+                pressureTrend = "↑",
+                textColor = AppColors.DarkText,
+                subtleColor = AppColors.DarkSubtle
+            )
+        }
+    }
 }
