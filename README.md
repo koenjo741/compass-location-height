@@ -17,3 +17,6 @@ World's Leading Compass &amp; Location App
 -- es soll keine werbung eingebunden werden
 -- ziel ist ein freeware-projekt, von dem alle menschen profitieren können
 -- ziel ist ferner, dass die app sowohl funktionell als auch optisch zu den besten und schönsten der welt wird
+
+
+Aktuelle Version - 07.11.2025: Stable (v3.0)
