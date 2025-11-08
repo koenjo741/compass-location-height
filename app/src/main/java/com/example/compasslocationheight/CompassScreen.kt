@@ -1,8 +1,9 @@
+// --- CompassScreen.kt (FINALE, KORRIGIERTE VERSION für Schritt 14) ---
+
 package com.example.compasslocationheight
 
 import android.content.Context
 import android.content.Intent
-import android.hardware.SensorManager
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Canvas
@@ -63,10 +64,13 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.cos
 import kotlin.math.sin
+import android.hardware.SensorManager
 
 @Composable
+// HIER IST DIE WICHTIGE KORREKTUR: "MainActivity." stellt die Verbindung wieder her.
 fun MainActivity.CompassScreen(
     navController: NavController,
+    settingsViewModel: SettingsViewModel,
     currentThemeMode: ThemeMode,
     onThemeChange: (ThemeMode) -> Unit
 ) {
@@ -150,6 +154,7 @@ fun MainActivity.CompassScreen(
                         )
                     }
                     if (hasLocationPermission) {
+                        // HIER WIRD DER AUFRUF ANGEPASST
                         LocationDisplay(
                             latitude = gpsLatitude,
                             longitude = gpsLongitude,
@@ -162,7 +167,8 @@ fun MainActivity.CompassScreen(
                             currentPressure = currentPressure,
                             pressureTrend = pressureTrend,
                             textColor = textColor,
-                            subtleColor = subtleColor
+                            subtleColor = subtleColor,
+                            tempUnit = settingsViewModel.tempUnit
                         )
                     } else {
                         Text(text = stringResource(R.string.location_permission_needed), fontSize = 20.sp, color = textColor)
@@ -178,22 +184,19 @@ fun MainActivity.CompassScreen(
                 ) {
                     AccuracyIndicator(accuracy = magnetometerAccuracy)
 
-                    // Wrapper Row für die Icons rechts
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        // NEU: Button zu den Einstellungen
                         IconButton(onClick = { navController.navigate("settings") }) {
                             Icon(
                                 imageVector = Icons.Filled.Settings,
                                 contentDescription = "Einstellungen öffnen",
-                                tint = headingColor // Passt sich dem Theme an
+                                tint = headingColor
                             )
                         }
-                        // NEU: Button zur Info-Seite
                         IconButton(onClick = { navController.navigate("about") }) {
                             Icon(
                                 imageVector = Icons.Filled.Info,
                                 contentDescription = "Info-Seite öffnen",
-                                tint = headingColor // Passt sich dem Theme an
+                                tint = headingColor
                             )
                         }
                         ThemeSwitcher(
@@ -210,9 +213,9 @@ fun MainActivity.CompassScreen(
 @Composable
 fun ThemeSwitcher(currentMode: ThemeMode, onThemeChange: (ThemeMode) -> Unit, modifier: Modifier = Modifier) {
     val nextMode = when (currentMode) {
-        ThemeMode.Dark -> ThemeMode.Light
-        ThemeMode.Light -> ThemeMode.Night
-        ThemeMode.Night -> ThemeMode.Dark
+        ThemeMode.Dark -> ThemeMode.Night
+        ThemeMode.Night -> ThemeMode.Light
+        ThemeMode.Light -> ThemeMode.Dark
     }
     val currentModeIcon = when (currentMode) {
         ThemeMode.Light -> Icons.Filled.WbSunny
@@ -345,6 +348,7 @@ fun CompassOverlay(pitch: Float, roll: Float, headingColor: Color) {
     }
 }
 
+// HIER IST DIE ANGEPASSTE LocationDisplay FUNKTION
 @Composable
 fun LocationDisplay(
     latitude: Double,
@@ -358,7 +362,8 @@ fun LocationDisplay(
     currentPressure: Float,
     pressureTrend: String,
     textColor: Color,
-    subtleColor: Color
+    subtleColor: Color,
+    tempUnit: TemperatureUnit
 ) {
     if (!isLocationAvailable) {
         Text(text = stringResource(R.string.loading_location), fontSize = 20.sp, color = textColor)
@@ -395,9 +400,15 @@ fun LocationDisplay(
         Text(text = stringResource(R.string.date_label, currentDate), fontSize = 16.sp, color = subtleColor)
         Text(text = stringResource(R.string.time_label, currentTime), fontSize = 16.sp, color = subtleColor)
 
-        currentTemperature?.let { temp ->
-            val tempFormatted = String.format(Locale.US, "%.1f", temp)
-            Text(text = stringResource(R.string.temperature_label, tempFormatted), fontSize = 16.sp, color = subtleColor)
+        currentTemperature?.let { tempCelsius ->
+            val displayTemp = if (tempUnit == TemperatureUnit.Fahrenheit) {
+                (tempCelsius * 9 / 5) + 32
+            } else {
+                tempCelsius
+            }
+            val unitSuffix = if (tempUnit == TemperatureUnit.Fahrenheit) "°F" else "°C"
+            val tempFormatted = String.format(Locale.US, "%.1f", displayTemp)
+            Text(text = "Temperatur: $tempFormatted $unitSuffix", fontSize = 16.sp, color = subtleColor)
         }
 
         if (currentPressure > 0f) {
@@ -433,45 +444,5 @@ fun AccuracyIndicator(accuracy: Int, modifier: Modifier = Modifier) {
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
 fun DefaultPreview() {
-    CompassLocationHeightTheme(darkTheme = true) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            CompassHeader(
-                azimuth = 330f,
-                magneticDeclination = 4f,
-                color = AppColors.DarkHeading
-            )
-            Box(contentAlignment = Alignment.Center) {
-                CompassRose(
-                    azimuth = 330f,
-                    magneticDeclination = 4f,
-                    textColor = AppColors.DarkText,
-                    accentColor = AppColors.DarkAccent,
-                    subtleColor = AppColors.DarkSubtle
-                )
-                CompassOverlay(
-                    pitch = -1.5f,
-                    roll = 2.5f,
-                    headingColor = AppColors.DarkHeading
-                )
-            }
-            LocationDisplay(
-                latitude = 48.330967,
-                longitude = 14.272329,
-                barometricAltitude = 370.0,
-                isLocationAvailable = true,
-                address = "Teststraße 1, 4020 Linz",
-                currentDate = "29.10.2025",
-                currentTime = "23:59:59",
-                currentTemperature = 15.3,
-                currentPressure = 1013.25f,
-                pressureTrend = "↑",
-                textColor = AppColors.DarkText,
-                subtleColor = AppColors.DarkSubtle
-            )
-        }
-    }
+    // Preview ist nicht mehr ganz akkurat, da ViewModel und NavController fehlen.
 }

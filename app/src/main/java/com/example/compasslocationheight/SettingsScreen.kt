@@ -1,5 +1,3 @@
-// --- SettingsScreen.kt (Version mit Zurück-Button unten) ---
-
 package com.example.compasslocationheight
 
 import androidx.compose.foundation.background
@@ -30,6 +28,8 @@ fun SettingsScreen(
     headingColor: Color
 ) {
     val currentTheme = settingsViewModel.themeMode
+    // NEU: Wir holen uns die aktuelle Temperatureinheit aus dem ViewModel
+    val currentTempUnit = settingsViewModel.tempUnit
 
     Column(
         modifier = Modifier
@@ -37,14 +37,9 @@ fun SettingsScreen(
             .background(backgroundColor)
             .padding(16.dp)
     ) {
-        // Die obere Leiste wurde komplett entfernt.
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Abschnitt für die Theme-Auswahl (bleibt gleich)
+        // Abschnitt für die Theme-Auswahl (unverändert)
         Text(text = "App-Theme", fontSize = 20.sp, color = textColor)
         Spacer(modifier = Modifier.height(16.dp))
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -69,10 +64,32 @@ fun SettingsScreen(
             )
         }
 
-        // Dieser Spacer nimmt allen übrigen Platz ein und schiebt den Button nach unten.
-        Spacer(Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(32.dp))
 
-        // NEU: Der Zurück-Button am unteren Rand
+        Text(text = "Temperatureinheit", fontSize = 20.sp, color = textColor)
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+
+            ThemeButton(
+                text = "°C",
+                onClick = { settingsViewModel.setTemperatureUnit(TemperatureUnit.Celsius) },
+                isSelected = currentTempUnit == TemperatureUnit.Celsius,
+                selectedColor = headingColor
+            )
+            ThemeButton(
+                text = "°F",
+                onClick = { settingsViewModel.setTemperatureUnit(TemperatureUnit.Fahrenheit) },
+                isSelected = currentTempUnit == TemperatureUnit.Fahrenheit,
+                selectedColor = headingColor
+            )
+        }
+
+
+        // Zurück-Button am unteren Rand
+        Spacer(Modifier.weight(1f))
         Button(
             onClick = { navController.popBackStack() },
             modifier = Modifier

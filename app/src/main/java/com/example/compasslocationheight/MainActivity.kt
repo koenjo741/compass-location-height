@@ -25,6 +25,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -88,8 +90,30 @@ enum class ThemeMode {
 @Serializable data class CurrentWeather(val temperature: Double)
 @Serializable data class HourlyData(val time: List<String>, val pressure_msl: List<Double>)
 
+
+// --- NEU: Die ViewModel Factory ---
+// Diese kleine Klasse ist eine Fabrik. Ihre einzige Aufgabe ist es,
+// ein SettingsViewModel zu erstellen und ihm den DataStore zu übergeben.
+class SettingsViewModelFactory(private val dataStore: SettingsDataStore) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(SettingsViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return SettingsViewModel(dataStore) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+
 class MainActivity : ComponentActivity(), SensorEventListener {
-    private val settingsViewModel: SettingsViewModel by viewModels()
+    // Wir erstellen zuerst eine Instanz unseres DataStore
+    private val settingsDataStore by lazy { SettingsDataStore(this) }
+
+    // JETZT BENUTZEN WIR DIE FACTORY, um das ViewModel zu erstellen
+    private val settingsViewModel: SettingsViewModel by viewModels {
+        SettingsViewModelFactory(settingsDataStore)
+    }
+
     // Manager & Sensoren
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
@@ -160,11 +184,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
         window.statusBarColor = Color.Black.toArgb()
 
-        // --- NEUER setContent BLOCK in MainActivity.kt ---
         setContent {
             val navController = rememberNavController()
-
-            // NEU: Wir holen den Theme-Zustand direkt aus dem ViewModel
             val currentTheme = settingsViewModel.themeMode
 
             val backgroundColor = when (currentTheme) {
@@ -184,15 +205,14 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             CompassLocationHeightTheme(darkTheme = isDarkTheme) {
                 NavHost(navController = navController, startDestination = "compass") {
                     composable("compass") {
-                        // NEU: Wir übergeben den aktuellen Theme-Modus und die Funktion zum Ändern
                         CompassScreen(
                             navController = navController,
+                            settingsViewModel = settingsViewModel, // HIER HINZUGEFÜGT
                             currentThemeMode = currentTheme,
                             onThemeChange = { newTheme -> settingsViewModel.setTheme(newTheme) }
                         )
                     }
                     composable("settings") {
-                        // Wir holen uns hier noch die headingColor für die Buttons
                         val headingColor = when (settingsViewModel.themeMode) {
                             ThemeMode.Light -> AppColors.LightHeading
                             ThemeMode.Night -> AppColors.NightHeading
@@ -212,9 +232,9 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 }
             }
         }
-
         checkLocationPermission()
     }
+
     private fun getAddressFromCoordinates(latitude: Double, longitude: Double) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
