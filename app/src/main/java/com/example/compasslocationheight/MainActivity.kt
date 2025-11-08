@@ -15,6 +15,7 @@ import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableFloatStateOf
@@ -25,6 +26,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.compasslocationheight.ui.theme.CompassLocationHeightTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -46,11 +51,6 @@ import kotlinx.serialization.json.Json
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.compasslocationheight.ui.theme.CompassLocationHeightTheme
-import androidx.activity.viewModels
 
 // --- AppColors OBJEKT ---
 object AppColors {
@@ -192,7 +192,19 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                         )
                     }
                     composable("settings") {
-                        SettingsScreen(backgroundColor = backgroundColor, textColor = textColor)
+                        // Wir holen uns hier noch die headingColor für die Buttons
+                        val headingColor = when (settingsViewModel.themeMode) {
+                            ThemeMode.Light -> AppColors.LightHeading
+                            ThemeMode.Night -> AppColors.NightHeading
+                            ThemeMode.Dark -> AppColors.DarkHeading
+                        }
+                        SettingsScreen(
+                            navController = navController,
+                            settingsViewModel = settingsViewModel,
+                            backgroundColor = backgroundColor,
+                            textColor = textColor,
+                            headingColor = headingColor
+                        )
                     }
                     composable("about") {
                         AboutScreen(backgroundColor = backgroundColor, textColor = textColor)
