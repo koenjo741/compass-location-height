@@ -183,7 +183,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         }
 
         window.statusBarColor = Color.Black.toArgb()
-
+        addressText = getString(R.string.searching_address)
         setContent {
             val navController = rememberNavController()
             val currentTheme = settingsViewModel.themeMode
@@ -227,7 +227,17 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                         )
                     }
                     composable("about") {
-                        AboutScreen(backgroundColor = backgroundColor, textColor = textColor)
+                        val headingColor = when (settingsViewModel.themeMode) {
+                            ThemeMode.Light -> AppColors.LightHeading
+                            ThemeMode.Night -> AppColors.NightHeading
+                            ThemeMode.Dark -> AppColors.DarkHeading
+                        }
+                        AboutScreen(
+                            navController = navController,
+                            backgroundColor = backgroundColor,
+                            textColor = textColor,
+                            headingColor = headingColor
+                        )
                     }
                 }
             }

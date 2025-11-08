@@ -188,14 +188,14 @@ fun MainActivity.CompassScreen(
                         IconButton(onClick = { navController.navigate("settings") }) {
                             Icon(
                                 imageVector = Icons.Filled.Settings,
-                                contentDescription = "Einstellungen öffnen",
+                                contentDescription = stringResource(R.string.cd_open_settings), // GEÄNDERT
                                 tint = headingColor
                             )
                         }
                         IconButton(onClick = { navController.navigate("about") }) {
                             Icon(
                                 imageVector = Icons.Filled.Info,
-                                contentDescription = "Info-Seite öffnen",
+                                contentDescription = stringResource(R.string.cd_open_about), // GEÄNDERT
                                 tint = headingColor
                             )
                         }
@@ -229,7 +229,8 @@ fun ThemeSwitcher(currentMode: ThemeMode, onThemeChange: (ThemeMode) -> Unit, mo
     }
     Icon(
         imageVector = currentModeIcon,
-        contentDescription = "Aktueller Modus: $currentMode. Klicke, um zu $nextMode zu wechseln",
+        // --- NUR DIESE ZEILE ÄNDERN ---
+        contentDescription = stringResource(R.string.cd_switch_theme, currentMode.name, nextMode.name),
         tint = iconColor,
         modifier = Modifier
             .size(30.dp)

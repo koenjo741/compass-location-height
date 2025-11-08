@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource // <-- DIESE ZEILE HAT GEFEHLT
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -28,7 +29,6 @@ fun SettingsScreen(
     headingColor: Color
 ) {
     val currentTheme = settingsViewModel.themeMode
-    // NEU: Wir holen uns die aktuelle Temperatureinheit aus dem ViewModel
     val currentTempUnit = settingsViewModel.tempUnit
 
     Column(
@@ -37,27 +37,26 @@ fun SettingsScreen(
             .background(backgroundColor)
             .padding(16.dp)
     ) {
-        // Abschnitt für die Theme-Auswahl (unverändert)
-        Text(text = "App-Theme", fontSize = 20.sp, color = textColor)
+        Text(text = stringResource(R.string.theme_section_title), fontSize = 20.sp, color = textColor)
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             ThemeButton(
-                text = "Dark",
+                text = stringResource(R.string.theme_dark),
                 onClick = { settingsViewModel.setTheme(ThemeMode.Dark) },
                 isSelected = currentTheme == ThemeMode.Dark,
                 selectedColor = headingColor
             )
             ThemeButton(
-                text = "Light",
+                text = stringResource(R.string.theme_light),
                 onClick = { settingsViewModel.setTheme(ThemeMode.Light) },
                 isSelected = currentTheme == ThemeMode.Light,
                 selectedColor = headingColor
             )
             ThemeButton(
-                text = "Night",
+                text = stringResource(R.string.theme_night),
                 onClick = { settingsViewModel.setTheme(ThemeMode.Night) },
                 isSelected = currentTheme == ThemeMode.Night,
                 selectedColor = headingColor
@@ -66,29 +65,26 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Text(text = "Temperatureinheit", fontSize = 20.sp, color = textColor)
+        Text(text = stringResource(R.string.temp_unit_section_title), fontSize = 20.sp, color = textColor)
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-
             ThemeButton(
-                text = "°C",
+                text = stringResource(R.string.unit_celsius),
                 onClick = { settingsViewModel.setTemperatureUnit(TemperatureUnit.Celsius) },
                 isSelected = currentTempUnit == TemperatureUnit.Celsius,
                 selectedColor = headingColor
             )
             ThemeButton(
-                text = "°F",
+                text = stringResource(R.string.unit_fahrenheit),
                 onClick = { settingsViewModel.setTemperatureUnit(TemperatureUnit.Fahrenheit) },
                 isSelected = currentTempUnit == TemperatureUnit.Fahrenheit,
                 selectedColor = headingColor
             )
         }
 
-
-        // Zurück-Button am unteren Rand
         Spacer(Modifier.weight(1f))
         Button(
             onClick = { navController.popBackStack() },
@@ -97,7 +93,7 @@ fun SettingsScreen(
                 .padding(vertical = 16.dp),
             colors = ButtonDefaults.buttonColors(containerColor = headingColor)
         ) {
-            Text(text = "Zurück", fontSize = 18.sp)
+            Text(text = stringResource(R.string.button_back), fontSize = 18.sp)
         }
     }
 }
