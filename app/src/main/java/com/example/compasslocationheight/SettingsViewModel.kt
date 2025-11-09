@@ -1,8 +1,7 @@
 package com.example.compasslocationheight
 
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.collect
@@ -14,39 +13,48 @@ enum class TemperatureUnit {
 
 class SettingsViewModel(private val dataStore: SettingsDataStore) : ViewModel() {
 
-    var themeMode by mutableStateOf(ThemeMode.Dark)
-        private set
+    // State for Theme
+    private val _themeMode = mutableStateOf(ThemeMode.Dark)
+    val themeMode: State<ThemeMode> = _themeMode
 
-    var tempUnit by mutableStateOf(TemperatureUnit.Celsius)
-        private set
+    // State for Temperature Unit
+    private val _tempUnit = mutableStateOf(TemperatureUnit.Celsius)
+    val tempUnit: State<TemperatureUnit> = _tempUnit
 
-    // HIER DIE ÄNDERUNG: "private set" wurde entfernt.
-    var language by mutableStateOf("system")
+    // State for Language
+    private val _language = mutableStateOf("system")
+    val language: State<String> = _language
 
     init {
         viewModelScope.launch {
-            dataStore.themeModeFlow.collect { loadedTheme ->
-                themeMode = loadedTheme
-            }
+            dataStore.themeModeFlow.collect { _themeMode.value = it }
         }
         viewModelScope.launch {
-            dataStore.tempUnitFlow.collect { loadedUnit ->
-                tempUnit = loadedUnit
-            }
+            dataStore.tempUnitFlow.collect { _tempUnit.value = it }
+        }
+        viewModelScope.launch {
+            dataStore.languageFlow.collect { _language.value = it }
         }
     }
 
     fun setTheme(newTheme: ThemeMode) {
-        themeMode = newTheme
+        _themeMode.value = newTheme
         viewModelScope.launch {
             dataStore.saveThemeMode(newTheme)
         }
     }
 
     fun setTemperatureUnit(newUnit: TemperatureUnit) {
-        tempUnit = newUnit
+        _tempUnit.value = newUnit
         viewModelScope.launch {
             dataStore.saveTemperatureUnit(newUnit)
+        }
+    }
+
+    fun setLanguage(newLanguage: String) {
+        _language.value = newLanguage
+        viewModelScope.launch {
+            dataStore.saveLanguage(newLanguage)
         }
     }
 }

@@ -15,7 +15,6 @@ class SettingsDataStore(private val context: Context) {
 
     private val THEME_KEY = stringPreferencesKey("theme_mode")
     private val TEMP_UNIT_KEY = stringPreferencesKey("temp_unit")
-    // NEU: Eindeutiger Schlüssel für die Sprache
     private val LANGUAGE_KEY = stringPreferencesKey("language")
 
     val themeModeFlow: Flow<ThemeMode> = context.dataStore.data
@@ -30,6 +29,11 @@ class SettingsDataStore(private val context: Context) {
             TemperatureUnit.valueOf(unitName)
         }
 
+    val languageFlow: Flow<String> = context.dataStore.data
+        .map { preferences ->
+            preferences[LANGUAGE_KEY] ?: "system"
+        }
+
     suspend fun saveThemeMode(themeMode: ThemeMode) {
         context.dataStore.edit { preferences ->
             preferences[THEME_KEY] = themeMode.name
@@ -39,6 +43,12 @@ class SettingsDataStore(private val context: Context) {
     suspend fun saveTemperatureUnit(unit: TemperatureUnit) {
         context.dataStore.edit { preferences ->
             preferences[TEMP_UNIT_KEY] = unit.name
+        }
+    }
+
+    suspend fun saveLanguage(language: String) {
+        context.dataStore.edit { preferences ->
+            preferences[LANGUAGE_KEY] = language
         }
     }
 }

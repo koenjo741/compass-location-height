@@ -1,5 +1,4 @@
-// --- CompassScreen.kt (FINALE, KORRIGIERTE VERSION für Schritt 14) ---
-
+// --- CompassScreen.kt ---
 package com.example.compasslocationheight
 
 import android.content.Context
@@ -10,32 +9,13 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.NightsStay
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.WbSunny
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,11 +27,8 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,20 +37,19 @@ import androidx.navigation.NavController
 import com.example.compasslocationheight.ui.theme.CompassLocationHeightTheme
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
 import android.hardware.SensorManager
 
 @Composable
-// HIER IST DIE WICHTIGE KORREKTUR: "MainActivity." stellt die Verbindung wieder her.
 fun MainActivity.CompassScreen(
     navController: NavController,
-    settingsViewModel: SettingsViewModel,
-    currentThemeMode: ThemeMode,
-    onThemeChange: (ThemeMode) -> Unit
+    settingsViewModel: SettingsViewModel
 ) {
+    val currentTheme by settingsViewModel.themeMode
+    val currentTempUnit by settingsViewModel.tempUnit
+
     LaunchedEffect(Unit) {
         while (true) {
             val now = Date()
@@ -87,7 +63,7 @@ fun MainActivity.CompassScreen(
     val window = (context as ComponentActivity).window
     val view = LocalView.current
 
-    val isDarkTheme = when (currentThemeMode) {
+    val isDarkTheme = when (currentTheme) {
         ThemeMode.Dark, ThemeMode.Night -> true
         ThemeMode.Light -> false
     }
@@ -97,26 +73,26 @@ fun MainActivity.CompassScreen(
         window.statusBarColor = android.graphics.Color.TRANSPARENT
     }
 
-    val backgroundColor = when (currentThemeMode) {
+    val backgroundColor = when (currentTheme) {
         ThemeMode.Light -> AppColors.LightBackground
         else -> AppColors.DarkBackground
     }
-    val headingColor = when (currentThemeMode) {
+    val headingColor = when (currentTheme) {
         ThemeMode.Light -> AppColors.LightHeading
         ThemeMode.Night -> AppColors.NightHeading
         ThemeMode.Dark -> AppColors.DarkHeading
     }
-    val textColor = when (currentThemeMode) {
+    val textColor = when (currentTheme) {
         ThemeMode.Light -> AppColors.LightText
         ThemeMode.Night -> AppColors.NightText
         ThemeMode.Dark -> AppColors.DarkText
     }
-    val accentColor = when (currentThemeMode) {
+    val accentColor = when (currentTheme) {
         ThemeMode.Light -> AppColors.LightAccent
         ThemeMode.Night -> AppColors.NightAccent
         ThemeMode.Dark -> AppColors.DarkAccent
     }
-    val subtleColor = when (currentThemeMode) {
+    val subtleColor = when (currentTheme) {
         ThemeMode.Light -> AppColors.LightSubtle
         ThemeMode.Night -> AppColors.NightSubtle
         ThemeMode.Dark -> AppColors.DarkSubtle
@@ -154,7 +130,6 @@ fun MainActivity.CompassScreen(
                         )
                     }
                     if (hasLocationPermission) {
-                        // HIER WIRD DER AUFRUF ANGEPASST
                         LocationDisplay(
                             latitude = gpsLatitude,
                             longitude = gpsLongitude,
@@ -168,7 +143,7 @@ fun MainActivity.CompassScreen(
                             pressureTrend = pressureTrend,
                             textColor = textColor,
                             subtleColor = subtleColor,
-                            tempUnit = settingsViewModel.tempUnit
+                            tempUnit = currentTempUnit
                         )
                     } else {
                         Text(text = stringResource(R.string.location_permission_needed), fontSize = 20.sp, color = textColor)
@@ -183,25 +158,24 @@ fun MainActivity.CompassScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AccuracyIndicator(accuracy = magnetometerAccuracy)
-
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = { navController.navigate("settings") }) {
                             Icon(
                                 imageVector = Icons.Filled.Settings,
-                                contentDescription = stringResource(R.string.cd_open_settings), // GEÄNDERT
+                                contentDescription = stringResource(R.string.cd_open_settings),
                                 tint = headingColor
                             )
                         }
                         IconButton(onClick = { navController.navigate("about") }) {
                             Icon(
                                 imageVector = Icons.Filled.Info,
-                                contentDescription = stringResource(R.string.cd_open_about), // GEÄNDERT
+                                contentDescription = stringResource(R.string.cd_open_about),
                                 tint = headingColor
                             )
                         }
                         ThemeSwitcher(
-                            currentMode = currentThemeMode,
-                            onThemeChange = onThemeChange
+                            currentMode = currentTheme,
+                            onThemeChange = { newTheme -> settingsViewModel.setTheme(newTheme) }
                         )
                     }
                 }
@@ -229,7 +203,6 @@ fun ThemeSwitcher(currentMode: ThemeMode, onThemeChange: (ThemeMode) -> Unit, mo
     }
     Icon(
         imageVector = currentModeIcon,
-        // --- NUR DIESE ZEILE ÄNDERN ---
         contentDescription = stringResource(R.string.cd_switch_theme, currentMode.name, nextMode.name),
         tint = iconColor,
         modifier = Modifier
@@ -312,7 +285,7 @@ fun CompassRose(
     }
 }
 
-fun DrawScope.drawTextCustom(textMeasurer: androidx.compose.ui.text.TextMeasurer, text: String, center: Offset, radius: Float, angleDegrees: Float, style: TextStyle) {
+fun DrawScope.drawTextCustom(textMeasurer: TextMeasurer, text: String, center: Offset, radius: Float, angleDegrees: Float, style: TextStyle) {
     val angleRad = Math.toRadians(angleDegrees.toDouble())
     val textLayoutResult = textMeasurer.measure(text, style)
     val textWidth = textLayoutResult.size.width
@@ -334,7 +307,6 @@ fun CompassOverlay(pitch: Float, roll: Float, headingColor: Color) {
                 close()
             }
             drawPath(path, color = headingColor)
-
             val crosshairLength = 96f
             drawLine(AppColors.CrosshairGreen, start = Offset(center.x - crosshairLength, center.y), end = Offset(center.x + crosshairLength, center.y), strokeWidth = 3f)
             drawLine(AppColors.CrosshairGreen, start = Offset(center.x, center.y - crosshairLength), end = Offset(center.x, center.y + crosshairLength), strokeWidth = 3f)
@@ -349,7 +321,6 @@ fun CompassOverlay(pitch: Float, roll: Float, headingColor: Color) {
     }
 }
 
-// HIER IST DIE ANGEPASSTE LocationDisplay FUNKTION
 @Composable
 fun LocationDisplay(
     latitude: Double,
@@ -370,7 +341,6 @@ fun LocationDisplay(
         Text(text = stringResource(R.string.loading_location), fontSize = 20.sp, color = textColor)
         return
     }
-
     val context = LocalContext.current
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
@@ -379,28 +349,20 @@ fun LocationDisplay(
             color = textColor,
             modifier = Modifier
                 .padding(bottom = 16.dp)
-                .border(
-                    width = 1.dp,
-                    color = subtleColor,
-                    shape = RoundedCornerShape(16.dp)
-                )
+                .border(width = 1.dp, color = subtleColor, shape = RoundedCornerShape(16.dp))
                 .clip(RoundedCornerShape(16.dp))
                 .clickable { openMaps(context, latitude, longitude) }
                 .padding(horizontal = 24.dp, vertical = 12.dp)
         )
-
         val lat = String.format(Locale.US, "%.6f", latitude)
         val lon = String.format(Locale.US, "%.6f", longitude)
         val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
         Text(text = stringResource(R.string.latitude_label, lat), fontSize = 16.sp, color = subtleColor)
         Text(text = stringResource(R.string.longitude_label, lon), fontSize = 16.sp, color = subtleColor)
         Text(text = stringResource(R.string.altitude_label, altBaro), fontSize = 16.sp, color = subtleColor)
-
         Spacer(modifier = Modifier.height(16.dp))
-
         Text(text = stringResource(R.string.date_label, currentDate), fontSize = 16.sp, color = subtleColor)
         Text(text = stringResource(R.string.time_label, currentTime), fontSize = 16.sp, color = subtleColor)
-
         currentTemperature?.let { tempCelsius ->
             val displayTemp = if (tempUnit == TemperatureUnit.Fahrenheit) {
                 (tempCelsius * 9 / 5) + 32
@@ -409,9 +371,8 @@ fun LocationDisplay(
             }
             val unitSuffix = if (tempUnit == TemperatureUnit.Fahrenheit) "°F" else "°C"
             val tempFormatted = String.format(Locale.US, "%.1f", displayTemp)
-            Text(text = "Temperatur: $tempFormatted $unitSuffix", fontSize = 16.sp, color = subtleColor)
+            Text(text = "${stringResource(R.string.temperature_label)} $tempFormatted $unitSuffix", fontSize = 16.sp, color = subtleColor)
         }
-
         if (currentPressure > 0f) {
             val pressureFormatted = String.format(Locale.US, "%.2f", currentPressure)
             Text(text = stringResource(R.string.pressure_label, pressureFormatted, pressureTrend), fontSize = 16.sp, color = subtleColor)
@@ -445,5 +406,5 @@ fun AccuracyIndicator(accuracy: Int, modifier: Modifier = Modifier) {
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
 fun DefaultPreview() {
-    // Preview ist nicht mehr ganz akkurat, da ViewModel und NavController fehlen.
+    // Preview is broken due to missing dependencies, which is fine.
 }
