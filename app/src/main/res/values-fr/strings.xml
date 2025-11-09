@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">CompassLocationHeight</string>
 
-    <!-- Textes pour l'état de chargement et d'erreur -->
+    <!-- Textes pour l\'état de chargement et d\'erreur -->
     <string name="loading_location">Chargement des données de localisation...</string>
     <string name="address_not_found">Adresse non trouvée</string>
-    <string name="address_search_error">Erreur lors de la recherche d'adresse</string>
+    <string name="address_search_error">Erreur lors de la recherche d\'adresse</string>
     <string name="location_permission_needed">Autorisation de localisation requise</string>
-    <string name="searching_address">Recherche d'adresse en cours...</string>
+    <string name="searching_address">Recherche d\'adresse en cours...</string>
 
-    <!-- Textes pour l'affichage de la localisation -->
+    <!-- Textes pour l\'affichage de la localisation -->
     <string name="latitude_label">Latitude : %1$s</string>
     <string name="longitude_label">Longitude : %1$s</string>
     <string name="altitude_label">Altitude : %1$s m</string>
@@ -19,7 +19,7 @@
 
     <!-- Textes pour la page des paramètres -->
     <string name="settings_title">Paramètres</string>
-    <string name="theme_section_title">Thème de l'application</string>
+    <string name="theme_section_title">Thème de l\'application</string>
     <string name="temp_unit_section_title">Unité de température</string>
     <string name="button_back">Retour</string>
     <string name="theme_dark">Sombre</string>
@@ -28,13 +28,13 @@
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
 
-    <!-- Textes pour la page d'information -->
+    <!-- Textes pour la page d\'information -->
     <string name="about_title">À propos</string>
     <string name="about_placeholder">(en construction)</string>
 
-    <!-- Textes pour l'accessibilité (Content Descriptions) -->
+    <!-- Textes pour l\'accessibilité (Content Descriptions) -->
     <string name="cd_open_settings">Ouvrir les paramètres</string>
-    <string name="cd_open_about">Ouvrir la page d'information</string>
+    <string name="cd_open_about">Ouvrir la page d\'information</string>
     <string name="cd_back">Retour</string>
     <string name="cd_switch_theme">Mode actuel : %1$s. Cliquer pour passer à %2$s</string>
 

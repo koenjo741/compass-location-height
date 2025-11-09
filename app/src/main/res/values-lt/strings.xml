@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Įkeliami vietos duomenys...</string>
+    <string name="address_not_found">Adresas nerastas</string>
+    <string name="address_search_error">Klaida ieškant adreso</string>
+    <string name="location_permission_needed">Reikalingas vietos nustatymo leidimas</string>
+    <string name="searching_address">Ieškomas adresas...</string>
+
+    <string name="latitude_label">Platuma: %1$s</string>
+    <string name="longitude_label">Ilguma: %1$s</string>
+    <string name="altitude_label">Aukštis: %1$s m</string>
+    <string name="date_label">Data: %1$s</string>
+    <string name="time_label">Laikas: %1$s</string>
+    <string name="temperature_label">Temperatūra: %1$s</string>
+    <string name="pressure_label">Slėgis: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Nustatymai</string>
+    <string name="theme_section_title">Programėlės tema</string>
+    <string name="temp_unit_section_title">Temperatūros vienetas</string>
+    <string name="button_back">Atgal</string>
+    <string name="theme_dark">Tamsi</string>
+    <string name="theme_light">Šviesi</string>
+    <string name="theme_night">Naktinė</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Apie</string>
+    <string name="about_placeholder">(kuriama)</string>
+
+    <string name="cd_open_settings">Atidaryti nustatymus</string>
+    <string name="cd_open_about">Atidaryti puslapį „Apie“</string>
+    <string name="cd_back">Atgal</string>
+    <string name="cd_switch_theme">Dabartinis režimas: %1$s. Spustelėkite norėdami perjungti į %2$s</string>
+
+</resources>

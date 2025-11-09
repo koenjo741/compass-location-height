@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Ilayisha idatha yendawo...</string>
+    <string name="address_not_found">Ikheli alitholakalanga</string>
+    <string name="address_search_error">Iphutha ekucingeni ikheli</string>
+    <string name="location_permission_needed">Kudingeka imvume yendawo</string>
+    <string name="searching_address">Kucintshwa ikheli...</string>
+
+    <string name="latitude_label">I-Latitude: %1$s</string>
+    <string name="longitude_label">I-Longitude: %1$s</string>
+    <string name="altitude_label">Ukuphakama: %1$s m</string>
+    <string name="date_label">Usuku: %1$s</string>
+    <string name="time_label">Isikhathi: %1$s</string>
+    <string name="temperature_label">Izinga lokushisa: %1$s</string>
+    <string name="pressure_label">Ukucindezeleka: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Izilungiselelo</string>
+    <string name="theme_section_title">Itimu ye-App</string>
+    <string name="temp_unit_section_title">Iyunithi Yokushisa</string>
+    <string name="button_back">Emuva</string>
+    <string name="theme_dark">Mnyama</string>
+    <string name="theme_light">Khanya</string>
+    <string name="theme_night">Ebusuku</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Eiphathelene</string>
+    <string name="about_placeholder">(isakhiwe)</string>
+
+    <string name="cd_open_settings">Vula izilungiselelo</string>
+    <string name="cd_open_about">Vula ikhasi eliphathelene</string>
+    <string name="cd_back">Emuva</string>
+    <string name="cd_switch_theme">Imodi yamanje: %1$s. Chofoza ukuze ushintshele ku %2$s</string>
+
+</resources>

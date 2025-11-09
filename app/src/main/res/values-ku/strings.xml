@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Daneyên cihbarkirinê bar dike...</string>
+    <string name="address_not_found">Navnîşan nehat dîtin</string>
+    <string name="address_search_error">Di lêgerîna navnîşanê de xeletî</string>
+    <string name="location_permission_needed">Destûra cihbarkirinê pêwîst e</string>
+    <string name="searching_address">Lêgerîna navnîşanê...</string>
+
+    <string name="latitude_label">Firehî: %1$s</string>
+    <string name="longitude_label">Dirêjî: %1$s</string>
+    <string name="altitude_label">Bilindayî: %1$s m</string>
+    <string name="date_label">Dîrok: %1$s</string>
+    <string name="time_label">Dem: %1$s</string>
+    <string name="temperature_label">Germahî: %1$s</string>
+    <string name="pressure_label">Zext: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Mîheng</string>
+    <string name="theme_section_title">Tema Serlêdanê</string>
+    <string name="temp_unit_section_title">Yekîneya Germahiyê</string>
+    <string name="button_back">Paşve</string>
+    <string name="theme_dark">Tarî</string>
+    <string name="theme_light">Ronî</string>
+    <string name="theme_night">Şev</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Derbarê</string>
+    <string name="about_placeholder">(di bin çêkirinê de)</string>
+
+    <string name="cd_open_settings">Mîhengan veke</string>
+    <string name="cd_open_about">Rûpela derbarê veke</string>
+    <string name="cd_back">Paşve</string>
+    <string name="cd_switch_theme">Moda niha: %1$s. Bikirtînin da ku hûn biguherînin %2$s</string>
+
+</resources>

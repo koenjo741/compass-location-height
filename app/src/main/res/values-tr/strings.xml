@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Konum verileri yükleniyor...</string>
+    <string name="address_not_found">Adres bulunamadı</string>
+    <string name="address_search_error">Adres aranırken hata oluştu</string>
+    <string name="location_permission_needed">Konum izni gerekiyor</string>
+    <string name="searching_address">Adres aranıyor...</string>
+
+    <string name="latitude_label">Enlem: %1$s</string>
+    <string name="longitude_label">Boylam: %1$s</string>
+    <string name="altitude_label">Rakım: %1$s m</string>
+    <string name="date_label">Tarih: %1$s</string>
+    <string name="time_label">Saat: %1$s</string>
+    <string name="temperature_label">Sıcaklık: %1$s</string>
+    <string name="pressure_label">Basınç: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Ayarlar</string>
+    <string name="theme_section_title">Uygulama Teması</string>
+    <string name="temp_unit_section_title">Sıcaklık Birimi</string>
+    <string name="button_back">Geri</string>
+    <string name="theme_dark">Koyu</string>
+    <string name="theme_light">Açık</string>
+    <string name="theme_night">Gece</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Hakkında</string>
+    <string name="about_placeholder">(yapım aşamasında)</string>
+
+    <string name="cd_open_settings">Ayarları aç</string>
+    <string name="cd_open_about">Hakkında sayfasını aç</string>
+    <string name="cd_back">Geri</string>
+    <string name="cd_switch_theme">Mevcut mod: %1$s. %2$s moduna geçmek için tıklayın</string>
+
+</resources>

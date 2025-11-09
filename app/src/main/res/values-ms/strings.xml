@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Memuatkan data lokasi...</string>
+    <string name="address_not_found">Alamat tidak ditemui</string>
+    <string name="address_search_error">Ralat mencari alamat</string>
+    <string name="location_permission_needed">Kebenaran lokasi diperlukan</string>
+    <string name="searching_address">Mencari alamat...</string>
+
+    <string name="latitude_label">Latitud: %1$s</string>
+    <string name="longitude_label">Longitud: %1$s</string>
+    <string name="altitude_label">Ketinggian: %1$s m</string>
+    <string name="date_label">Tarikh: %1$s</string>
+    <string name="time_label">Masa: %1$s</string>
+    <string name="temperature_label">Suhu: %1$s</string>
+    <string name="pressure_label">Tekanan: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Tetapan</string>
+    <string name="theme_section_title">Tema Aplikasi</string>
+    <string name="temp_unit_section_title">Unit Suhu</string>
+    <string name="button_back">Kembali</string>
+    <string name="theme_dark">Gelap</string>
+    <string name="theme_light">Terang</string>
+    <string name="theme_night">Malam</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Mengenai</string>
+    <string name="about_placeholder">(dalam pembinaan)</string>
+
+    <string name="cd_open_settings">Buka tetapan</string>
+    <string name="cd_open_about">Buka halaman mengenai</string>
+    <string name="cd_back">Kembali</string>
+    <string name="cd_switch_theme">Mod semasa: %1$s. Klik untuk bertukar kepada %2$s</string>
+
+</resources>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">در حال بارگذاری داده‌های موقعیت مکانی...</string>
+    <string name="address_not_found">آدرس پیدا نشد</string>
+    <string name="address_search_error">خطا در جستجوی آدرس</string>
+    <string name="location_permission_needed">مجوز موقعیت مکانی لازم است</string>
+    <string name="searching_address">در حال جستجوی آدرس...</string>
+
+    <string name="latitude_label">عرض جغرافیایی: %1$s</string>
+    <string name="longitude_label">طول جغرافیایی: %1$s</string>
+    <string name="altitude_label">ارتفاع: %1$s متر</string>
+    <string name="date_label">تاریخ: %1$s</string>
+    <string name="time_label">زمان: %1$s</string>
+    <string name="temperature_label">دما: %1$s</string>
+    <string name="pressure_label">فشار: %1$s هکتوپاسکال %2$s</string>
+
+    <string name="settings_title">تنظیمات</string>
+    <string name="theme_section_title">تم برنامه</string>
+    <string name="temp_unit_section_title">واحد دما</string>
+    <string name="button_back">بازگشت</string>
+    <string name="theme_dark">تاریک</string>
+    <string name="theme_light">روشن</string>
+    <string name="theme_night">شب</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">درباره</string>
+    <string name="about_placeholder">(در حال ساخت)</string>
+
+    <string name="cd_open_settings">باز کردن تنظیمات</string>
+    <string name="cd_open_about">باز کردن صفحه درباره</string>
+    <string name="cd_back">بازگشت</string>
+    <string name="cd_switch_theme">حالت فعلی: %1$s. برای تغییر به %2$s کلیک کنید</string>
+
+</resources>

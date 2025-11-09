@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Qiegħed jittella\' d-data tal-post...</string>
+    <string name="address_not_found">L-indirizz ma nstabx</string>
+    <string name="address_search_error">Żball waqt it-tfittxija għall-indirizz</string>
+    <string name="location_permission_needed">Permess tal-lokazzjoni meħtieġ</string>
+    <string name="searching_address">Qiegħed isir tiftix għall-indirizz...</string>
+
+    <string name="latitude_label">Latitudni: %1$s</string>
+    <string name="longitude_label">Lonġitudni: %1$s</string>
+    <string name="altitude_label">Elevazzjoni: %1$s m</string>
+    <string name="date_label">Data: %1$s</string>
+    <string name="time_label">Ħin: %1$s</string>
+    <string name="temperature_label">Temperatura: %1$s</string>
+    <string name="pressure_label">Pressjoni: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="theme_section_title">Tema tal-App</string>
+    <string name="temp_unit_section_title">Unità tat-Temperatura</string>
+    <string name="button_back">Lura</string>
+    <string name="theme_dark">Skur</string>
+    <string name="theme_light">Dawl</string>
+    <string name="theme_night">Lejl</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Dwar</string>
+    <string name="about_placeholder">(qed tinbena)</string>
+
+    <string name="cd_open_settings">Iftaħ is-settings</string>
+    <string name="cd_open_about">Iftaħ il-paġna Dwar</string>
+    <string name="cd_back">Lura</string>
+    <string name="cd_switch_theme">Mod attwali: %1$s. Ikklikkja biex taqleb għal %2$s</string>
+
+</resources>

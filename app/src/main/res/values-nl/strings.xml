@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Locatiegegevens laden...</string>
+    <string name="address_not_found">Adres niet gevonden</string>
+    <string name="address_search_error">Fout bij het zoeken naar adres</string>
+    <string name="location_permission_needed">Locatietoestemming vereist</string>
+    <string name="searching_address">Zoeken naar adres...</string>
+
+    <string name="latitude_label">Breedtegraad: %1$s</string>
+    <string name="longitude_label">Lengtegraad: %1$s</string>
+    <string name="altitude_label">Hoogte: %1$s m</string>
+    <string name="date_label">Datum: %1$s</string>
+    <string name="time_label">Tijd: %1$s</string>
+    <string name="temperature_label">Temperatuur: %1$s</string>
+    <string name="pressure_label">Druk: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Instellingen</string>
+    <string name="theme_section_title">App-thema</string>
+    <string name="temp_unit_section_title">Temperatuureenheid</string>
+    <string name="button_back">Terug</string>
+    <string name="theme_dark">Donker</string>
+    <string name="theme_light">Licht</string>
+    <string name="theme_night">Nacht</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Over</string>
+    <string name="about_placeholder">(in ontwikkeling)</string>
+
+    <string name="cd_open_settings">Instellingen openen</string>
+    <string name="cd_open_about">Over-pagina openen</string>
+    <string name="cd_back">Terug</string>
+    <string name="cd_switch_theme">Huidige modus: %1$s. Klik om te schakelen naar %2$s</string>
+
+</resources>

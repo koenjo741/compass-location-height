@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Nbudata data ebe...</string>
+    <string name="address_not_found">Achọtaghị adreesị</string>
+    <string name="address_search_error">Njehie n\'ịchọ adreesị</string>
+    <string name="location_permission_needed">Achọrọ ikike ebe</string>
+    <string name="searching_address">N\'ịchọ adreesị...</string>
+
+    <string name="latitude_label">Latitudo: %1$s</string>
+    <string name="longitude_label">Longitudo: %1$s</string>
+    <string name="altitude_label">Elu: %1$s m</string>
+    <string name="date_label">Ụbọchị: %1$s</string>
+    <string name="time_label">Oge: %1$s</string>
+    <string name="temperature_label">Okpomọkụ: %1$s</string>
+    <string name="pressure_label">Nrụgide: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Ntọala</string>
+    <string name="theme_section_title">Isiokwu Ngwa</string>
+    <string name="temp_unit_section_title">Ngalaba Okpomọkụ</string>
+    <string name="button_back">Laghachi azụ</string>
+    <string name="theme_dark">Ọchịchịrị</string>
+    <string name="theme_light">Ìhè</string>
+    <string name="theme_night">Abali</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Banyere</string>
+    <string name="about_placeholder">(na-arụ ọrụ)</string>
+
+    <string name="cd_open_settings">Mepee ntọala</string>
+    <string name="cd_open_about">Mepee ibe banyere</string>
+    <string name="cd_back">Laghachi azụ</string>
+    <string name="cd_switch_theme">Ụdị dị ugbu a: %1$s. Pịa ka ịgbanwee gaa na %2$s</string>
+
+</resources>

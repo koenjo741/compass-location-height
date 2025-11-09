@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Učitavanje podataka o lokaciji...</string>
+    <string name="address_not_found">Adresa nije pronađena</string>
+    <string name="address_search_error">Greška prilikom traženja adrese</string>
+    <string name="location_permission_needed">Potrebna dozvola za lokaciju</string>
+    <string name="searching_address">Traženje adrese...</string>
+
+    <string name="latitude_label">Geografska širina: %1$s</string>
+    <string name="longitude_label">Geografska dužina: %1$s</string>
+    <string name="altitude_label">Nadmorska visina: %1$s m</string>
+    <string name="date_label">Datum: %1$s</string>
+    <string name="time_label">Vrijeme: %1$s</string>
+    <string name="temperature_label">Temperatura: %1$s</string>
+    <string name="pressure_label">Pritisak: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Postavke</string>
+    <string name="theme_section_title">Tema Aplikacije</string>
+    <string name="temp_unit_section_title">Jedinica Temperature</string>
+    <string name="button_back">Nazad</string>
+    <string name="theme_dark">Tamna</string>
+    <string name="theme_light">Svijetla</string>
+    <string name="theme_night">Noćna</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">O aplikaciji</string>
+    <string name="about_placeholder">(u izradi)</string>
+
+    <string name="cd_open_settings">Otvori postavke</string>
+    <string name="cd_open_about">Otvori stranicu O aplikaciji</string>
+    <string name="cd_back">Nazad</string>
+    <string name="cd_switch_theme">Trenutni način: %1$s. Kliknite za prebacivanje na %2$s</string>
+
+</resources>

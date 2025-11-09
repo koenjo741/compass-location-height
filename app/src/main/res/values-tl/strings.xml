@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Naglo-load ng data ng lokasyon...</string>
+    <string name="address_not_found">Hindi nakita ang address</string>
+    <string name="address_search_error">May error sa paghahanap ng address</string>
+    <string name="location_permission_needed">Kailangan ng pahintulot sa lokasyon</string>
+    <string name="searching_address">Naghahanap ng address...</string>
+
+    <string name="latitude_label">Latitude: %1$s</string>
+    <string name="longitude_label">Longitude: %1$s</string>
+    <string name="altitude_label">Altitude: %1$s m</string>
+    <string name="date_label">Petsa: %1$s</string>
+    <string name="time_label">Oras: %1$s</string>
+    <string name="temperature_label">Temperatura: %1$s</string>
+    <string name="pressure_label">Presyon: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Mga Setting</string>
+    <string name="theme_section_title">Tema ng App</string>
+    <string name="temp_unit_section_title">Yunit ng Temperatura</string>
+    <string name="button_back">Bumalik</string>
+    <string name="theme_dark">Madilim</string>
+    <string name="theme_light">Maliwanag</string>
+    <string name="theme_night">Gabi</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Tungkol sa</string>
+    <string name="about_placeholder">(ginagawa)</string>
+
+    <string name="cd_open_settings">Buksan ang mga setting</string>
+    <string name="cd_open_about">Buksan ang pahina ng tungkol sa</string>
+    <string name="cd_back">Bumalik</string>
+    <string name="cd_switch_theme">Kasalukuyang mode: %1$s. I-click para lumipat sa %2$s</string>
+
+</resources>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">অবস্থান ডেটা লোড হচ্ছে...</string>
+    <string name="address_not_found">ঠিকানা পাওয়া যায়নি</string>
+    <string name="address_search_error">ঠিকানা অনুসন্ধানে ত্রুটি</string>
+    <string name="location_permission_needed">অবস্থানের অনুমতি আবশ্যক</string>
+    <string name="searching_address">ঠিকানা অনুসন্ধান করা হচ্ছে...</string>
+
+    <string name="latitude_label">অক্ষাংশ: %1$s</string>
+    <string name="longitude_label">দ্রাঘিমাংশ: %1$s</string>
+    <string name="altitude_label">উচ্চতা: %1$s মি</string>
+    <string name="date_label">তারিখ: %1$s</string>
+    <string name="time_label">সময়: %1$s</string>
+    <string name="temperature_label">তাপমাত্রা: %1$s</string>
+    <string name="pressure_label">চাপ: %1$s hPa %2$s</string>
+
+    <string name="settings_title">সেটিংস</string>
+    <string name="theme_section_title">অ্যাপ থিম</string>
+    <string name="temp_unit_section_title">তাপমাত্রা একক</string>
+    <string name="button_back">ফিরে যান</string>
+    <string name="theme_dark">গাঢ়</string>
+    <string name="theme_light">হালকা</string>
+    <string name="theme_night">রাত্রি</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">সম্পর্কে</string>
+    <string name="about_placeholder">(নির্মাণাধীন)</string>
+
+    <string name="cd_open_settings">সেটিংস খুলুন</string>
+    <string name="cd_open_about">সম্পর্কে পেজ খুলুন</string>
+    <string name="cd_back">ফিরে যান</string>
+    <string name="cd_switch_theme">বর্তমান মোড: %1$s। %2$s মোডে স্যুইচ করতে ক্লিক করুন</string>
+
+</resources>

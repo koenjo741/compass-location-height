@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Helyadatok betöltése...</string>
+    <string name="address_not_found">Cím nem található</string>
+    <string name="address_search_error">Hiba a cím keresése közben</string>
+    <string name="location_permission_needed">Helymeghatározási engedély szükséges</string>
+    <string name="searching_address">Cím keresése...</string>
+
+    <string name="latitude_label">Szélesség: %1$s</string>
+    <string name="longitude_label">Hosszúság: %1$s</string>
+    <string name="altitude_label">Magasság: %1$s m</string>
+    <string name="date_label">Dátum: %1$s</string>
+    <string name="time_label">Idő: %1$s</string>
+    <string name="temperature_label">Hőmérséklet: %1$s</string>
+    <string name="pressure_label">Nyomás: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Beállítások</string>
+    <string name="theme_section_title">Alkalmazás téma</string>
+    <string name="temp_unit_section_title">Hőmérséklet mértékegysége</string>
+    <string name="button_back">Vissza</string>
+    <string name="theme_dark">Sötét</string>
+    <string name="theme_light">Világos</string>
+    <string name="theme_night">Éjszakai</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Névjegy</string>
+    <string name="about_placeholder">(fejlesztés alatt)</string>
+
+    <string name="cd_open_settings">Beállítások megnyitása</string>
+    <string name="cd_open_about">Névjegy oldal megnyitása</string>
+    <string name="cd_back">Vissza</string>
+    <string name="cd_switch_theme">Jelenlegi mód: %1$s. Kattintson a %2$s módra váltáshoz</string>
+
+</resources>

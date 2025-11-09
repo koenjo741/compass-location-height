@@ -1,10 +1,9 @@
-// --- AppStyle.kt ---
 package com.example.compasslocationheight
 
 import androidx.compose.ui.graphics.Color
 
 object AppColors {
-    // Dark Mode (unser bisheriger Standard)
+    // Dark Mode
     val DarkBackground = Color.Black
     val DarkText = Color(0xFFFFFAF0) // FloralWhite
     val DarkHeading = Color(0xFF1E90FF) // Blau
@@ -18,18 +17,23 @@ object AppColors {
     val LightAccent = Color(0xFFCC0000)  // Dunkleres Rot
     val LightSubtle = Color.DarkGray
 
-    // Night Mode (Rotlicht)
+    // Night Mode
     val NightBackground = Color.Black
     val NightText = Color(0xFFB71C1C) // Dunkles Rot
-    val NightHeading = Color(0xFF0045F5).copy(alpha = 0.7f) // Abgedunkeltes Blau -> Violettstich
+    val NightHeading = Color(0xFF0045F5).copy(alpha = 0.7f)
     val NightAccent = Color(0xFFF44336)   // Helles Rot
     val NightSubtle = Color(0xFF4E342E)   // Sehr dunkles Rotbraun
 
-    // Fadenkreuz & Wasserwaage (bleiben meist gleich)
+    // Crosshair & Bubble
     val CrosshairGreen = Color(0xFF33FF33)
     val BubbleOrange = Color(0xFFFF9933)
 }
 
 enum class ThemeMode {
     Dark, Light, Night
+}
+
+// The TemperatureUnit enum now lives here, in its logical home.
+enum class TemperatureUnit {
+    Celsius, Fahrenheit
 }

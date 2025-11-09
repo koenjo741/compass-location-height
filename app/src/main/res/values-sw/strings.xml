@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Inapakia data ya eneo...</string>
+    <string name="address_not_found">Anwani haikupatikana</string>
+    <string name="address_search_error">Hitilafu wakati wa kutafuta anwani</string>
+    <string name="location_permission_needed">Ruhusa ya eneo inahitajika</string>
+    <string name="searching_address">Inatafuta anwani...</string>
+
+    <string name="latitude_label">Latitudo: %1$s</string>
+    <string name="longitude_label">Longitudo: %1$s</string>
+    <string name="altitude_label">Mwinuko: %1$s m</string>
+    <string name="date_label">Tarehe: %1$s</string>
+    <string name="time_label">Muda: %1$s</string>
+    <string name="temperature_label">Joto: %1$s</string>
+    <string name="pressure_label">Shinikizo: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Mipangilio</string>
+    <string name="theme_section_title">Mandhari ya Programu</string>
+    <string name="temp_unit_section_title">Kipimo cha Joto</string>
+    <string name="button_back">Rudi Nyuma</string>
+    <string name="theme_dark">Giza</string>
+    <string name="theme_light">Nuru</string>
+    <string name="theme_night">Usiku</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Kuhusu</string>
+    <string name="about_placeholder">(inajengwa)</string>
+
+    <string name="cd_open_settings">Fungua mipangilio</string>
+    <string name="cd_open_about">Fungua ukurasa wa kuhusu</string>
+    <string name="cd_back">Rudi nyuma</string>
+    <string name="cd_switch_theme">Hali ya sasa: %1$s. Bofya ili ubadili kwenda %2$s</string>
+
+</resources>

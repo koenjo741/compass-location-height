@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Загрузка данных о местоположении...</string>
+    <string name="address_not_found">Адрес не найден</string>
+    <string name="address_search_error">Ошибка поиска адреса</string>
+    <string name="location_permission_needed">Требуется разрешение на определение местоположения</string>
+    <string name="searching_address">Поиск адреса...</string>
+
+    <string name="latitude_label">Широта: %1$s</string>
+    <string name="longitude_label">Долгота: %1$s</string>
+    <string name="altitude_label">Высота: %1$s м</string>
+    <string name="date_label">Дата: %1$s</string>
+    <string name="time_label">Время: %1$s</string>
+    <string name="temperature_label">Температура: %1$s</string>
+    <string name="pressure_label">Давление: %1$s гПа %2$s</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="theme_section_title">Тема приложения</string>
+    <string name="temp_unit_section_title">Единица измерения температуры</string>
+    <string name="button_back">Назад</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_night">Ночная</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">О приложении</string>
+    <string name="about_placeholder">(в разработке)</string>
+
+    <string name="cd_open_settings">Открыть настройки</string>
+    <string name="cd_open_about">Открыть страницу "О приложении"</string>
+    <string name="cd_back">Назад</string>
+    <string name="cd_switch_theme">Текущий режим: %1$s. Нажмите для переключения на %2$s</string>
+
+</resources>

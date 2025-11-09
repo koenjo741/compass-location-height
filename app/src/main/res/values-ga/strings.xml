@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Dátaí suímh á lódáil...</string>
+    <string name="address_not_found">Níor aimsíodh an seoladh</string>
+    <string name="address_search_error">Earráid ag cuardach seoltaí</string>
+    <string name="location_permission_needed">Tá cead suímh ag teastáil</string>
+    <string name="searching_address">Ag cuardach seoltaí...</string>
+
+    <string name="latitude_label">Domhanleithead: %1$s</string>
+    <string name="longitude_label">Domhanfhad: %1$s</string>
+    <string name="altitude_label">Airde: %1$s m</string>
+    <string name="date_label">Dáta: %1$s</string>
+    <string name="time_label">Am: %1$s</string>
+    <string name="temperature_label">Teocht: %1$s</string>
+    <string name="pressure_label">Brú: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Socruithe</string>
+    <string name="theme_section_title">Téama an Aip</string>
+    <string name="temp_unit_section_title">Aonad Teochta</string>
+    <string name="button_back">Ar Ais</string>
+    <string name="theme_dark">Dorcha</string>
+    <string name="theme_light">Gile</string>
+    <string name="theme_night">Oíche</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Faoi</string>
+    <string name="about_placeholder">(á thógáil)</string>
+
+    <string name="cd_open_settings">Oscail socruithe</string>
+    <string name="cd_open_about">Oscail an leathanach Faoi</string>
+    <string name="cd_back">Ar ais</string>
+    <string name="cd_switch_theme">Mód reatha: %1$s. Cliceáil chun athrú go %2$s</string>
+
+</resources>

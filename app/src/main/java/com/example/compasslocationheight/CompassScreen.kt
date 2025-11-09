@@ -1,4 +1,3 @@
-// --- CompassScreen.kt ---
 package com.example.compasslocationheight
 
 import android.content.Context

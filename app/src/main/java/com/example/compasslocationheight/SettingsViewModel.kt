@@ -7,21 +7,14 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-enum class TemperatureUnit {
-    Celsius, Fahrenheit
-}
-
 class SettingsViewModel(private val dataStore: SettingsDataStore) : ViewModel() {
 
-    // State for Theme
     private val _themeMode = mutableStateOf(ThemeMode.Dark)
     val themeMode: State<ThemeMode> = _themeMode
 
-    // State for Temperature Unit
     private val _tempUnit = mutableStateOf(TemperatureUnit.Celsius)
     val tempUnit: State<TemperatureUnit> = _tempUnit
 
-    // State for Language
     private val _language = mutableStateOf("system")
     val language: State<String> = _language
 

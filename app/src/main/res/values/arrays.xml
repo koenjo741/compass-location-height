@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 1. Die Namen, die der Nutzer im Menü sieht -->
+    <string-array name="language_names">
+        <item>Afrikaans</item>
+        <item>Amarəñña</item>
+        <item>Al-ʿarabīyah</item>
+        <item>Bǎlgarski</item>
+        <item>Bāṅlā</item>
+        <item>Bosanski</item>
+        <item>Čeština</item>
+        <item>Crnogorski</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>English</item>
+        <item>Español</item>
+        <item>Eesti</item>
+        <item>Suomi</item> <!-- KORREKTUR: Finnisch an die richtige Stelle verschoben -->
+        <item>Français</item>
+        <item>Gaeilge</item>
+        <item>Hausa</item>
+        <item>हिन्दी (Hindī)</item>
+        <item>Hrvatski</item>
+        <item>Magyar</item> <!-- KORREKTUR: Ungarisch an die richtige Stelle verschoben -->
+        <item>Igbo</item>
+        <item>Indonesia</item>
+        <item>Irish</item>
+        <item>Italiano</item>
+        <item>עברית (Ivrit)</item>
+        <item>日本語 (Nihongo)</item>
+        <item>Jawa</item>
+        <item>ქართული (Kartuli)</item>
+        <item>ಕನ್ನಡ (Kannaḍa)</item>
+        <item>한국어 (Hangugeo)</item>
+        <item>Kiswahili</item>
+        <item>Kurdî (Kurmancî)</item>
+        <item>Latviešu</item>
+        <item>Lietuvių</item>
+        <item>Malti</item>
+        <item>Melayu</item>
+        <item>Nederlands</item>
+        <item>Norsk</item>
+        <item>Polski</item> <!-- KORREKTUR: Polnisch an die richtige Stelle verschoben -->
+        <item>Português</item>
+        <item>Română</item>
+        <item>Русский (Russkiy)</item>
+        <item>Slovenčina</item>
+        <item>Slovenščina</item>
+        <item>Shona</item>
+        <item>Shqip</item>
+        <item>Srpski</item>
+        <item>Svenska</item> <!-- NEU: Schwedisch hinzugefügt, da der Ordner existiert -->
+        <item>Tagalog</item>
+        <item>தமிழ் (Tamiḻ)</item>
+        <item>ภาษาไทย (Thai)</item>
+        <item>Tiếng Việt</item>
+        <item>Türkçe</item>
+        <item>Українська (Ukrayinsʹka)</item>
+        <item>اردو (Urdū)</item>
+        <item>Yorùbá</item>
+        <item>中文 (简体) (Zhōngwén - Jiǎntǐ)</item>
+        <item>Zulu</item>
+    </string-array>
+
+    <!-- 2. Die dazugehörigen Sprach-Codes (müssen mit den Ordnernamen übereinstimmen) -->
+    <string-array name="language_codes">
+        <item>af</item>
+        <item>am</item>
+        <item>ar</item>
+        <item>bg</item>
+        <item>bn</item>
+        <item>bs</item>
+        <item>cs</item>
+        <item>b+cnr</item> <!-- KORREKTUR: Muss exakt dem Ordnernamen "values-b+cnr" entsprechen -->
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>en</item>
+        <item>es</item>
+        <item>et</item>
+        <item>fi</item> <!-- KORREKTUR: Finnisch an die richtige Stelle verschoben -->
+        <item>fr</item>
+        <item>ga</item>
+        <item>ha</item>
+        <item>hi</item>
+        <item>hr</item>
+        <item>hu</item> <!-- KORREKTUR: Ungarisch an die richtige Stelle verschoben -->
+        <item>ig</item>
+        <item>id</item>
+        <item>b+ira</item> <!-- KORREKTUR: Muss exakt dem Ordnernamen "values-b+ira" entsprechen -->
+        <item>it</item>
+        <item>he</item>
+        <item>ja</item>
+        <item>jv</item>
+        <item>ka</item>
+        <item>kn</item>
+        <item>ko</item>
+        <item>sw</item>
+        <item>ku</item>
+        <item>lv</item>
+        <item>lt</item>
+        <item>mt</item>
+        <item>ms</item>
+        <item>nl</item> <!-- KORREKTUR: Passt jetzt zum umbenannten Ordner "values-nl" -->
+        <item>nb</item>
+        <item>pl</item> <!-- KORREKTUR: Polnisch an die richtige Stelle verschoben -->
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sk</item>
+        <item>sl</item>
+        <item>sn</item>
+        <item>sq</item>
+        <item>sr</item>
+        <item>sv-rSE</item> <!-- NEU: Schwedisch hinzugefügt, passend zum Ordner "values-sv-rSE" -->
+        <item>tl</item>
+        <item>ta</item>
+        <item>th</item>
+        <item>vi</item>
+        <item>tr</item>
+        <item>uk</item>
+        <item>ur</item>
+        <item>yo</item>
+        <item>zh-rCN</item>
+        <item>zu</item>
+    </string-array>
+</resources>

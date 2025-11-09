@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">ადგილმდებარეობის მონაცემების ჩატვირთვა...</string>
+    <string name="address_not_found">მისამართი ვერ მოიძებნა</string>
+    <string name="address_search_error">შეცდომა მისამართის ძიებისას</string>
+    <string name="location_permission_needed">საჭიროა ადგილმდებარეობის ნებართვა</string>
+    <string name="searching_address">მიმდინარეობს მისამართის ძიება...</string>
+
+    <string name="latitude_label">განედი: %1$s</string>
+    <string name="longitude_label">გრძედი: %1$s</string>
+    <string name="altitude_label">სიმაღლე: %1$s მ</string>
+    <string name="date_label">თარიღი: %1$s</string>
+    <string name="time_label">დრო: %1$s</string>
+    <string name="temperature_label">ტემპერატურა: %1$s</string>
+    <string name="pressure_label">წნევა: %1$s ჰპა %2$s</string>
+
+    <string name="settings_title">პარამეტრები</string>
+    <string name="theme_section_title">აპლიკაციის თემა</string>
+    <string name="temp_unit_section_title">ტემპერატურის ერთეული</string>
+    <string name="button_back">უკან</string>
+    <string name="theme_dark">ბნელი</string>
+    <string name="theme_light">ნათელი</string>
+    <string name="theme_night">ღამე</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">შესახებ</string>
+    <string name="about_placeholder">(მშენებლობის პროცესში)</string>
+
+    <string name="cd_open_settings">პარამეტრების გახსნა</string>
+    <string name="cd_open_about">გახსენით გვერდი "შესახებ"</string>
+    <string name="cd_back">უკან</string>
+    <string name="cd_switch_theme">მიმდინარე რეჟიმი: %1$s. დააჭირეთ, რომ გადახვიდეთ %2$s-ზე</string>
+
+</resources>

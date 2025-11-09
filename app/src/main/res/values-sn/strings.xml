@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Kurodha dhata yenzvimbo...</string>
+    <string name="address_not_found">Kero haina kuwanikwa</string>
+    <string name="address_search_error">Kukanganisa pakutsvaga kero</string>
+    <string name="location_permission_needed">Rukuvhute rwenzvimbo runodiwa</string>
+    <string name="searching_address">Kutsvaga kero...</string>
+
+    <string name="latitude_label">Latitude: %1$s</string>
+    <string name="longitude_label">Longitude: %1$s</string>
+    <string name="altitude_label">Kukwirira: %1$s m</string>
+    <string name="date_label">Zuva: %1$s</string>
+    <string name="time_label">Nguva: %1$s</string>
+    <string name="temperature_label">Kupisa: %1$s</string>
+    <string name="pressure_label">Kumanikidza: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Zvirongwa</string>
+    <string name="theme_section_title">Dingindira reApp</string>
+    <string name="temp_unit_section_title">Chikamu Chekupisa</string>
+    <string name="button_back">Kudzokera</string>
+    <string name="theme_dark">Rima</string>
+    <string name="theme_light">Chiedza</string>
+    <string name="theme_night">Husiku</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Nezve</string>
+    <string name="about_placeholder">(kuchivakwa)</string>
+
+    <string name="cd_open_settings">Vhura zvirongwa</string>
+    <string name="cd_open_about">Vhura peji reNezve</string>
+    <string name="cd_back">Kudzokera</string>
+    <string name="cd_switch_theme">Maitiro azvino: %1$s. Dzvanya kuti uchinje ku %2$s</string>
+
+</resources>

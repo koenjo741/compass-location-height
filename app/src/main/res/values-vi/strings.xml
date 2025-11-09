@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Đang tải dữ liệu vị trí...</string>
+    <string name="address_not_found">Không tìm thấy địa chỉ</string>
+    <string name="address_search_error">Lỗi khi tìm kiếm địa chỉ</string>
+    <string name="location_permission_needed">Cần có quyền vị trí</string>
+    <string name="searching_address">Đang tìm kiếm địa chỉ...</string>
+
+    <string name="latitude_label">Vĩ độ: %1$s</string>
+    <string name="longitude_label">Kinh độ: %1$s</string>
+    <string name="altitude_label">Độ cao: %1$s m</string>
+    <string name="date_label">Ngày: %1$s</string>
+    <string name="time_label">Thời gian: %1$s</string>
+    <string name="temperature_label">Nhiệt độ: %1$s</string>
+    <string name="pressure_label">Áp suất: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Cài đặt</string>
+    <string name="theme_section_title">Chủ đề ứng dụng</string>
+    <string name="temp_unit_section_title">Đơn vị nhiệt độ</string>
+    <string name="button_back">Quay lại</string>
+    <string name="theme_dark">Tối</string>
+    <string name="theme_light">Sáng</string>
+    <string name="theme_night">Ban đêm</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Giới thiệu</string>
+    <string name="about_placeholder">(đang xây dựng)</string>
+
+    <string name="cd_open_settings">Mở cài đặt</string>
+    <string name="cd_open_about">Mở trang giới thiệu</string>
+    <string name="cd_back">Quay lại</string>
+    <string name="cd_switch_theme">Chế độ hiện tại: %1$s. Nhấn để chuyển sang %2$s</string>
+
+</resources>

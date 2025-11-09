@@ -1,4 +1,3 @@
-// --- MainActivity.kt ---
 package com.example.compasslocationheight
 
 import android.Manifest
@@ -24,6 +23,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -46,6 +46,8 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
@@ -111,6 +113,17 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         super.onCreate(savedInstanceState)
         addressText = getString(R.string.searching_address)
 
+        lifecycleScope.launch {
+            snapshotFlow { settingsViewModel.language.value }
+                .drop(1)
+                .distinctUntilChanged()
+                .collect {
+                    recreate()
+                }
+        }
+
+        LocaleHelper.setLocale(settingsViewModel.language.value)
+
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         pressureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE)
@@ -126,7 +139,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                     getAddressFromCoordinates(location.latitude, location.longitude)
                     updateMagneticDeclination(location.latitude, location.longitude, location.altitude)
                     val now = System.currentTimeMillis()
-                    if (now - lastWeatherApiCall > 300000) { // Alle 5 Minuten
+                    if (now - lastWeatherApiCall > 300000) {
                         getCurrentTemperature(location.latitude, location.longitude)
                         lastWeatherApiCall = now
                     }
@@ -204,7 +217,9 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     private fun getAddressFromCoordinates(latitude: Double, longitude: Double) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val geocoder = Geocoder(this@MainActivity, Locale.GERMANY)
+                val currentLocale = resources.configuration.locales[0]
+                val geocoder = Geocoder(this@MainActivity, currentLocale)
+
                 @Suppress("DEPRECATION")
                 val addresses = geocoder.getFromLocation(latitude, longitude, 1)
                 val address = addresses?.firstOrNull()?.let { addr ->
@@ -220,6 +235,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             }
         }
     }
+
     private fun getCurrentTemperature(latitude: Double, longitude: Double) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -243,8 +259,9 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             }
         }
     }
+
     private fun calculatePressureTrend(hourlyData: HourlyData): String {
-        val now = SimpleDateFormat("yyyy-MM-dd'T'HH:00", Locale.GERMANY).format(Date())
+        val now = SimpleDateFormat("yyyy-MM-dd'T'HH:00", resources.configuration.locales[0]).format(Date())
         val currentIndex = hourlyData.time.indexOf(now)
         if (currentIndex == -1 || currentIndex + 3 >= hourlyData.pressure_msl.size) { return "→" }
         val pressureNow = hourlyData.pressure_msl[currentIndex]
@@ -258,16 +275,19 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             else -> "→"
         }
     }
+
     private fun updateMagneticDeclination(latitude: Double, longitude: Double, altitude: Double) {
         val time = System.currentTimeMillis()
         val geomagneticField = GeomagneticField(latitude.toFloat(), longitude.toFloat(), altitude.toFloat(), time)
         magneticDeclination = geomagneticField.declination
     }
+
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000).build()
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }
+
     private fun checkLocationPermission() {
         when {
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
@@ -279,6 +299,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             else -> requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
+
     override fun onResume() {
         super.onResume()
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
@@ -287,16 +308,19 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI)
         if (hasLocationPermission) { startLocationUpdates() }
     }
+
     override fun onPause() {
         super.onPause()
         sensorManager.unregisterListener(this)
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
+
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         if (sensor?.type == Sensor.TYPE_MAGNETIC_FIELD) {
             magnetometerAccuracy = accuracy
         }
     }
+
     override fun onSensorChanged(event: SensorEvent?) {
         if (event == null) return
         when (event.sensor.type) {

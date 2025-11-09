@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">የቦታ መረጃ እየጫነ ነው...</string>
+    <string name="address_not_found">አድራሻ አልተገኘም</string>
+    <string name="address_search_error">አድራሻ ሲፈልጉ ስህተት</string>
+    <string name="location_permission_needed">የቦታ ፈቃድ ያስፈልጋል</string>
+    <string name="searching_address">አድራሻ በመፈለግ ላይ...</string>
+
+    <string name="latitude_label">ኬክሮስ: %1$s</string>
+    <string name="longitude_label">ኬንትሮስ: %1$s</string>
+    <string name="altitude_label">ከፍታ: %1$s ሜ</string>
+    <string name="date_label">ቀን: %1$s</string>
+    <string name="time_label">ሰዓት: %1$s</string>
+    <string name="temperature_label">ሙቀት: %1$s</string>
+    <string name="pressure_label">ግፊት: %1$s hPa %2$s</string>
+
+    <string name="settings_title">ቅንብሮች</string>
+    <string name="theme_section_title">የመተግበሪያ ገጽታ</string>
+    <string name="temp_unit_section_title">የሙቀት መለኪያ</string>
+    <string name="button_back">ወደ ኋላ</string>
+    <string name="theme_dark">ጥቁር</string>
+    <string name="theme_light">ብርሃን</string>
+    <string name="theme_night">ሌሊት</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">ስለ</string>
+    <string name="about_placeholder">(በግንባታ ላይ)</string>
+
+    <string name="cd_open_settings">ቅንብሮችን ክፈት</string>
+    <string name="cd_open_about">ስለ ገጽ ክፈት</string>
+    <string name="cd_back">ወደ ኋላ</string>
+    <string name="cd_switch_theme">አሁን ያለ ሁኔታ: %1$s. ወደ %2$s ለመቀየር ይጫኑ</string>
+
+</resources>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Φόρτωση δεδομένων τοποθεσίας...</string>
+    <string name="address_not_found">Δεν βρέθηκε διεύθυνση</string>
+    <string name="address_search_error">Σφάλμα κατά την αναζήτηση διεύθυνσης</string>
+    <string name="location_permission_needed">Απαιτείται άδεια τοποθεσίας</string>
+    <string name="searching_address">Αναζήτηση διεύθυνσης...</string>
+
+    <string name="latitude_label">Γεωγραφικό Πλάτος: %1$s</string>
+    <string name="longitude_label">Γεωγραφικό Μήκος: %1$s</string>
+    <string name="altitude_label">Υψόμετρο: %1$s μ</string>
+    <string name="date_label">Ημερομηνία: %1$s</string>
+    <string name="time_label">Ώρα: %1$s</string>
+    <string name="temperature_label">Θερμοκρασία: %1$s</string>
+    <string name="pressure_label">Πίεση: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Ρυθμίσεις</string>
+    <string name="theme_section_title">Θέμα Εφαρμογής</string>
+    <string name="temp_unit_section_title">Μονάδα Θερμοκρασίας</string>
+    <string name="button_back">Πίσω</string>
+    <string name="theme_dark">Σκοτεινό</string>
+    <string name="theme_light">Φωτεινό</string>
+    <string name="theme_night">Νυχτερινό</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Πληροφορίες</string>
+    <string name="about_placeholder">(υπό κατασκευή)</string>
+
+    <string name="cd_open_settings">Άνοιγμα ρυθμίσεων</string>
+    <string name="cd_open_about">Άνοιγμα σελίδας πληροφοριών</string>
+    <string name="cd_back">Πίσω</string>
+    <string name="cd_switch_theme">Τρέχουσα λειτουργία: %1$s. Κάντε κλικ για εναλλαγή σε %2$s</string>
+
+</resources>

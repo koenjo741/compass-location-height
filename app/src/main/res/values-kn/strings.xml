@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">ಸ್ಥಳ ಡೇಟಾವನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ...</string>
+    <string name="address_not_found">ವಿಳಾಸ ಕಂಡುಬಂದಿಲ್ಲ</string>
+    <string name="address_search_error">ವಿಳಾಸ ಹುಡುಕುವಲ್ಲಿ ದೋಷ</string>
+    <string name="location_permission_needed">ಸ್ಥಳ ಅನುಮತಿ ಅಗತ್ಯವಿದೆ</string>
+    <string name="searching_address">ವಿಳಾಸ ಹುಡುಕಲಾಗುತ್ತಿದೆ...</string>
+
+    <string name="latitude_label">ಅಕ್ಷಾಂಶ: %1$s</string>
+    <string name="longitude_label">ರೇಖಾಂಶ: %1$s</string>
+    <string name="altitude_label">ಎತ್ತರ: %1$s ಮೀ</string>
+    <string name="date_label">ದಿನಾಂಕ: %1$s</string>
+    <string name="time_label">ಸಮಯ: %1$s</string>
+    <string name="temperature_label">ತಾಪಮಾನ: %1$s</string>
+    <string name="pressure_label">ಒತ್ತಡ: %1$s hPa %2$s</string>
+
+    <string name="settings_title">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
+    <string name="theme_section_title">ಅಪ್ಲಿಕೇಶನ್ ಥೀಮ್</string>
+    <string name="temp_unit_section_title">ತಾಪಮಾನದ ಘಟಕ</string>
+    <string name="button_back">ಹಿಂದೆ</string>
+    <string name="theme_dark">ಗಾಢ</string>
+    <string name="theme_light">ತಿಳಿ</string>
+    <string name="theme_night">ರಾತ್ರಿ</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">ಕುರಿತು</string>
+    <string name="about_placeholder">(ನಿರ್ಮಾಣ ಹಂತದಲ್ಲಿದೆ)</string>
+
+    <string name="cd_open_settings">ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</string>
+    <string name="cd_open_about">ಕುರಿತು ಪುಟವನ್ನು ತೆರೆಯಿರಿ</string>
+    <string name="cd_back">ಹಿಂದೆ</string>
+    <string name="cd_switch_theme">ಪ್ರಸ್ತುತ ಮೋಡ್: %1$s. %2$s ಗೆ ಬದಲಾಯಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ</string>
+
+</resources>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Duke ngarkuar të dhënat e vendndodhjes...</string>
+    <string name="address_not_found">Adresa nuk u gjet</string>
+    <string name="address_search_error">Gabim gjatë kërkimit të adresës</string>
+    <string name="location_permission_needed">Kërkohet leja e vendndodhjes</string>
+    <string name="searching_address">Duke kërkuar adresën...</string>
+
+    <string name="latitude_label">Gjerësia gjeografike: %1$s</string>
+    <string name="longitude_label">Gjatësia gjeografike: %1$s</string>
+    <string name="altitude_label">Lartësia: %1$s m</string>
+    <string name="date_label">Data: %1$s</string>
+    <string name="time_label">Ora: %1$s</string>
+    <string name="temperature_label">Temperatura: %1$s</string>
+    <string name="pressure_label">Shtypja: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Cilësimet</string>
+    <string name="theme_section_title">Tema e Aplikacionit</string>
+    <string name="temp_unit_section_title">Njësia e Temperaturës</string>
+    <string name="button_back">Prapa</string>
+    <string name="theme_dark">E errët</string>
+    <string name="theme_light">E ndritshme</string>
+    <string name="theme_night">Nata</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Rreth</string>
+    <string name="about_placeholder">(në ndërtim)</string>
+
+    <string name="cd_open_settings">Hap cilësimet</string>
+    <string name="cd_open_about">Hap faqen rreth</string>
+    <string name="cd_back">Prapa</string>
+    <string name="cd_switch_theme">Mënyra aktuale: %1$s. Klikoni për të kaluar te %2$s</string>
+
+</resources>

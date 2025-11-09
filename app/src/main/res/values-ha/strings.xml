@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Ana ɗora bayanan wuri...</string>
+    <string name="address_not_found">Ba a samo adireshin ba</string>
+    <string name="address_search_error">Kuskure wajen neman adireshi</string>
+    <string name="location_permission_needed">Ana buƙatar izinin wuri</string>
+    <string name="searching_address">Ana neman adireshi...</string>
+
+    <string name="latitude_label">Lattiɗi: %1$s</string>
+    <string name="longitude_label">Loonɗi: %1$s</string>
+    <string name="altitude_label">Tsayi: %1$s m</string>
+    <string name="date_label">Kwanan wata: %1$s</string>
+    <string name="time_label">Lokaci: %1$s</string>
+    <string name="temperature_label">Zazzabi: %1$s</string>
+    <string name="pressure_label">Matsi: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Saituna</string>
+    <string name="theme_section_title">Salon App</string>
+    <string name="temp_unit_section_title">Rukuni na Zazzabi</string>
+    <string name="button_back">Baya</string>
+    <string name="theme_dark">Duɗu</string>
+    <string name="theme_light">Haske</string>
+    <string name="theme_night">Dare</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Game da</string>
+    <string name="about_placeholder">(ana ginawa)</string>
+
+    <string name="cd_open_settings">Bude saituna</string>
+    <string name="cd_open_about">Bude shafin Game da</string>
+    <string name="cd_back">Baya</string>
+    <string name="cd_switch_theme">Yanayin yanzu: %1$s. Danna don canzawa zuwa %2$s</string>
+
+</resources>

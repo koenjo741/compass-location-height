@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">स्थान डेटा लोड हो रहा है...</string>
+    <string name="address_not_found">पता नहीं मिला</string>
+    <string name="address_search_error">पता खोजने में त्रुटि</string>
+    <string name="location_permission_needed">स्थान की अनुमति आवश्यक है</string>
+    <string name="searching_address">पता खोजा जा रहा है...</string>
+
+    <string name="latitude_label">अक्षांश: %1$s</string>
+    <string name="longitude_label">देशांतर: %1$s</string>
+    <string name="altitude_label">ऊंचाई: %1$s मी</string>
+    <string name="date_label">दिनांक: %1$s</string>
+    <string name="time_label">समय: %1$s</string>
+    <string name="temperature_label">तापमान: %1$s</string>
+    <string name="pressure_label">दबाव: %1$s hPa %2$s</string>
+
+    <string name="settings_title">सेटिंग्स</string>
+    <string name="theme_section_title">ऐप थीम</string>
+    <string name="temp_unit_section_title">तापमान इकाई</string>
+    <string name="button_back">वापस</string>
+    <string name="theme_dark">गहरा</string>
+    <string name="theme_light">हल्का</string>
+    <string name="theme_night">रात</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">जानकारी</string>
+    <string name="about_placeholder">(निर्माणधीन)</string>
+
+    <string name="cd_open_settings">सेटिंग्स खोलें</string>
+    <string name="cd_open_about">जानकारी पेज खोलें</string>
+    <string name="cd_back">वापस</string>
+    <string name="cd_switch_theme">वर्तमान मोड: %1$s. %2$s पर स्विच करने के लिए क्लिक करें</string>
+
+</resources>

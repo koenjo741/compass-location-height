@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Завантаження даних про місцезнаходження...</string>
+    <string name="address_not_found">Адресу не знайдено</string>
+    <string name="address_search_error">Помилка пошуку адреси</string>
+    <string name="location_permission_needed">Потрібен дозвіл на місцезнаходження</string>
+    <string name="searching_address">Пошук адреси...</string>
+
+    <string name="latitude_label">Широта: %1$s</string>
+    <string name="longitude_label">Довгота: %1$s</string>
+    <string name="altitude_label">Висота: %1$s м</string>
+    <string name="date_label">Дата: %1$s</string>
+    <string name="time_label">Час: %1$s</string>
+    <string name="temperature_label">Температура: %1$s</string>
+    <string name="pressure_label">Тиск: %1$s гПа %2$s</string>
+
+    <string name="settings_title">Налаштування</string>
+    <string name="theme_section_title">Тема застосунку</string>
+    <string name="temp_unit_section_title">Одиниця температури</string>
+    <string name="button_back">Назад</string>
+    <string name="theme_dark">Темна</string>
+    <string name="theme_light">Світла</string>
+    <string name="theme_night">Нічна</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Про застосунок</string>
+    <string name="about_placeholder">(у розробці)</string>
+
+    <string name="cd_open_settings">Відкрити налаштування</string>
+    <string name="cd_open_about">Відкрити сторінку "Про застосунок"</string>
+    <string name="cd_back">Назад</string>
+    <string name="cd_switch_theme">Поточний режим: %1$s. Натисніть, щоб переключитися на %2$s</string>
+
+</resources>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">د موقعیت معلومات پورته کیږي...</string>
+    <string name="address_not_found">پته و نه موندل شوه</string>
+    <string name="address_search_error">د پتې په لټون کې تېروتنه</string>
+    <string name="location_permission_needed">د موقعیت اجازه اړینه ده</string>
+    <string name="searching_address">پته لټول کیږي...</string>
+
+    <string name="latitude_label">عرض البلد: %1$s</string>
+    <string name="longitude_label">طول البلد: %1$s</string>
+    <string name="altitude_label">لوړوالی: %1$s م</string>
+    <string name="date_label">نېټه: %1$s</string>
+    <string name="time_label">وخت: %1$s</string>
+    <string name="temperature_label">تودوخه: %1$s</string>
+    <string name="pressure_label">فشار: %1$s hPa %2$s</string>
+
+    <string name="settings_title">تنظیمات</string>
+    <string name="theme_section_title">د اپلیکیشن بڼه</string>
+    <string name="temp_unit_section_title">د تودوخې واحد</string>
+    <string name="button_back">شاته</string>
+    <string name="theme_dark">تور</string>
+    <string name="theme_light">روښانه</string>
+    <string name="theme_night">شپه</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">دې په اړه</string>
+    <string name="about_placeholder">(تر کار لاندې)</string>
+
+    <string name="cd_open_settings">تنظیمات خلاص کړئ</string>
+    <string name="cd_open_about">د "دې په اړه" پاڼه پرانیزئ</string>
+    <string name="cd_back">شاته</string>
+    <string name="cd_switch_theme">اوسنۍ بڼه: %1$s. %2$s ته د بدلولو لپاره کلیک وکړئ</string>
+
+</resources>

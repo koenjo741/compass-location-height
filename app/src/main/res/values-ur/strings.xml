@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">مقام کا ڈیٹا لوڈ ہو رہا ہے...</string>
+    <string name="address_not_found">پتہ نہیں ملا</string>
+    <string name="address_search_error">پتہ تلاش کرنے میں خرابی</string>
+    <string name="location_permission_needed">مقام کی اجازت درکار ہے</string>
+    <string name="searching_address">پتہ تلاش کیا جا رہا ہے...</string>
+
+    <string name="latitude_label">عرض البلد: %1$s</string>
+    <string name="longitude_label">طول البلد: %1$s</string>
+    <string name="altitude_label">بلندی: %1$s میٹر</string>
+    <string name="date_label">تاریخ: %1$s</string>
+    <string name="time_label">وقت: %1$s</string>
+    <string name="temperature_label">درجہ حرارت: %1$s</string>
+    <string name="pressure_label">دباؤ: %1$s hPa %2$s</string>
+
+    <string name="settings_title">ترتیبات</string>
+    <string name="theme_section_title">ایپ تھیم</string>
+    <string name="temp_unit_section_title">درجہ حرارت کی اکائی</string>
+    <string name="button_back">واپس</string>
+    <string name="theme_dark">تاریک</string>
+    <string name="theme_light">روشن</string>
+    <string name="theme_night">رات</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">کے بارے میں</string>
+    <string name="about_placeholder">(زیر تعمیر)</string>
+
+    <string name="cd_open_settings">ترتیبات کھولیں</string>
+    <string name="cd_open_about">کے بارے میں صفحہ کھولیں</string>
+    <string name="cd_back">واپس</string>
+    <string name="cd_switch_theme">موجودہ موڈ: %1$s. %2$s پر سوئچ کرنے کے لیے کلک کریں</string>
+
+</resources>

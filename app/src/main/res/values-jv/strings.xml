@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Ngemot data lokasi...</string>
+    <string name="address_not_found">Alamat ora ditemokake</string>
+    <string name="address_search_error">Ana kasalahan nalika nggoleki alamat</string>
+    <string name="location_permission_needed">Idin lokasi dibutuhake</string>
+    <string name="searching_address">Nggoleki alamat...</string>
+
+    <string name="latitude_label">Lintang: %1$s</string>
+    <string name="longitude_label">Bujur: %1$s</string>
+    <string name="altitude_label">Dhuwur: %1$s m</string>
+    <string name="date_label">Tanggal: %1$s</string>
+    <string name="time_label">Wektu: %1$s</string>
+    <string name="temperature_label">Suhu: %1$s</string>
+    <string name="pressure_label">Tekanan: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Setelan</string>
+    <string name="theme_section_title">Tema Aplikasi</string>
+    <string name="temp_unit_section_title">Unit Suhu</string>
+    <string name="button_back">Bali</string>
+    <string name="theme_dark">Peteng</string>
+    <string name="theme_light">Padhang</string>
+    <string name="theme_night">Wengi</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Babagan</string>
+    <string name="about_placeholder">(lagi dibangun)</string>
+
+    <string name="cd_open_settings">Bukak setelan</string>
+    <string name="cd_open_about">Bukak kaca babagan</string>
+    <string name="cd_back">Bali</string>
+    <string name="cd_switch_theme">Mode saiki: %1$s. Klik kanggo ngalih menyang %2$s</string>
+
+</resources>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Načítavanie dát o polohe...</string>
+    <string name="address_not_found">Adresa nebola nájdená</string>
+    <string name="address_search_error">Chyba pri hľadaní adresy</string>
+    <string name="location_permission_needed">Vyžaduje sa povolenie polohy</string>
+    <string name="searching_address">Hľadanie adresy...</string>
+
+    <string name="latitude_label">Zemepisná šírka: %1$s</string>
+    <string name="longitude_label">Zemepisná dĺžka: %1$s</string>
+    <string name="altitude_label">Nadmorská výška: %1$s m</string>
+    <string name="date_label">Dátum: %1$s</string>
+    <string name="time_label">Čas: %1$s</string>
+    <string name="temperature_label">Teplota: %1$s</string>
+    <string name="pressure_label">Tlak: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Nastavenia</string>
+    <string name="theme_section_title">Téma aplikácie</string>
+    <string name="temp_unit_section_title">Jednotka teploty</string>
+    <string name="button_back">Späť</string>
+    <string name="theme_dark">Tmavá</string>
+    <string name="theme_light">Svetlá</string>
+    <string name="theme_night">Nočná</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">O aplikácii</string>
+    <string name="about_placeholder">(vo výstavbe)</string>
+
+    <string name="cd_open_settings">Otvoriť nastavenia</string>
+    <string name="cd_open_about">Otvoriť stránku O aplikácii</string>
+    <string name="cd_back">Späť</string>
+    <string name="cd_switch_theme">Aktuálny režim: %1$s. Kliknutím prepnete na %2$s</string>
+
+</resources>

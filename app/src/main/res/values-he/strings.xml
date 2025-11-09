@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">טוען נתוני מיקום...</string>
+    <string name="address_not_found">הכתובת לא נמצאה</string>
+    <string name="address_search_error">שגיאה בחיפוש הכתובת</string>
+    <string name="location_permission_needed">נדרשת הרשאת מיקום</string>
+    <string name="searching_address">מחפש כתובת...</string>
+
+    <string name="latitude_label">קו רוחב: %1$s</string>
+    <string name="longitude_label">קו אורך: %1$s</string>
+    <string name="altitude_label">גובה: %1$s מ׳</string>
+    <string name="date_label">תאריך: %1$s</string>
+    <string name="time_label">שעה: %1$s</string>
+    <string name="temperature_label">טמפרטורה: %1$s</string>
+    <string name="pressure_label">לחץ: %1$s hPa %2$s</string>
+
+    <string name="settings_title">הגדרות</string>
+    <string name="theme_section_title">ערכת נושא של היישום</string>
+    <string name="temp_unit_section_title">יחידת טמפרטורה</string>
+    <string name="button_back">חזרה</string>
+    <string name="theme_dark">כהה</string>
+    <string name="theme_light">בהיר</string>
+    <string name="theme_night">לילה</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">אודות</string>
+    <string name="about_placeholder">(בבנייה)</string>
+
+    <string name="cd_open_settings">פתח הגדרות</string>
+    <string name="cd_open_about">פתח דף אודות</string>
+    <string name="cd_back">חזרה</string>
+    <string name="cd_switch_theme">מצב נוכחי: %1$s. לחץ כדי לעבור למצב %2$s</string>
+
+</resources>

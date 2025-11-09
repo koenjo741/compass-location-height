@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">இருப்பிடத் தரவை ஏற்றுகிறது...</string>
+    <string name="address_not_found">முகவரி காணப்படவில்லை</string>
+    <string name="address_search_error">முகவரியைத் தேடும்போது பிழை ஏற்பட்டது</string>
+    <string name="location_permission_needed">இருப்பிட அனுமதி தேவை</string>
+    <string name="searching_address">முகவரியைத் தேடுகிறது...</string>
+
+    <string name="latitude_label">அகலக்கோடு: %1$s</string>
+    <string name="longitude_label">நெடுங்கோடு: %1$s</string>
+    <string name="altitude_label">உயரம்: %1$s மீ</string>
+    <string name="date_label">தேதி: %1$s</string>
+    <string name="time_label">நேரம்: %1$s</string>
+    <string name="temperature_label">வெப்பநிலை: %1$s</string>
+    <string name="pressure_label">அழுத்தம்: %1$s hPa %2$s</string>
+
+    <string name="settings_title">அமைப்புகள்</string>
+    <string name="theme_section_title">பயன்பாட்டு தீம்</string>
+    <string name="temp_unit_section_title">வெப்பநிலை அலகு</string>
+    <string name="button_back">பின் செல்ல</string>
+    <string name="theme_dark">இருண்ட</string>
+    <string name="theme_light">வெளிச்சமான</string>
+    <string name="theme_night">இரவு</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">பற்றி</string>
+    <string name="about_placeholder">(கட்டுமானத்தில் உள்ளது)</string>
+
+    <string name="cd_open_settings">அமைப்புகளைத் திறக்கவும்</string>
+    <string name="cd_open_about">பற்றி பக்கத்தைத் திறக்கவும்</string>
+    <string name="cd_back">பின் செல்ல</string>
+    <string name="cd_switch_theme">தற்போதைய முறை: %1$s. %2$s முறைக்கு மாற கிளிக் செய்யவும்</string>
+
+</resources>

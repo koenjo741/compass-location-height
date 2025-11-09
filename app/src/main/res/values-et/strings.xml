@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Laadin asukohaandmeid...</string>
+    <string name="address_not_found">Aadressi ei leitud</string>
+    <string name="address_search_error">Viga aadressi otsimisel</string>
+    <string name="location_permission_needed">Asukohaluba on vajalik</string>
+    <string name="searching_address">Otsin aadressi...</string>
+
+    <string name="latitude_label">Laiuskraad: %1$s</string>
+    <string name="longitude_label">Pikkuskraad: %1$s</string>
+    <string name="altitude_label">Kõrgus: %1$s m</string>
+    <string name="date_label">Kuupäev: %1$s</string>
+    <string name="time_label">Kellaaeg: %1$s</string>
+    <string name="temperature_label">Temperatuur: %1$s</string>
+    <string name="pressure_label">Rõhk: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Seaded</string>
+    <string name="theme_section_title">Rakenduse teema</string>
+    <string name="temp_unit_section_title">Temperatuuriühik</string>
+    <string name="button_back">Tagasi</string>
+    <string name="theme_dark">Tume</string>
+    <string name="theme_light">Valge</string>
+    <string name="theme_night">Öö</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Teave</string>
+    <string name="about_placeholder">(arendamisel)</string>
+
+    <string name="cd_open_settings">Ava seaded</string>
+    <string name="cd_open_about">Ava teabeleht</string>
+    <string name="cd_back">Tagasi</string>
+    <string name="cd_switch_theme">Praegune režiim: %1$s. Klõpsa, et lülituda režiimile %2$s</string>
+
+</resources>

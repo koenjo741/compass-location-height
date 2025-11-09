@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Laster stedsdata...</string>
+    <string name="address_not_found">Adresse ikke funnet</string>
+    <string name="address_search_error">Feil ved søk etter adresse</string>
+    <string name="location_permission_needed">Stedstillatelse er nødvendig</string>
+    <string name="searching_address">Søker etter adresse...</string>
+
+    <string name="latitude_label">Breddegrad: %1$s</string>
+    <string name="longitude_label">Lengdegrad: %1$s</string>
+    <string name="altitude_label">Høyde: %1$s m</string>
+    <string name="date_label">Dato: %1$s</string>
+    <string name="time_label">Tid: %1$s</string>
+    <string name="temperature_label">Temperatur: %1$s</string>
+    <string name="pressure_label">Trykk: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Innstillinger</string>
+    <string name="theme_section_title">App-tema</string>
+    <string name="temp_unit_section_title">Temperaturenhet</string>
+    <string name="button_back">Tilbake</string>
+    <string name="theme_dark">Mørk</string>
+    <string name="theme_light">Lys</string>
+    <string name="theme_night">Natt</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Om</string>
+    <string name="about_placeholder">(under konstruksjon)</string>
+
+    <string name="cd_open_settings">Åpne innstillinger</string>
+    <string name="cd_open_about">Åpne Om-siden</string>
+    <string name="cd_back">Tilbake</string>
+    <string name="cd_switch_theme">Gjeldende modus: %1$s. Klikk for å bytte til %2$s</string>
+
+</resources>

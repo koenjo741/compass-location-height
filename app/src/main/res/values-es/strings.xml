@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Cargando datos de ubicación...</string>
+    <string name="address_not_found">Dirección no encontrada</string>
+    <string name="address_search_error">Error al buscar la dirección</string>
+    <string name="location_permission_needed">Permiso de ubicación necesario</string>
+    <string name="searching_address">Buscando dirección...</string>
+
+    <string name="latitude_label">Latitud: %1$s</string>
+    <string name="longitude_label">Longitud: %1$s</string>
+    <string name="altitude_label">Altitud: %1$s m</string>
+    <string name="date_label">Fecha: %1$s</string>
+    <string name="time_label">Hora: %1$s</string>
+    <string name="temperature_label">Temperatura: %1$s</string>
+    <string name="pressure_label">Presión: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Ajustes</string>
+    <string name="theme_section_title">Tema de la aplicación</string>
+    <string name="temp_unit_section_title">Unidad de temperatura</string>
+    <string name="button_back">Atrás</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_night">Noche</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Acerca de</string>
+    <string name="about_placeholder">(en construcción)</string>
+
+    <string name="cd_open_settings">Abrir ajustes</string>
+    <string name="cd_open_about">Abrir página acerca de</string>
+    <string name="cd_back">Atrás</string>
+    <string name="cd_switch_theme">Modo actual: %1$s. Clic para cambiar a %2$s</string>
+
+</resources>

@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Notiek atrašanās vietas datu ielāde...</string>
+    <string name="address_not_found">Adrese nav atrasta</string>
+    <string name="address_search_error">Kļūda, meklējot adresi</string>
+    <string name="location_permission_needed">Nepieciešama atrašanās vietas atļauja</string>
+    <string name="searching_address">Notiek adreses meklēšana...</string>
+
+    <string name="latitude_label">Platuma grādi: %1$s</string>
+    <string name="longitude_label">Garuma grādi: %1$s</string>
+    <string name="altitude_label">Augstums: %1$s m</string>
+    <string name="date_label">Datums: %1$s</string>
+    <string name="time_label">Laiks: %1$s</string>
+    <string name="temperature_label">Temperatūra: %1$s</string>
+    <string name="pressure_label">Spiediens: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Iestatījumi</string>
+    <string name="theme_section_title">Lietotnes tēma</string>
+    <string name="temp_unit_section_title">Temperatūras mērvienība</string>
+    <string name="button_back">Atpakaļ</string>
+    <string name="theme_dark">Tumšs</string>
+    <string name="theme_light">Gaišs</string>
+    <string name="theme_night">Nakts</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Par</string>
+    <string name="about_placeholder">(izstrādes stadijā)</string>
+
+    <string name="cd_open_settings">Atvērt iestatījumus</string>
+    <string name="cd_open_about">Atvērt lapu "Par"</string>
+    <string name="cd_back">Atpakaļ</string>
+    <string name="cd_switch_theme">Pašreizējais režīms: %1$s. Noklikšķiniet, lai pārslēgtos uz %2$s</string>
+
+</resources>

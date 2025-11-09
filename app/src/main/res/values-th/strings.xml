@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">กำลังโหลดข้อมูลตำแหน่ง...</string>
+    <string name="address_not_found">ไม่พบที่อยู่</string>
+    <string name="address_search_error">เกิดข้อผิดพลาดในการค้นหาที่อยู่</string>
+    <string name="location_permission_needed">ต้องได้รับอนุญาตเข้าถึงตำแหน่ง</string>
+    <string name="searching_address">กำลังค้นหาที่อยู่...</string>
+
+    <string name="latitude_label">ละติจูด: %1$s</string>
+    <string name="longitude_label">ลองจิจูด: %1$s</string>
+    <string name="altitude_label">ระดับความสูง: %1$s ม.</string>
+    <string name="date_label">วันที่: %1$s</string>
+    <string name="time_label">เวลา: %1$s</string>
+    <string name="temperature_label">อุณหภูมิ: %1$s</string>
+    <string name="pressure_label">ความดัน: %1$s hPa %2$s</string>
+
+    <string name="settings_title">การตั้งค่า</string>
+    <string name="theme_section_title">ธีมแอปพลิเคชัน</string>
+    <string name="temp_unit_section_title">หน่วยอุณหภูมิ</string>
+    <string name="button_back">ย้อนกลับ</string>
+    <string name="theme_dark">มืด</string>
+    <string name="theme_light">สว่าง</string>
+    <string name="theme_night">กลางคืน</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">เกี่ยวกับ</string>
+    <string name="about_placeholder">(อยู่ระหว่างการพัฒนา)</string>
+
+    <string name="cd_open_settings">เปิดการตั้งค่า</string>
+    <string name="cd_open_about">เปิดหน้าเกี่ยวกับ</string>
+    <string name="cd_back">ย้อนกลับ</string>
+    <string name="cd_switch_theme">โหมดปัจจุบัน: %1$s. คลิกเพื่อสลับไปที่ %2$s</string>
+
+</resources>
