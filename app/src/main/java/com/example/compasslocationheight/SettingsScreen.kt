@@ -15,7 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource // <-- DIESE ZEILE HAT GEFEHLT
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -30,6 +30,7 @@ fun SettingsScreen(
 ) {
     val currentTheme = settingsViewModel.themeMode
     val currentTempUnit = settingsViewModel.tempUnit
+    val currentLanguage = settingsViewModel.language
 
     Column(
         modifier = Modifier
@@ -37,6 +38,7 @@ fun SettingsScreen(
             .background(backgroundColor)
             .padding(16.dp)
     ) {
+        // ... (Theme und Temperatureinheit Sektionen bleiben unverändert) ...
         Text(text = stringResource(R.string.theme_section_title), fontSize = 20.sp, color = textColor)
         Spacer(modifier = Modifier.height(16.dp))
         Row(
@@ -62,9 +64,7 @@ fun SettingsScreen(
                 selectedColor = headingColor
             )
         }
-
         Spacer(modifier = Modifier.height(32.dp))
-
         Text(text = stringResource(R.string.temp_unit_section_title), fontSize = 20.sp, color = textColor)
         Spacer(modifier = Modifier.height(16.dp))
         Row(
@@ -84,7 +84,33 @@ fun SettingsScreen(
                 selectedColor = headingColor
             )
         }
+        Spacer(modifier = Modifier.height(32.dp))
 
+
+        // Sprachauswahl Sektion
+        Text(text = "Sprache / Language", fontSize = 20.sp, color = textColor)
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            // HIER DIE ÄNDERUNG: Wir weisen den Wert direkt zu.
+            ThemeButton(
+                text = "Deutsch",
+                onClick = { settingsViewModel.language = "de" },
+                isSelected = currentLanguage == "de",
+                selectedColor = headingColor
+            )
+            // HIER DIE ÄNDERUNG: Wir weisen den Wert direkt zu.
+            ThemeButton(
+                text = "English",
+                onClick = { settingsViewModel.language = "en" },
+                isSelected = currentLanguage == "en",
+                selectedColor = headingColor
+            )
+        }
+
+        // Zurück-Button
         Spacer(Modifier.weight(1f))
         Button(
             onClick = { navController.popBackStack() },

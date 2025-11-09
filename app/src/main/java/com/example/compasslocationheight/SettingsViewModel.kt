@@ -20,14 +20,15 @@ class SettingsViewModel(private val dataStore: SettingsDataStore) : ViewModel() 
     var tempUnit by mutableStateOf(TemperatureUnit.Celsius)
         private set
 
+    // HIER DIE ÄNDERUNG: "private set" wurde entfernt.
+    var language by mutableStateOf("system")
+
     init {
-        // Theme laden (unverändert)
         viewModelScope.launch {
             dataStore.themeModeFlow.collect { loadedTheme ->
                 themeMode = loadedTheme
             }
         }
-        // NEU: Temperatureinheit laden
         viewModelScope.launch {
             dataStore.tempUnitFlow.collect { loadedUnit ->
                 tempUnit = loadedUnit
@@ -44,7 +45,6 @@ class SettingsViewModel(private val dataStore: SettingsDataStore) : ViewModel() 
 
     fun setTemperatureUnit(newUnit: TemperatureUnit) {
         tempUnit = newUnit
-        // NEU: Speichern der Temperatureinheit im Hintergrund
         viewModelScope.launch {
             dataStore.saveTemperatureUnit(newUnit)
         }

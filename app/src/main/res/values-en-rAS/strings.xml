@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <!-- Texte für den Lade- und Fehlerzustand -->
+    <string name="loading_location">Loading location data...</string>
+    <string name="address_not_found">Address not found</string>
+    <string name="address_search_error">Error searching for address</string>
+    <string name="location_permission_needed">Location permission required</string>
+    <string name="searching_address">Searching for address...</string>
+
+    <!-- Texte für die Standortanzeige -->
+    <string name="latitude_label">Latitude: %1$s</string>
+    <string name="longitude_label">Longitude: %1$s</string>
+    <string name="altitude_label">Altitude: %1$s m</string>
+    <string name="date_label">Date: %1$s</string>
+    <string name="time_label">Time: %1$s</string>
+    <string name="temperature_label">Temperature: %1$s</string>
+    <string name="pressure_label">Pressure: %1$s hPa %2$s</string>
+
+    <!-- Texte für die Einstellungsseite -->
+    <string name="settings_title">Settings</string>
+    <string name="theme_section_title">App Theme</string>
+    <string name="temp_unit_section_title">Temperature Unit</string>
+    <string name="button_back">Back</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_night">Night</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <!-- Texte für die Info-Seite -->
+    <string name="about_title">About</string>
+    <string name="about_placeholder">(under construction)</string>
+
+    <!-- Texte für Barrierefreiheit (Content Descriptions) -->
+    <string name="cd_open_settings">Open settings</string>
+    <string name="cd_open_about">Open about page</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_switch_theme">Current mode: %1$s. Click to switch to %2$s</string>
+
+</resources>
