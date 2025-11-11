@@ -117,7 +117,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             snapshotFlow { settingsViewModel.language.value }
                 .drop(1)
                 .distinctUntilChanged()
-                .collect {
+                .collect { langCode ->
+                    LocaleHelper.setLocale(langCode)
                     recreate()
                 }
         }
