@@ -116,7 +116,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         lifecycleScope.launch {
             var isInitialLanguageSet = false
             settingsViewModel.language
-                .distinctUntilChanged()
                 .collect { langCode ->
                     if (isInitialLanguageSet) {
                         LocaleHelper.setLocale(langCode)
