@@ -23,7 +23,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.collectAsState
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -114,7 +114,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         addressText = getString(R.string.searching_address)
 
         lifecycleScope.launch {
-            snapshotFlow { settingsViewModel.language.value }
+            settingsViewModel.language
                 .drop(1)
                 .distinctUntilChanged()
                 .collect { langCode ->
@@ -122,7 +122,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                     recreate()
                 }
         }
-
         LocaleHelper.setLocale(settingsViewModel.language.value)
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -150,7 +149,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
         setContent {
             val navController = rememberNavController()
-            val currentTheme by settingsViewModel.themeMode
+            val currentTheme by settingsViewModel.themeMode.collectAsState()
 
             val backgroundColor = when (currentTheme) {
                 ThemeMode.Light -> AppColors.LightBackground

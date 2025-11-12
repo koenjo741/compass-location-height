@@ -21,9 +21,9 @@ fun SettingsScreen(
     textColor: Color,
     headingColor: Color
 ) {
-    val currentTheme by settingsViewModel.themeMode
-    val currentTempUnit by settingsViewModel.tempUnit
-    val currentLanguage by settingsViewModel.language
+    val currentTheme by settingsViewModel.themeMode.collectAsState()
+    val currentTempUnit by settingsViewModel.tempUnit.collectAsState()
+    val currentLanguage by settingsViewModel.language.collectAsState()
 
     Column(
         modifier = Modifier
