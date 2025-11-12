@@ -72,7 +72,7 @@ fun SettingsScreen(
             onExpandedChange = { expanded = !expanded }
         ) {
             TextField(
-                modifier = Modifier.menuAnchor().fillMaxWidth(),
+                modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth(),
                 readOnly = true,
                 value = selectedOptionText,
                 onValueChange = {},
