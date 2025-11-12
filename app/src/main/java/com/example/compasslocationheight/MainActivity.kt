@@ -12,6 +12,7 @@ import android.hardware.SensorManager
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.Looper
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -114,8 +115,16 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         addressText = getString(R.string.searching_address)
 
         lifecycleScope.launch {
+            var isInitialLanguageSet = false
             settingsViewModel.language.collect { langCode ->
-                LocaleHelper.setLocale(langCode)
+                if (isInitialLanguageSet) {
+                    LocaleHelper.setLocale(this@MainActivity, langCode)
+                    Toast.makeText(this@MainActivity, "recreate() called", Toast.LENGTH_SHORT).show()
+                    recreate()
+                } else {
+                    LocaleHelper.setLocale(this@MainActivity, langCode)
+                    isInitialLanguageSet = true
+                }
             }
         }
 
