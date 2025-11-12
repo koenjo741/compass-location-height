@@ -114,15 +114,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         addressText = getString(R.string.searching_address)
 
         lifecycleScope.launch {
-            var isInitialLanguageSet = false
             settingsViewModel.language.collect { langCode ->
-                if (isInitialLanguageSet) {
-                    LocaleHelper.setLocale(langCode)
-                    recreate()
-                } else {
-                    LocaleHelper.setLocale(langCode)
-                    isInitialLanguageSet = true
-                }
+                LocaleHelper.setLocale(langCode)
             }
         }
 
