@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -89,6 +90,7 @@ fun SettingsScreen(
                         onClick = {
                             settingsViewModel.setLanguage(langCode)
                             expanded = false
+                            Toast.makeText(context, "Die Sprache wurde auf $langName geändert.", Toast.LENGTH_SHORT).show()
                         }
                     )
                 }
