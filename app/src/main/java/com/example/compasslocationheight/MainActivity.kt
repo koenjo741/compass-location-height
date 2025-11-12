@@ -13,6 +13,7 @@ import android.location.Geocoder
 import android.os.Bundle
 import android.os.Looper
 import androidx.activity.ComponentActivity
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -118,6 +119,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 .drop(1)
                 .distinctUntilChanged()
                 .collect { langCode ->
+                    Toast.makeText(this, "Sprachänderung erhalten. UI wird neu erstellt.", Toast.LENGTH_SHORT).show()
                     LocaleHelper.setLocale(langCode)
                     recreate()
                 }
