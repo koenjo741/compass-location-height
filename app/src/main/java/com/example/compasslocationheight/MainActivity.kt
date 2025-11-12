@@ -115,16 +115,15 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
         lifecycleScope.launch {
             var isInitialLanguageSet = false
-            settingsViewModel.language
-                .collect { langCode ->
-                    if (isInitialLanguageSet) {
-                        LocaleHelper.setLocale(langCode)
-                        recreate()
-                    } else {
-                        LocaleHelper.setLocale(langCode)
-                        isInitialLanguageSet = true
-                    }
+            settingsViewModel.language.collect { langCode ->
+                if (isInitialLanguageSet) {
+                    LocaleHelper.setLocale(langCode)
+                    recreate()
+                } else {
+                    LocaleHelper.setLocale(langCode)
+                    isInitialLanguageSet = true
                 }
+            }
         }
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
