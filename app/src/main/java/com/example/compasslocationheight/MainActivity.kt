@@ -119,7 +119,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 .drop(1)
                 .distinctUntilChanged()
                 .collect { langCode ->
-                    Toast.makeText(this, "Sprachänderung erhalten. UI wird neu erstellt.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Sprachänderung erhalten. UI wird neu erstellt.", Toast.LENGTH_SHORT).show()
                     LocaleHelper.setLocale(langCode)
                     recreate()
                 }
