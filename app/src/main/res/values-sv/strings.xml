@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">CompassLocationHeight</string>
+
+    <string name="loading_location">Laddar platsdata...</string>
+    <string name="address_not_found">Adress hittades inte</string>
+    <string name="address_search_error">Fel vid sökning av adress</string>
+    <string name="location_permission_needed">Platstillstånd krävs</string>
+    <string name="searching_address">Söker adress...</string>
+
+    <string name="latitude_label">Breddgrad: %1$s</string>
+    <string name="longitude_label">Längdgrad: %1$s</string>
+    <string name="altitude_label">Höjd: %1$s m</string>
+    <string name="date_label">Datum: %1$s</string>
+    <string name="time_label">Tid: %1$s</string>
+    <string name="temperature_label">Temperatur: </string>
+    <string name="pressure_label">Lufttryck: %1$s hPa %2$s</string>
+
+    <string name="settings_title">Inställningar</string>
+    <string name="theme_section_title">App-tema</string>
+    <string name="temp_unit_section_title">Temperaturenhet</string>
+    <string name="button_back">Tillbaka</string>
+    <string name="theme_dark">Mörk</string>
+    <string name="theme_light">Ljus</string>
+    <string name="theme_night">Natt</string>
+    <string name="unit_celsius">°C</string>
+    <string name="unit_fahrenheit">°F</string>
+
+    <string name="about_title">Om appen</string>
+    <string name="about_placeholder">(byggs fortfarande)</string>
+
+    <string name="cd_open_settings">Öppna inställningar</string>
+    <string name="cd_open_about">Öppna informationssida</string>
+    <string name="cd_back">Tillbaka</string>
+    <string name="cd_switch_theme">Aktuellt läge: %1$s. Klicka för att växla till %2$s</string>
+
+</resources>
