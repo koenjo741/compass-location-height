@@ -7,9 +7,6 @@ object LocaleHelper {
     fun setLocale(context: Context, languageCode: String) {
         val locale = if (languageCode == "system") {
             Locale.getDefault()
-        } else if (languageCode.contains("+")) {
-            val parts = languageCode.split("+")
-            Locale(parts[0], parts[1].uppercase(Locale.ROOT))
         } else {
             Locale(languageCode)
         }
