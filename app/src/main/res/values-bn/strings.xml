@@ -12,7 +12,7 @@
     <string name="altitude_label">উচ্চতা: %1$s মি</string>
     <string name="date_label">তারিখ: %1$s</string>
     <string name="time_label">সময়: %1$s</string>
-    <string name="temperature_label">তাপমাত্রা: %1$s</string>
+    <string name="temperature_label">তাপমাত্রা: </string>
     <string name="pressure_label">চাপ: %1$s hPa %2$s</string>
 
     <string name="settings_title">সেটিংস</string>

@@ -12,7 +12,7 @@
     <string name="altitude_label">Elevazzjoni: %1$s m</string>
     <string name="date_label">Data: %1$s</string>
     <string name="time_label">Ħin: %1$s</string>
-    <string name="temperature_label">Temperatura: %1$s</string>
+    <string name="temperature_label">Temperatura: </string>
     <string name="pressure_label">Pressjoni: %1$s hPa %2$s</string>
 
     <string name="settings_title">Settings</string>

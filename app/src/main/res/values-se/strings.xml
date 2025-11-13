@@ -14,7 +14,7 @@
     <string name="altitude_label">Höhe: %1$s m</string>
     <string name="date_label">Datum: %1$s</string>
     <string name="time_label">Zeit: %1$s</string>
-    <string name="temperature_label">Temperatur: </string> <!-- Suffix wird im Code hinzugefügt -->
+    <string name="temperature_label">Temperatur: </string>
     <string name="pressure_label">Luftdruck: %1$s hPa %2$s</string>
 
     <!-- NEU: Texte für die Einstellungsseite -->

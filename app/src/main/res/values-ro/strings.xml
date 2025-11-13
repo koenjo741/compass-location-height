@@ -12,7 +12,7 @@
     <string name="altitude_label">Altitudine: %1$s m</string>
     <string name="date_label">Data: %1$s</string>
     <string name="time_label">Ora: %1$s</string>
-    <string name="temperature_label">Temperatură: %1$s</string>
+    <string name="temperature_label">Temperatură: </string>
     <string name="pressure_label">Presiune: %1$s hPa %2$s</string>
 
     <string name="settings_title">Setări</string>

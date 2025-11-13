@@ -12,7 +12,7 @@
     <string name="altitude_label">Kukwirira: %1$s m</string>
     <string name="date_label">Zuva: %1$s</string>
     <string name="time_label">Nguva: %1$s</string>
-    <string name="temperature_label">Kupisa: %1$s</string>
+    <string name="temperature_label">Kupisa: </string>
     <string name="pressure_label">Kumanikidza: %1$s hPa %2$s</string>
 
     <string name="settings_title">Zvirongwa</string>

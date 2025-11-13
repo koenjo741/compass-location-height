@@ -12,7 +12,7 @@
     <string name="altitude_label">உயரம்: %1$s மீ</string>
     <string name="date_label">தேதி: %1$s</string>
     <string name="time_label">நேரம்: %1$s</string>
-    <string name="temperature_label">வெப்பநிலை: %1$s</string>
+    <string name="temperature_label">வெப்பநிலை: </string>
     <string name="pressure_label">அழுத்தம்: %1$s hPa %2$s</string>
 
     <string name="settings_title">அமைப்புகள்</string>

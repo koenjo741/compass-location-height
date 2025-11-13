@@ -12,7 +12,7 @@
     <string name="altitude_label">Rakım: %1$s m</string>
     <string name="date_label">Tarih: %1$s</string>
     <string name="time_label">Saat: %1$s</string>
-    <string name="temperature_label">Sıcaklık: %1$s</string>
+    <string name="temperature_label">Sıcaklık: </string>
     <string name="pressure_label">Basınç: %1$s hPa %2$s</string>
 
     <string name="settings_title">Ayarlar</string>

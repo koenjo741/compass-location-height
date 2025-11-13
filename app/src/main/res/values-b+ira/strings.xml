@@ -12,7 +12,7 @@
     <string name="altitude_label">ارتفاع: %1$s متر</string>
     <string name="date_label">تاریخ: %1$s</string>
     <string name="time_label">زمان: %1$s</string>
-    <string name="temperature_label">دما: %1$s</string>
+    <string name="temperature_label">دما: </string>
     <string name="pressure_label">فشار: %1$s هکتوپاسکال %2$s</string>
 
     <string name="settings_title">تنظیمات</string>

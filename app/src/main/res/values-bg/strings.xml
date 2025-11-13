@@ -12,7 +12,7 @@
     <string name="altitude_label">Надморска височина: %1$s м</string>
     <string name="date_label">Дата: %1$s</string>
     <string name="time_label">Час: %1$s</string>
-    <string name="temperature_label">Температура: %1$s</string>
+    <string name="temperature_label">Температура: </string>
     <string name="pressure_label">Налягане: %1$s hPa %2$s</string>
 
     <string name="settings_title">Настройки</string>

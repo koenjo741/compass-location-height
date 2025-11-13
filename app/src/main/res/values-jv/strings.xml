@@ -12,7 +12,7 @@
     <string name="altitude_label">Dhuwur: %1$s m</string>
     <string name="date_label">Tanggal: %1$s</string>
     <string name="time_label">Wektu: %1$s</string>
-    <string name="temperature_label">Suhu: %1$s</string>
+    <string name="temperature_label">Suhu: </string>
     <string name="pressure_label">Tekanan: %1$s hPa %2$s</string>
 
     <string name="settings_title">Setelan</string>

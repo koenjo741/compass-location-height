@@ -12,7 +12,7 @@
     <string name="altitude_label">بلندی: %1$s میٹر</string>
     <string name="date_label">تاریخ: %1$s</string>
     <string name="time_label">وقت: %1$s</string>
-    <string name="temperature_label">درجہ حرارت: %1$s</string>
+    <string name="temperature_label">درجہ حرارت: </string>
     <string name="pressure_label">دباؤ: %1$s hPa %2$s</string>
 
     <string name="settings_title">ترتیبات</string>

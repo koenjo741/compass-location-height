@@ -12,7 +12,7 @@
     <string name="altitude_label">Airde: %1$s m</string>
     <string name="date_label">Dáta: %1$s</string>
     <string name="time_label">Am: %1$s</string>
-    <string name="temperature_label">Teocht: %1$s</string>
+    <string name="temperature_label">Teocht: </string>
     <string name="pressure_label">Brú: %1$s hPa %2$s</string>
 
     <string name="settings_title">Socruithe</string>

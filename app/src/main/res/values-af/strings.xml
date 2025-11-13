@@ -12,7 +12,7 @@
     <string name="altitude_label">Hoogte: %1$s m</string>
     <string name="date_label">Datum: %1$s</string>
     <string name="time_label">Tyd: %1$s</string>
-    <string name="temperature_label">Temperatuur: %1$s</string>
+    <string name="temperature_label">Temperatuur: </string>
     <string name="pressure_label">Druk: %1$s hPa %2$s</string>
 
     <string name="settings_title">Instellings</string>

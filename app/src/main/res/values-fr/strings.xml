@@ -14,7 +14,7 @@
     <string name="altitude_label">Altitude : %1$s m</string>
     <string name="date_label">Date : %1$s</string>
     <string name="time_label">Heure : %1$s</string>
-    <string name="temperature_label">Température : %1$s</string>
+    <string name="temperature_label">Température : </string>
     <string name="pressure_label">Pression : %1$s hPa %2$s</string>
 
     <!-- Textes pour la page des paramètres -->

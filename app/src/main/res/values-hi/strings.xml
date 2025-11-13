@@ -12,7 +12,7 @@
     <string name="altitude_label">ऊंचाई: %1$s मी</string>
     <string name="date_label">दिनांक: %1$s</string>
     <string name="time_label">समय: %1$s</string>
-    <string name="temperature_label">तापमान: %1$s</string>
+    <string name="temperature_label">तापमान: </string>
     <string name="pressure_label">दबाव: %1$s hPa %2$s</string>
 
     <string name="settings_title">सेटिंग्स</string>
