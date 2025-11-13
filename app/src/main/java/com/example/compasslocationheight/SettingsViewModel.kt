@@ -27,6 +27,12 @@ class SettingsViewModel(private val dataStore: SettingsDataStore) : ViewModel() 
         initialValue = "system"
     )
 
+    val coordinateFormat: StateFlow<CoordinateFormat> = dataStore.coordinateFormatFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = CoordinateFormat.Decimal
+    )
+
     fun setTheme(newTheme: ThemeMode) {
         viewModelScope.launch {
             dataStore.saveThemeMode(newTheme)
@@ -42,6 +48,12 @@ class SettingsViewModel(private val dataStore: SettingsDataStore) : ViewModel() 
     fun setLanguage(newLanguage: String) {
         viewModelScope.launch {
             dataStore.saveLanguage(newLanguage)
+        }
+    }
+
+    fun setCoordinateFormat(newFormat: CoordinateFormat) {
+        viewModelScope.launch {
+            dataStore.saveCoordinateFormat(newFormat)
         }
     }
 }

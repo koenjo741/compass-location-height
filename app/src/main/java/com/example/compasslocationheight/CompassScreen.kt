@@ -48,6 +48,7 @@ fun MainActivity.CompassScreen(
 ) {
     val currentTheme by settingsViewModel.themeMode.collectAsState()
     val currentTempUnit by settingsViewModel.tempUnit.collectAsState()
+    val currentCoordinateFormat by settingsViewModel.coordinateFormat.collectAsState()
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -147,7 +148,8 @@ fun MainActivity.CompassScreen(
                             pressureTrend = pressureTrend,
                             textColor = textColor,
                             subtleColor = subtleColor,
-                            tempUnit = currentTempUnit
+                            tempUnit = currentTempUnit,
+                            coordinateFormat = currentCoordinateFormat
                         )
                     } else {
                         Text(text = stringResource(R.string.location_permission_needed), fontSize = 20.sp, color = textColor)
@@ -342,7 +344,8 @@ fun LocationDisplay(
     pressureTrend: String,
     textColor: Color,
     subtleColor: Color,
-    tempUnit: TemperatureUnit
+    tempUnit: TemperatureUnit,
+    coordinateFormat: CoordinateFormat
 ) {
     if (!isLocationAvailable) {
         Text(text = stringResource(R.string.loading_location), fontSize = 20.sp, color = textColor)
@@ -361,8 +364,7 @@ fun LocationDisplay(
                 .clickable { openMaps(context, latitude, longitude) }
                 .padding(horizontal = 24.dp, vertical = 12.dp)
         )
-        val lat = String.format(Locale.US, "%.6f", latitude)
-        val lon = String.format(Locale.US, "%.6f", longitude)
+        val (lat, lon) = formatCoordinates(latitude, longitude, coordinateFormat)
         val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
         Text(text = stringResource(R.string.latitude_label, lat), fontSize = 16.sp, color = subtleColor)
         Text(text = stringResource(R.string.longitude_label, lon), fontSize = 16.sp, color = subtleColor)
@@ -392,6 +394,54 @@ private fun openMaps(context: Context, latitude: Double, longitude: Double) {
     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
     mapIntent.setPackage("com.google.android.apps.maps")
     context.startActivity(mapIntent)
+}
+
+private fun formatCoordinates(latitude: Double, longitude: Double, format: CoordinateFormat): Pair<String, String> {
+    return when (format) {
+        CoordinateFormat.Decimal -> {
+            Pair(
+                String.format(Locale.US, "%.6f", latitude),
+                String.format(Locale.US, "%.6f", longitude)
+            )
+        }
+        CoordinateFormat.DMS -> {
+            Pair(
+                decimalToDMS(latitude, "lat"),
+                decimalToDMS(longitude, "lon")
+            )
+        }
+        CoordinateFormat.DDM -> {
+            Pair(
+                decimalToDDM(latitude, "lat"),
+                decimalToDDM(longitude, "lon")
+            )
+        }
+    }
+}
+
+private fun decimalToDMS(coord: Double, type: String): String {
+    val direction = when(type) {
+        "lat" -> if (coord >= 0) "N" else "S"
+        "lon" -> if (coord >= 0) "E" else "W"
+        else -> ""
+    }
+    val absCoord = Math.abs(coord)
+    val degrees = absCoord.toInt()
+    val minutes = ((absCoord - degrees) * 60).toInt()
+    val seconds = (((absCoord - degrees) * 60) - minutes) * 60
+    return "$degrees° $minutes' ${String.format(Locale.US, "%.2f", seconds)}'' $direction"
+}
+
+private fun decimalToDDM(coord: Double, type: String): String {
+    val direction = when(type) {
+        "lat" -> if (coord >= 0) "N" else "S"
+        "lon" -> if (coord >= 0) "E" else "W"
+        else -> ""
+    }
+    val absCoord = Math.abs(coord)
+    val degrees = absCoord.toInt()
+    val minutes = (absCoord - degrees) * 60
+    return "$degrees° ${String.format(Locale.US, "%.4f", minutes)}' $direction"
 }
 
 @Composable
