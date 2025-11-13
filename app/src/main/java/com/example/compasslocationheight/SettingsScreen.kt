@@ -24,7 +24,6 @@ fun SettingsScreen(
     val currentTheme by settingsViewModel.themeMode.collectAsState()
     val currentTempUnit by settingsViewModel.tempUnit.collectAsState()
     val currentLanguage by settingsViewModel.language.collectAsState()
-    val currentCoordinateFormat by settingsViewModel.coordinateFormat.collectAsState()
 
     Column(
         modifier = Modifier
@@ -51,17 +50,6 @@ fun SettingsScreen(
         ) {
             ThemeButton(text = stringResource(R.string.unit_celsius), onClick = { settingsViewModel.setTemperatureUnit(TemperatureUnit.Celsius) }, isSelected = currentTempUnit == TemperatureUnit.Celsius, selectedColor = headingColor)
             ThemeButton(text = stringResource(R.string.unit_fahrenheit), onClick = { settingsViewModel.setTemperatureUnit(TemperatureUnit.Fahrenheit) }, isSelected = currentTempUnit == TemperatureUnit.Fahrenheit, selectedColor = headingColor)
-        }
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(text = stringResource(R.string.coordinate_format_section_title), fontSize = 20.sp, color = textColor)
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            ThemeButton(text = stringResource(R.string.coordinate_format_decimal), onClick = { settingsViewModel.setCoordinateFormat(CoordinateFormat.Decimal) }, isSelected = currentCoordinateFormat == CoordinateFormat.Decimal, selectedColor = headingColor)
-            ThemeButton(text = stringResource(R.string.coordinate_format_dms), onClick = { settingsViewModel.setCoordinateFormat(CoordinateFormat.DMS) }, isSelected = currentCoordinateFormat == CoordinateFormat.DMS, selectedColor = headingColor)
-            ThemeButton(text = stringResource(R.string.coordinate_format_ddm), onClick = { settingsViewModel.setCoordinateFormat(CoordinateFormat.DDM) }, isSelected = currentCoordinateFormat == CoordinateFormat.DDM, selectedColor = headingColor)
         }
         Spacer(modifier = Modifier.height(32.dp))
 

@@ -17,26 +17,22 @@
     <string name="temperature_label">Temperatur: </string>
     <string name="pressure_label">Luftdruck: %1$s hPa %2$s</string>
 
-    <!-- Texte für die Einstellungsseite -->
+    <!-- NEU: Texte für die Einstellungsseite -->
     <string name="settings_title">Einstellungen</string>
-    <string name="theme_section_title">App-Design</string>
+    <string name="theme_section_title">App-Theme</string>
     <string name="temp_unit_section_title">Temperatureinheit</string>
-    <string name="coordinate_format_section_title">Koordinatenformat</string>
     <string name="button_back">Zurück</string>
-    <string name="theme_dark">Dunkel</string>
-    <string name="theme_light">Hell</string>
-    <string name="theme_night">Nacht</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_night">Night</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
-    <string name="coordinate_format_decimal">Dezimal</string>
-    <string name="coordinate_format_dms">GMS</string>
-    <string name="coordinate_format_ddm">GDM</string>
 
-    <!-- Texte für die Info-Seite -->
+    <!-- NEU: Texte für die Info-Seite -->
     <string name="about_title">Über die App</string>
     <string name="about_placeholder">(wird noch gebaut)</string>
 
-    <!-- Texte für Barrierefreiheit (Content Descriptions) -->
+    <!-- NEU: Texte für Barrierefreiheit (Content Descriptions) -->
     <string name="cd_open_settings">Einstellungen öffnen</string>
     <string name="cd_open_about">Info-Seite öffnen</string>
     <string name="cd_back">Zurück</string>

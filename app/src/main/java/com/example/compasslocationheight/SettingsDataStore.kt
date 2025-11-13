@@ -16,7 +16,6 @@ class SettingsDataStore(private val context: Context) {
     private val THEME_KEY = stringPreferencesKey("theme_mode")
     private val TEMP_UNIT_KEY = stringPreferencesKey("temp_unit")
     private val LANGUAGE_KEY = stringPreferencesKey("language")
-    private val COORDINATE_FORMAT_KEY = stringPreferencesKey("coordinate_format")
 
     val themeModeFlow: Flow<ThemeMode> = context.dataStore.data
         .map { preferences ->
@@ -35,12 +34,6 @@ class SettingsDataStore(private val context: Context) {
             preferences[LANGUAGE_KEY] ?: "system"
         }
 
-    val coordinateFormatFlow: Flow<CoordinateFormat> = context.dataStore.data
-        .map { preferences ->
-            val formatName = preferences[COORDINATE_FORMAT_KEY] ?: CoordinateFormat.Decimal.name
-            CoordinateFormat.valueOf(formatName)
-        }
-
     suspend fun saveThemeMode(themeMode: ThemeMode) {
         context.dataStore.edit { preferences ->
             preferences[THEME_KEY] = themeMode.name
@@ -56,12 +49,6 @@ class SettingsDataStore(private val context: Context) {
     suspend fun saveLanguage(language: String) {
         context.dataStore.edit { preferences ->
             preferences[LANGUAGE_KEY] = language
-        }
-    }
-
-    suspend fun saveCoordinateFormat(format: CoordinateFormat) {
-        context.dataStore.edit { preferences ->
-            preferences[COORDINATE_FORMAT_KEY] = format.name
         }
     }
 }
