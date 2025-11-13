@@ -1,6 +1,9 @@
 # compass-location-height
 World's Leading Compass &amp; Location App
 
+*** Commit #81 ist eine sehr stabile Version, die die Sprachauswahl gut implementiert hat. ***
+
+
 - ich möchte eine app für das smartphone entwickeln
 - diese app soll folgendes können:
 -- sie soll einen kompass enthalten
