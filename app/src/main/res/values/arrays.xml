@@ -113,7 +113,7 @@
         <item>sn</item>
         <item>sq</item>
         <item>sr</item>
-        <item>sv</item>
+        <item>sv-rSE</item> <!-- NEU: Schwedisch hinzugefügt, passend zum Ordner "values-se" -->
         <item>tl</item>
         <item>ta</item>
         <item>th</item>
