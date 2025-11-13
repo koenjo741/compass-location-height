@@ -1,19 +1,18 @@
 package com.example.compasslocationheight
 
-import android.content.Context
-import java.util.Locale
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 
 object LocaleHelper {
-    fun setLocale(context: Context, languageCode: String) {
-        val locale = if (languageCode == "system") {
-            Locale.getDefault()
-        } else {
-            Locale(languageCode)
+    fun setLocale(languageCode: String) {
+        val appLocale: LocaleListCompat = when (languageCode) {
+            "system" -> {
+                LocaleListCompat.getEmptyLocaleList()
+            }
+            else -> {
+                LocaleListCompat.forLanguageTags(languageCode)
+            }
         }
-        Locale.setDefault(locale)
-        val resources = context.resources
-        val configuration = resources.configuration
-        configuration.setLocale(locale)
-        resources.updateConfiguration(configuration, resources.displayMetrics)
+        AppCompatDelegate.setApplicationLocales(appLocale)
     }
 }

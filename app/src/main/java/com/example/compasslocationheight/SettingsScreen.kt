@@ -21,9 +21,9 @@ fun SettingsScreen(
     textColor: Color,
     headingColor: Color
 ) {
-    val currentTheme by settingsViewModel.themeMode.collectAsState()
-    val currentTempUnit by settingsViewModel.tempUnit.collectAsState()
-    val currentLanguage by settingsViewModel.language.collectAsState()
+    val currentTheme by settingsViewModel.themeMode
+    val currentTempUnit by settingsViewModel.tempUnit
+    val currentLanguage by settingsViewModel.language
 
     Column(
         modifier = Modifier
@@ -72,7 +72,7 @@ fun SettingsScreen(
             onExpandedChange = { expanded = !expanded }
         ) {
             TextField(
-                modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth(),
+                modifier = Modifier.menuAnchor().fillMaxWidth(),
                 readOnly = true,
                 value = selectedOptionText,
                 onValueChange = {},

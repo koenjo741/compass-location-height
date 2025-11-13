@@ -23,7 +23,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.snapshotFlow
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -114,17 +114,15 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         addressText = getString(R.string.searching_address)
 
         lifecycleScope.launch {
-            var isInitialLanguageSet = false
-            settingsViewModel.language.collect { langCode ->
-                if (isInitialLanguageSet) {
-                    LocaleHelper.setLocale(this@MainActivity, langCode)
+            snapshotFlow { settingsViewModel.language.value }
+                .drop(1)
+                .distinctUntilChanged()
+                .collect {
                     recreate()
-                } else {
-                    LocaleHelper.setLocale(this@MainActivity, langCode)
-                    isInitialLanguageSet = true
                 }
-            }
         }
+
+        LocaleHelper.setLocale(settingsViewModel.language.value)
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -151,7 +149,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
         setContent {
             val navController = rememberNavController()
-            val currentTheme by settingsViewModel.themeMode.collectAsState()
+            val currentTheme by settingsViewModel.themeMode
 
             val backgroundColor = when (currentTheme) {
                 ThemeMode.Light -> AppColors.LightBackground

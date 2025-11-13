@@ -46,8 +46,8 @@ fun MainActivity.CompassScreen(
     navController: NavController,
     settingsViewModel: SettingsViewModel
 ) {
-    val currentTheme by settingsViewModel.themeMode.collectAsState()
-    val currentTempUnit by settingsViewModel.tempUnit.collectAsState()
+    val currentTheme by settingsViewModel.themeMode
+    val currentTempUnit by settingsViewModel.tempUnit
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -65,7 +65,6 @@ fun MainActivity.CompassScreen(
     val isDarkTheme = when (currentTheme) {
         ThemeMode.Dark, ThemeMode.Night -> true
         ThemeMode.Light -> false
-        else -> true // Default to dark theme
     }
 
     SideEffect {
@@ -81,25 +80,21 @@ fun MainActivity.CompassScreen(
         ThemeMode.Light -> AppColors.LightHeading
         ThemeMode.Night -> AppColors.NightHeading
         ThemeMode.Dark -> AppColors.DarkHeading
-        else -> AppColors.DarkHeading
     }
     val textColor = when (currentTheme) {
         ThemeMode.Light -> AppColors.LightText
         ThemeMode.Night -> AppColors.NightText
         ThemeMode.Dark -> AppColors.DarkText
-        else -> AppColors.DarkText
     }
     val accentColor = when (currentTheme) {
         ThemeMode.Light -> AppColors.LightAccent
         ThemeMode.Night -> AppColors.NightAccent
         ThemeMode.Dark -> AppColors.DarkAccent
-        else -> AppColors.DarkAccent
     }
     val subtleColor = when (currentTheme) {
         ThemeMode.Light -> AppColors.LightSubtle
         ThemeMode.Night -> AppColors.NightSubtle
         ThemeMode.Dark -> AppColors.DarkSubtle
-        else -> AppColors.DarkSubtle
     }
 
     CompassLocationHeightTheme(darkTheme = isDarkTheme) {
@@ -194,19 +189,16 @@ fun ThemeSwitcher(currentMode: ThemeMode, onThemeChange: (ThemeMode) -> Unit, mo
         ThemeMode.Dark -> ThemeMode.Night
         ThemeMode.Night -> ThemeMode.Light
         ThemeMode.Light -> ThemeMode.Dark
-        else -> ThemeMode.Dark
     }
     val currentModeIcon = when (currentMode) {
         ThemeMode.Light -> Icons.Filled.WbSunny
         ThemeMode.Night -> Icons.Filled.NightsStay
         ThemeMode.Dark -> Icons.Filled.DarkMode
-        else -> Icons.Filled.DarkMode
     }
     val iconColor = when (currentMode) {
         ThemeMode.Light -> Color(0xFFFFD700)
         ThemeMode.Night -> AppColors.NightHeading
         ThemeMode.Dark -> AppColors.DarkHeading
-        else -> AppColors.DarkHeading
     }
     Icon(
         imageVector = currentModeIcon,
