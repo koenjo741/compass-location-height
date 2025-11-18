@@ -13,6 +13,7 @@
     <string name="date_label">Petsa: %1$s</string>
     <string name="time_label">Oras: %1$s</string>
     <string name="temperature_label">Temperatura: </string>
+    <string name="humidity_label">Halumigmig:</string>
     <string name="pressure_label">Presyon: %1$s hPa %2$s</string>
 
     <string name="settings_title">Mga Setting</string>

@@ -13,6 +13,7 @@
     <string name="date_label">Ngày: %1$s</string>
     <string name="time_label">Thời gian: %1$s</string>
     <string name="temperature_label">Nhiệt độ: </string>
+    <string name="humidity_label">Độ ẩm:</string>
     <string name="pressure_label">Áp suất: %1$s hPa %2$s</string>
 
     <string name="settings_title">Cài đặt</string>

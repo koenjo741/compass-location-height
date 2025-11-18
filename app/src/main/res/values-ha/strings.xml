@@ -13,6 +13,7 @@
     <string name="date_label">Kwanan wata: %1$s</string>
     <string name="time_label">Lokaci: %1$s</string>
     <string name="temperature_label">Zazzabi: </string>
+    <string name="humidity_label">Laima:</string>
     <string name="pressure_label">Matsi: %1$s hPa %2$s</string>
 
     <string name="settings_title">Saituna</string>

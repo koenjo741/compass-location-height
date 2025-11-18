@@ -13,6 +13,7 @@
     <string name="date_label">תאריך: %1$s</string>
     <string name="time_label">שעה: %1$s</string>
     <string name="temperature_label">טמפרטורה: </string>
+    <string name="humidity_label">לחות:</string>
     <string name="pressure_label">לחץ: %1$s hPa %2$s</string>
 
     <string name="settings_title">הגדרות</string>

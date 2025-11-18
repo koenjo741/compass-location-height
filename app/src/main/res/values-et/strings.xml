@@ -13,6 +13,7 @@
     <string name="date_label">Kuupäev: %1$s</string>
     <string name="time_label">Kellaaeg: %1$s</string>
     <string name="temperature_label">Temperatuur: </string>
+    <string name="humidity_label">Niiskus:</string>
     <string name="pressure_label">Rõhk: %1$s hPa %2$s</string>
 
     <string name="settings_title">Seaded</string>

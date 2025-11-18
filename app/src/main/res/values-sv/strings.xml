@@ -13,6 +13,7 @@
     <string name="date_label">Datum: %1$s</string>
     <string name="time_label">Tid: %1$s</string>
     <string name="temperature_label">Temperatur: </string>
+    <string name="humidity_label">Luftfuktighet:</string>
     <string name="pressure_label">Lufttryck: %1$s hPa %2$s</string>
 
     <string name="settings_title">Inställningar</string>

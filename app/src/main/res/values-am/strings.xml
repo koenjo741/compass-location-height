@@ -13,6 +13,7 @@
     <string name="date_label">ቀን: %1$s</string>
     <string name="time_label">ሰዓት: %1$s</string>
     <string name="temperature_label">ሙቀት: </string>
+    <string name="humidity_label">እርጥበት:</string>
     <string name="pressure_label">ግፊት: %1$s hPa %2$s</string>
 
     <string name="settings_title">ቅንብሮች</string>

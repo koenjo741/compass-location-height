@@ -58,7 +58,7 @@ import java.util.Locale
 
 @Serializable data class WeatherResponse(val current_weather: CurrentWeather, val hourly: HourlyData)
 @Serializable data class CurrentWeather(val temperature: Double)
-@Serializable data class HourlyData(val time: List<String>, val pressure_msl: List<Double>)
+@Serializable data class HourlyData(val time: List<String>, val pressure_msl: List<Double>, val relativehumidity_2m: List<Int>)
 
 class SettingsViewModelFactory(private val dataStore: SettingsDataStore) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -99,6 +99,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var magnetometerAccuracy by mutableIntStateOf(0)
     var magneticDeclination by mutableFloatStateOf(0f)
     var currentTemperature by mutableStateOf<Double?>(null)
+    var currentHumidity by mutableStateOf<Int?>(null)
     var currentPressure by mutableFloatStateOf(0f)
     var pressureTrend by mutableStateOf("→")
     private var lastWeatherApiCall: Long = 0
@@ -248,17 +249,29 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                     parameter("latitude", latitude)
                     parameter("longitude", longitude)
                     parameter("current_weather", "true")
-                    parameter("hourly", "pressure_msl")
+                    parameter("hourly", "pressure_msl,relativehumidity_2m")
                 }.body()
                 val trend = calculatePressureTrend(response.hourly)
+                val humidity = getCurrentHumidity(response.hourly)
                 withContext(Dispatchers.Main) {
                     currentTemperature = response.current_weather.temperature
                     pressureTrend = trend
+                    currentHumidity = humidity
                 }
                 client.close()
             } catch (e: Exception) {
                 println("Wetter-API Fehler: ${e.message}")
             }
+        }
+    }
+
+    private fun getCurrentHumidity(hourlyData: HourlyData): Int? {
+        val now = SimpleDateFormat("yyyy-MM-dd'T'HH:00", resources.configuration.locales[0]).format(Date())
+        val currentIndex = hourlyData.time.indexOf(now)
+        return if (currentIndex != -1 && currentIndex < hourlyData.relativehumidity_2m.size) {
+            hourlyData.relativehumidity_2m[currentIndex]
+        } else {
+            null
         }
     }
 

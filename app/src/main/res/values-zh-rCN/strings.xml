@@ -13,6 +13,7 @@
     <string name="date_label">日期: %1$s</string>
     <string name="time_label">时间: %1$s</string>
     <string name="temperature_label">温度: </string>
+    <string name="humidity_label">湿度:</string>
     <string name="pressure_label">气压: %1$s hPa %2$s</string>
 
     <string name="settings_title">设置</string>

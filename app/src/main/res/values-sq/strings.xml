@@ -13,6 +13,7 @@
     <string name="date_label">Data: %1$s</string>
     <string name="time_label">Ora: %1$s</string>
     <string name="temperature_label">Temperatura: </string>
+    <string name="humidity_label">Lagështia:</string>
     <string name="pressure_label">Shtypja: %1$s hPa %2$s</string>
 
     <string name="settings_title">Cilësimet</string>

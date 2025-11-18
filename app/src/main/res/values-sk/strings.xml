@@ -13,6 +13,7 @@
     <string name="date_label">Dátum: %1$s</string>
     <string name="time_label">Čas: %1$s</string>
     <string name="temperature_label">Teplota: </string>
+    <string name="humidity_label">Vlhkosť:</string>
     <string name="pressure_label">Tlak: %1$s hPa %2$s</string>
 
     <string name="settings_title">Nastavenia</string>

@@ -13,6 +13,7 @@
     <string name="date_label">ದಿನಾಂಕ: %1$s</string>
     <string name="time_label">ಸಮಯ: %1$s</string>
     <string name="temperature_label">ತಾಪಮಾನ: </string>
+    <string name="humidity_label">ಆರ್ದ್ರತೆ:</string>
     <string name="pressure_label">ಒತ್ತಡ: %1$s hPa %2$s</string>
 
     <string name="settings_title">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>

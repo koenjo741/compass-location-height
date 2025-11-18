@@ -13,6 +13,7 @@
     <string name="date_label">Tarehe: %1$s</string>
     <string name="time_label">Muda: %1$s</string>
     <string name="temperature_label">Joto: </string>
+    <string name="humidity_label">Unyevu:</string>
     <string name="pressure_label">Shinikizo: %1$s hPa %2$s</string>
 
     <string name="settings_title">Mipangilio</string>

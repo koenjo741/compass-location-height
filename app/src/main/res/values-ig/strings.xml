@@ -13,6 +13,7 @@
     <string name="date_label">Ụbọchị: %1$s</string>
     <string name="time_label">Oge: %1$s</string>
     <string name="temperature_label">Okpomọkụ: </string>
+    <string name="humidity_label">Udu mmiri:</string>
     <string name="pressure_label">Nrụgide: %1$s hPa %2$s</string>
 
     <string name="settings_title">Ntọala</string>

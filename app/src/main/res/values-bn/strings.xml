@@ -13,6 +13,7 @@
     <string name="date_label">তারিখ: %1$s</string>
     <string name="time_label">সময়: %1$s</string>
     <string name="temperature_label">তাপমাত্রা: </string>
+    <string name="humidity_label">আর্দ্রতা:</string>
     <string name="pressure_label">চাপ: %1$s hPa %2$s</string>
 
     <string name="settings_title">সেটিংস</string>

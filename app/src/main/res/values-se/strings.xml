@@ -15,6 +15,7 @@
     <string name="date_label">Datum: %1$s</string>
     <string name="time_label">Zeit: %1$s</string>
     <string name="temperature_label">Temperatur: </string>
+    <string name="humidity_label">Lávki:</string>
     <string name="pressure_label">Luftdruck: %1$s hPa %2$s</string>
 
     <!-- NEU: Texte für die Einstellungsseite -->

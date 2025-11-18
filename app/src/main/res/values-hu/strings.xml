@@ -13,6 +13,7 @@
     <string name="date_label">Dátum: %1$s</string>
     <string name="time_label">Idő: %1$s</string>
     <string name="temperature_label">Hőmérséklet: </string>
+    <string name="humidity_label">Páratartalom:</string>
     <string name="pressure_label">Nyomás: %1$s hPa %2$s</string>
 
     <string name="settings_title">Beállítások</string>

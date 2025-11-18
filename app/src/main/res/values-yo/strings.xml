@@ -13,6 +13,7 @@
     <string name="date_label">Ọjọ́: %1$s</string>
     <string name="time_label">Àkókò: %1$s</string>
     <string name="temperature_label">Ìgbóná: </string>
+    <string name="humidity_label">Ọrini:</string>
     <string name="pressure_label">Ìfúnpá: %1$s hPa %2$s</string>
 
     <string name="settings_title">Ètò</string>

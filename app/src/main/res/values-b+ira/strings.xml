@@ -13,6 +13,7 @@
     <string name="date_label">تاریخ: %1$s</string>
     <string name="time_label">زمان: %1$s</string>
     <string name="temperature_label">دما: </string>
+    <string name="humidity_label">رطوبت:</string>
     <string name="pressure_label">فشار: %1$s هکتوپاسکال %2$s</string>
 
     <string name="settings_title">تنظیمات</string>

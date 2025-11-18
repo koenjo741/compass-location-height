@@ -13,6 +13,7 @@
     <string name="date_label">Дата: %1$s</string>
     <string name="time_label">Время: %1$s</string>
     <string name="temperature_label">Температура: </string>
+    <string name="humidity_label">Влажность:</string>
     <string name="pressure_label">Давление: %1$s гПа %2$s</string>
 
     <string name="settings_title">Настройки</string>

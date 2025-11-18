@@ -13,6 +13,7 @@
     <string name="date_label">தேதி: %1$s</string>
     <string name="time_label">நேரம்: %1$s</string>
     <string name="temperature_label">வெப்பநிலை: </string>
+    <string name="humidity_label">ஈரப்பதம்:</string>
     <string name="pressure_label">அழுத்தம்: %1$s hPa %2$s</string>
 
     <string name="settings_title">அமைப்புகள்</string>

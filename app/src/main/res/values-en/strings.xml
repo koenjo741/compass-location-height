@@ -15,6 +15,7 @@
     <string name="date_label">Date: %1$s</string>
     <string name="time_label">Time: %1$s</string>
     <string name="temperature_label">Temperature: </string> <!-- Suffix is added in the code -->
+    <string name="humidity_label">Humidity:</string>
     <string name="pressure_label">Air Pressure: %1$s hPa %2$s</string>
 
     <!-- NEW: Texts for the settings page -->

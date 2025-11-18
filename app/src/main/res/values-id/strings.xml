@@ -13,6 +13,7 @@
     <string name="date_label">Tanggal: %1$s</string>
     <string name="time_label">Waktu: %1$s</string>
     <string name="temperature_label">Suhu: </string>
+    <string name="humidity_label">Kelembapan:</string>
     <string name="pressure_label">Tekanan: %1$s hPa %2$s</string>
 
     <string name="settings_title">Pengaturan</string>

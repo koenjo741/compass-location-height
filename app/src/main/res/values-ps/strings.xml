@@ -13,6 +13,7 @@
     <string name="date_label">نېټه: %1$s</string>
     <string name="time_label">وخت: %1$s</string>
     <string name="temperature_label">تودوخه: </string>
+    <string name="humidity_label">رطوبت:</string>
     <string name="pressure_label">فشار: %1$s hPa %2$s</string>
 
     <string name="settings_title">تنظیمات</string>

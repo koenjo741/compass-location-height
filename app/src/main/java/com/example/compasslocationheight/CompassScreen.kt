@@ -143,6 +143,7 @@ fun MainActivity.CompassScreen(
                             currentDate = currentDate,
                             currentTime = currentTime,
                             currentTemperature = currentTemperature,
+                            currentHumidity = currentHumidity,
                             currentPressure = currentPressure,
                             pressureTrend = pressureTrend,
                             textColor = textColor,
@@ -338,6 +339,7 @@ fun LocationDisplay(
     currentDate: String,
     currentTime: String,
     currentTemperature: Double?,
+    currentHumidity: Int?,
     currentPressure: Float,
     pressureTrend: String,
     textColor: Color,
@@ -379,6 +381,9 @@ fun LocationDisplay(
             val unitSuffix = if (tempUnit == TemperatureUnit.Fahrenheit) "°F" else "°C"
             val tempFormatted = String.format(Locale.US, "%.1f", displayTemp)
             Text(text = "${stringResource(R.string.temperature_label)} $tempFormatted $unitSuffix", fontSize = 16.sp, color = subtleColor)
+        }
+        currentHumidity?.let {
+            Text(text = "${stringResource(R.string.humidity_label)} $it%", fontSize = 16.sp, color = subtleColor)
         }
         if (currentPressure > 0f) {
             val pressureFormatted = String.format(Locale.US, "%.2f", currentPressure)

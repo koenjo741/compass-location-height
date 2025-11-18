@@ -13,6 +13,7 @@
     <string name="date_label">Datums: %1$s</string>
     <string name="time_label">Laiks: %1$s</string>
     <string name="temperature_label">Temperatūra: </string>
+    <string name="humidity_label">Mitrums:</string>
     <string name="pressure_label">Spiediens: %1$s hPa %2$s</string>
 
     <string name="settings_title">Iestatījumi</string>

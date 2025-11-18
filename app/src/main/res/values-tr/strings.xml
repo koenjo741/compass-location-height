@@ -13,6 +13,7 @@
     <string name="date_label">Tarih: %1$s</string>
     <string name="time_label">Saat: %1$s</string>
     <string name="temperature_label">Sıcaklık: </string>
+    <string name="humidity_label">Nem:</string>
     <string name="pressure_label">Basınç: %1$s hPa %2$s</string>
 
     <string name="settings_title">Ayarlar</string>

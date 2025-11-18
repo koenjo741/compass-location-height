@@ -13,6 +13,7 @@
     <string name="date_label">Data: %1$s</string>
     <string name="time_label">Laikas: %1$s</string>
     <string name="temperature_label">Temperatūra: </string>
+    <string name="humidity_label">Drėgmė:</string>
     <string name="pressure_label">Slėgis: %1$s hPa %2$s</string>
 
     <string name="settings_title">Nustatymai</string>

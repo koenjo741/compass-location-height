@@ -13,6 +13,7 @@
     <string name="date_label">Dîrok: %1$s</string>
     <string name="time_label">Dem: %1$s</string>
     <string name="temperature_label">Germahî: </string>
+    <string name="humidity_label">Nembûn:</string>
     <string name="pressure_label">Zext: %1$s hPa %2$s</string>
 
     <string name="settings_title">Mîheng</string>

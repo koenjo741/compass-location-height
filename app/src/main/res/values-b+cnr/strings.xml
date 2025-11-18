@@ -13,6 +13,7 @@
     <string name="date_label">Datum: %1$s</string>
     <string name="time_label">Vrijeme: %1$s</string>
     <string name="temperature_label">Temperatura: </string>
+    <string name="humidity_label">Vlažnost:</string>
     <string name="pressure_label">Pritisak: %1$s hPa %2$s</string>
 
     <string name="settings_title">Podešavanja</string>

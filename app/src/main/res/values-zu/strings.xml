@@ -13,6 +13,7 @@
     <string name="date_label">Usuku: %1$s</string>
     <string name="time_label">Isikhathi: %1$s</string>
     <string name="temperature_label">Izinga lokushisa: </string>
+    <string name="humidity_label">Umswakama:</string>
     <string name="pressure_label">Ukucindezeleka: %1$s hPa %2$s</string>
 
     <string name="settings_title">Izilungiselelo</string>
