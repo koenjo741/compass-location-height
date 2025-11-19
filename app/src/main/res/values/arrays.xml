@@ -17,6 +17,7 @@
         <item>Español</item>
         <item>Eesti</item>
         <item>Suomi</item> 
+        <item>فارسی (Farsi)</item>
         <item>Français</item>
         <item>Gaeilge</item>
         <item>Hausa</item>
@@ -25,7 +26,6 @@
         <item>Magyar</item> 
         <item>Igbo</item>
         <item>Indonesia</item>
-        <item>Irish</item>
         <item>Italiano</item>
         <item>עברית (Ivrit)</item>
         <item>日本語 (Nihongo)</item>
@@ -80,6 +80,7 @@
         <item>es</item>
         <item>et</item>
         <item>fi</item> 
+        <item>fa</item>
         <item>fr</item>
         <item>ga</item>
         <item>ha</item>
@@ -87,8 +88,7 @@
         <item>hr</item>
         <item>hu</item> 
         <item>ig</item>
-        <item>id</item>
-        <item>b+ira</item> 
+        <item>in</item>
         <item>it</item>
         <item>iw</item>
         <item>ja</item>
