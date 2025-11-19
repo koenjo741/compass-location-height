@@ -25,83 +25,88 @@ fun SettingsScreen(
     val currentTempUnit by settingsViewModel.tempUnit.collectAsState()
     val currentLanguage by settingsViewModel.language.collectAsState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(backgroundColor)
-            .padding(16.dp)
-    ) {
-        Text(text = stringResource(R.string.theme_section_title), fontSize = 20.sp, color = textColor)
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = backgroundColor
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp)
         ) {
-            ThemeButton(text = stringResource(R.string.theme_dark), onClick = { settingsViewModel.setTheme(ThemeMode.Dark) }, isSelected = currentTheme == ThemeMode.Dark, selectedColor = headingColor)
-            ThemeButton(text = stringResource(R.string.theme_light), onClick = { settingsViewModel.setTheme(ThemeMode.Light) }, isSelected = currentTheme == ThemeMode.Light, selectedColor = headingColor)
-            ThemeButton(text = stringResource(R.string.theme_night), onClick = { settingsViewModel.setTheme(ThemeMode.Night) }, isSelected = currentTheme == ThemeMode.Night, selectedColor = headingColor)
-        }
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(text = stringResource(R.string.temp_unit_section_title), fontSize = 20.sp, color = textColor)
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            ThemeButton(text = stringResource(R.string.unit_celsius), onClick = { settingsViewModel.setTemperatureUnit(TemperatureUnit.Celsius) }, isSelected = currentTempUnit == TemperatureUnit.Celsius, selectedColor = headingColor)
-            ThemeButton(text = stringResource(R.string.unit_fahrenheit), onClick = { settingsViewModel.setTemperatureUnit(TemperatureUnit.Fahrenheit) }, isSelected = currentTempUnit == TemperatureUnit.Fahrenheit, selectedColor = headingColor)
-        }
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Text(text = "Sprache / Language", fontSize = 20.sp, color = textColor)
-        Spacer(modifier = Modifier.height(16.dp))
-
-        var expanded by remember { mutableStateOf(false) }
-        val context = LocalContext.current
-        val languageNames = context.resources.getStringArray(R.array.language_names)
-        val languageCodes = context.resources.getStringArray(R.array.language_codes)
-        val languageOptions = remember(languageNames, languageCodes) {
-            val systemLocale = java.util.Locale.getDefault().displayLanguage
-            val systemLanguageString = "System ($systemLocale)"
-            mapOf("system" to systemLanguageString) + languageCodes.zip(languageNames).toMap()
-        }
-        val selectedOptionText = languageOptions[currentLanguage] ?: languageOptions["system"]!!
-
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded }
-        ) {
-            TextField(
-                modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth(),
-                readOnly = true,
-                value = selectedOptionText,
-                onValueChange = {},
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                colors = ExposedDropdownMenuDefaults.textFieldColors(),
-            )
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
+            Text(text = stringResource(R.string.theme_section_title), fontSize = 20.sp, color = textColor)
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                languageOptions.forEach { (langCode, langName) ->
-                    DropdownMenuItem(
-                        text = { Text(text = langName) },
-                        onClick = {
-                            settingsViewModel.setLanguage(langCode)
-                            expanded = false
-                        }
-                    )
+                ThemeButton(text = stringResource(R.string.theme_dark), onClick = { settingsViewModel.setTheme(ThemeMode.Dark) }, isSelected = currentTheme == ThemeMode.Dark, selectedColor = headingColor)
+                ThemeButton(text = stringResource(R.string.theme_light), onClick = { settingsViewModel.setTheme(ThemeMode.Light) }, isSelected = currentTheme == ThemeMode.Light, selectedColor = headingColor)
+                ThemeButton(text = stringResource(R.string.theme_night), onClick = { settingsViewModel.setTheme(ThemeMode.Night) }, isSelected = currentTheme == ThemeMode.Night, selectedColor = headingColor)
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+            Text(text = stringResource(R.string.temp_unit_section_title), fontSize = 20.sp, color = textColor)
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                ThemeButton(text = stringResource(R.string.unit_celsius), onClick = { settingsViewModel.setTemperatureUnit(TemperatureUnit.Celsius) }, isSelected = currentTempUnit == TemperatureUnit.Celsius, selectedColor = headingColor)
+                ThemeButton(text = stringResource(R.string.unit_fahrenheit), onClick = { settingsViewModel.setTemperatureUnit(TemperatureUnit.Fahrenheit) }, isSelected = currentTempUnit == TemperatureUnit.Fahrenheit, selectedColor = headingColor)
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Text(text = "Sprache / Language", fontSize = 20.sp, color = textColor)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            var expanded by remember { mutableStateOf(false) }
+            val context = LocalContext.current
+            val languageNames = context.resources.getStringArray(R.array.language_names)
+            val languageCodes = context.resources.getStringArray(R.array.language_codes)
+            val languageOptions = remember(languageNames, languageCodes) {
+                val systemLocale = java.util.Locale.getDefault().displayLanguage
+                val systemLanguageString = "System ($systemLocale)"
+                mapOf("system" to systemLanguageString) + languageCodes.zip(languageNames).toMap()
+            }
+            val selectedOptionText = languageOptions[currentLanguage] ?: languageOptions["system"]!!
+
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }
+            ) {
+                TextField(
+                    modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth(),
+                    readOnly = true,
+                    value = selectedOptionText,
+                    onValueChange = {},
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                    colors = ExposedDropdownMenuDefaults.textFieldColors(),
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    languageOptions.forEach { (langCode, langName) ->
+                        DropdownMenuItem(
+                            text = { Text(text = langName) },
+                            onClick = {
+                                settingsViewModel.setLanguage(langCode)
+                                expanded = false
+                            }
+                        )
+                    }
                 }
             }
-        }
 
-        Spacer(Modifier.weight(1f))
-        Button(
-            onClick = { navController.popBackStack() },
-            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = headingColor)
-        ) {
-            Text(text = stringResource(R.string.button_back), fontSize = 18.sp)
+            Spacer(Modifier.weight(1f))
+            Button(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = headingColor)
+            ) {
+                Text(text = stringResource(R.string.button_back), fontSize = 18.sp)
+            }
         }
     }
 }
