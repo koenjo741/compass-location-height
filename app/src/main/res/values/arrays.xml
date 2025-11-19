@@ -16,13 +16,13 @@
         <item>English</item>
         <item>Español</item>
         <item>Eesti</item>
-        <item>Suomi</item> <!-- KORREKTUR: Finnisch an die richtige Stelle verschoben -->
+        <item>Suomi</item> 
         <item>Français</item>
         <item>Gaeilge</item>
         <item>Hausa</item>
         <item>हिन्दी (Hindī)</item>
         <item>Hrvatski</item>
-        <item>Magyar</item> <!-- KORREKTUR: Ungarisch an die richtige Stelle verschoben -->
+        <item>Magyar</item> 
         <item>Igbo</item>
         <item>Indonesia</item>
         <item>Irish</item>
@@ -41,7 +41,7 @@
         <item>Melayu</item>
         <item>Nederlands</item>
         <item>Norsk</item>
-        <item>Polski</item> <!-- KORREKTUR: Polnisch an die richtige Stelle verschoben -->
+        <item>Polski</item> 
         <item>Português</item>
         <item>Română</item>
         <item>Русский (Russkiy)</item>
@@ -50,7 +50,7 @@
         <item>Shona</item>
         <item>Shqip</item>
         <item>Srpski</item>
-        <item>Svenska</item> <!-- NEU: Schwedisch hinzugefügt, da der Ordner existiert -->
+        <item>Svenska</item> 
         <item>Tagalog</item>
         <item>தமிழ் (Tamiḻ)</item>
         <item>ภาษาไทย (Thai)</item>
@@ -72,25 +72,25 @@
         <item>bn</item>
         <item>bs</item>
         <item>cs</item>
-        <item>b+cnr</item> <!-- KORREKTUR: Muss exakt dem Ordnernamen "values-b+cnr" entsprechen -->
+        <item>b+cnr</item> 
         <item>da</item>
         <item>de</item>
         <item>el</item>
         <item>en</item>
         <item>es</item>
         <item>et</item>
-        <item>fi</item> <!-- KORREKTUR: Finnisch an die richtige Stelle verschoben -->
+        <item>fi</item> 
         <item>fr</item>
         <item>ga</item>
         <item>ha</item>
         <item>hi</item>
         <item>hr</item>
-        <item>hu</item> <!-- KORREKTUR: Ungarisch an die richtige Stelle verschoben -->
+        <item>hu</item> 
         <item>ig</item>
         <item>id</item>
-        <item>b+ira</item> <!-- KORREKTUR: Muss exakt dem Ordnernamen "values-b+ira" entsprechen -->
+        <item>b+ira</item> 
         <item>it</item>
-        <item>he</item>
+        <item>iw</item>
         <item>ja</item>
         <item>jv</item>
         <item>ka</item>
@@ -102,9 +102,9 @@
         <item>lt</item>
         <item>mt</item>
         <item>ms</item>
-        <item>nl</item> <!-- KORREKTUR: Passt jetzt zum umbenannten Ordner "values-nl" -->
+        <item>nl</item> 
         <item>nb</item>
-        <item>pl</item> <!-- KORREKTUR: Polnisch an die richtige Stelle verschoben -->
+        <item>pl</item> 
         <item>pt</item>
         <item>ro</item>
         <item>ru</item>
