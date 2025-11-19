@@ -89,6 +89,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var hasLocationPermission by mutableStateOf(false)
     var gpsLatitude by mutableDoubleStateOf(0.0)
     var gpsLongitude by mutableDoubleStateOf(0.0)
+    var gpsAltitude by mutableDoubleStateOf(0.0)
     var isLocationAvailable by mutableStateOf(false)
     var barometricAltitude by mutableDoubleStateOf(0.0)
     var addressText by mutableStateOf("")
@@ -138,6 +139,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 p0.lastLocation?.let { location ->
                     gpsLatitude = location.latitude
                     gpsLongitude = location.longitude
+                    gpsAltitude = location.altitude
                     isLocationAvailable = true
                     getAddressFromCoordinates(location.latitude, location.longitude)
                     updateMagneticDeclination(location.latitude, location.longitude, location.altitude)

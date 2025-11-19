@@ -138,6 +138,7 @@ fun MainActivity.CompassScreen(
                             latitude = gpsLatitude,
                             longitude = gpsLongitude,
                             barometricAltitude = barometricAltitude,
+                            gpsAltitude = gpsAltitude,
                             isLocationAvailable = isLocationAvailable,
                             address = addressText,
                             currentDate = currentDate,
@@ -334,6 +335,7 @@ fun LocationDisplay(
     latitude: Double,
     longitude: Double,
     barometricAltitude: Double,
+    gpsAltitude: Double,
     isLocationAvailable: Boolean,
     address: String,
     currentDate: String,
@@ -386,7 +388,14 @@ fun LocationDisplay(
             Text(text = "${stringResource(R.string.humidity_label)} $it%", fontSize = 16.sp, color = subtleColor)
         }
         if (currentPressure > 0f) {
-            val pressureFormatted = String.format(Locale.US, "%.2f", currentPressure)
+            val pressureFormatted = if (isLocationAvailable && gpsAltitude != 0.0) {
+                val p1 = String.format(Locale.US, "%.1f", currentPressure)
+                val qnh = currentPressure + (gpsAltitude / 8.0)
+                val p2 = String.format(Locale.US, "%.1f", qnh)
+                "$p1 / $p2"
+            } else {
+                String.format(Locale.US, "%.1f", currentPressure)
+            }
             Text(text = stringResource(R.string.pressure_label, pressureFormatted, pressureTrend), fontSize = 16.sp, color = subtleColor)
         }
     }
