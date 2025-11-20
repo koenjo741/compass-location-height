@@ -223,7 +223,7 @@ fun ThemeSwitcher(currentMode: ThemeMode, onThemeChange: (ThemeMode) -> Unit, mo
 }
 
 fun degreesToCardinalDirection(degrees: Int): String {
-    val directions = arrayOf("N", "NNO", "NO", "ONO", "O", "OSO", "SO", "SSO", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
+    val directions = arrayOf("N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
     return directions[((degrees + 11.25) / 22.5).toInt() % 16]
 }
 
