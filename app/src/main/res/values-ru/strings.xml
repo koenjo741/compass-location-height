@@ -19,6 +19,7 @@
     <string name="settings_title">Настройки</string>
     <string name="theme_section_title">Тема приложения</string>
     <string name="temp_unit_section_title">Единица измерения температуры</string>
+    <string name="language_section_title">Язык</string>
     <string name="button_back">Назад</string>
     <string name="theme_dark">Тёмная</string>
     <string name="theme_light">Светлая</string>

@@ -19,6 +19,7 @@
     <string name="settings_title">Configurações</string>
     <string name="theme_section_title">Tema do Aplicativo</string>
     <string name="temp_unit_section_title">Unidade de Temperatura</string>
+    <string name="language_section_title">Idioma</string>
     <string name="button_back">Voltar</string>
     <string name="theme_dark">Escuro</string>
     <string name="theme_light">Claro</string>

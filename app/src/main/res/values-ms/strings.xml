@@ -19,6 +19,7 @@
     <string name="settings_title">Tetapan</string>
     <string name="theme_section_title">Tema Aplikasi</string>
     <string name="temp_unit_section_title">Unit Suhu</string>
+    <string name="language_section_title">Bahasa</string>
     <string name="button_back">Kembali</string>
     <string name="theme_dark">Gelap</string>
     <string name="theme_light">Terang</string>

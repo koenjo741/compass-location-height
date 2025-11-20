@@ -19,6 +19,7 @@
     <string name="settings_title">Nustatymai</string>
     <string name="theme_section_title">Programėlės tema</string>
     <string name="temp_unit_section_title">Temperatūros vienetas</string>
+    <string name="language_section_title">Kalba</string>
     <string name="button_back">Atgal</string>
     <string name="theme_dark">Tamsi</string>
     <string name="theme_light">Šviesi</string>

@@ -19,6 +19,7 @@
     <string name="settings_title">Instellings</string>
     <string name="theme_section_title">App-tema</string>
     <string name="temp_unit_section_title">Temperatuureenheid</string>
+    <string name="language_section_title">Taal</string>
     <string name="button_back">Terug</string>
     <string name="theme_dark">Donker</string>
     <string name="theme_light">Lig</string>

@@ -19,6 +19,7 @@
     <string name="settings_title">Ayarlar</string>
     <string name="theme_section_title">Uygulama Teması</string>
     <string name="temp_unit_section_title">Sıcaklık Birimi</string>
+    <string name="language_section_title">Dil</string>
     <string name="button_back">Geri</string>
     <string name="theme_dark">Koyu</string>
     <string name="theme_light">Açık</string>

@@ -19,6 +19,7 @@
     <string name="settings_title">Socruithe</string>
     <string name="theme_section_title">Téama an Aip</string>
     <string name="temp_unit_section_title">Aonad Teochta</string>
+    <string name="language_section_title">Teanga</string>
     <string name="button_back">Ar Ais</string>
     <string name="theme_dark">Dorcha</string>
     <string name="theme_light">Gile</string>

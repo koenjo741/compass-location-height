@@ -19,6 +19,7 @@
     <string name="settings_title">הגדרות</string>
     <string name="theme_section_title">ערכת נושא של היישום</string>
     <string name="temp_unit_section_title">יחידת טמפרטורה</string>
+    <string name="language_section_title">שפה</string>
     <string name="button_back">חזרה</string>
     <string name="theme_dark">כהה</string>
     <string name="theme_light">בהיר</string>

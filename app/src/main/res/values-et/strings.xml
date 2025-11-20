@@ -19,6 +19,7 @@
     <string name="settings_title">Seaded</string>
     <string name="theme_section_title">Rakenduse teema</string>
     <string name="temp_unit_section_title">Temperatuuriühik</string>
+    <string name="language_section_title">Keel</string>
     <string name="button_back">Tagasi</string>
     <string name="theme_dark">Tume</string>
     <string name="theme_light">Valge</string>

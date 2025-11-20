@@ -19,6 +19,7 @@
     <string name="settings_title">ترتیبات</string>
     <string name="theme_section_title">ایپ تھیم</string>
     <string name="temp_unit_section_title">درجہ حرارت کی اکائی</string>
+    <string name="language_section_title">زبان</string>
     <string name="button_back">واپس</string>
     <string name="theme_dark">تاریک</string>
     <string name="theme_light">روشن</string>

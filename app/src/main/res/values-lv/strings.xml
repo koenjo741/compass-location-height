@@ -19,6 +19,7 @@
     <string name="settings_title">Iestatījumi</string>
     <string name="theme_section_title">Lietotnes tēma</string>
     <string name="temp_unit_section_title">Temperatūras mērvienība</string>
+    <string name="language_section_title">Valoda</string>
     <string name="button_back">Atpakaļ</string>
     <string name="theme_dark">Tumšs</string>
     <string name="theme_light">Gaišs</string>

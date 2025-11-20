@@ -22,6 +22,7 @@
     <string name="settings_title">Einstellungen</string>
     <string name="theme_section_title">App-Theme</string>
     <string name="temp_unit_section_title">Temperatureinheit</string>
+    <string name="language_section_title">Giella</string>
     <string name="button_back">Zurück</string>
     <string name="theme_dark">Dark</string>
     <string name="theme_light">Light</string>

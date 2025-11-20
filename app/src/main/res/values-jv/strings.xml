@@ -19,6 +19,7 @@
     <string name="settings_title">Setelan</string>
     <string name="theme_section_title">Tema Aplikasi</string>
     <string name="temp_unit_section_title">Unit Suhu</string>
+    <string name="language_section_title">Basa</string>
     <string name="button_back">Bali</string>
     <string name="theme_dark">Peteng</string>
     <string name="theme_light">Padhang</string>

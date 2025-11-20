@@ -19,6 +19,7 @@
     <string name="settings_title">Cilësimet</string>
     <string name="theme_section_title">Tema e Aplikacionit</string>
     <string name="temp_unit_section_title">Njësia e Temperaturës</string>
+    <string name="language_section_title">Gjuha</string>
     <string name="button_back">Prapa</string>
     <string name="theme_dark">E errët</string>
     <string name="theme_light">E ndritshme</string>

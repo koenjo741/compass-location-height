@@ -22,6 +22,7 @@
     <string name="settings_title">Paramètres</string>
     <string name="theme_section_title">Thème de l\'application</string>
     <string name="temp_unit_section_title">Unité de température</string>
+    <string name="language_section_title">Langue</string>
     <string name="button_back">Retour</string>
     <string name="theme_dark">Sombre</string>
     <string name="theme_light">Clair</string>

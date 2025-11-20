@@ -19,6 +19,7 @@
     <string name="settings_title">Innstillinger</string>
     <string name="theme_section_title">App-tema</string>
     <string name="temp_unit_section_title">Temperaturenhet</string>
+    <string name="language_section_title">Språk</string>
     <string name="button_back">Tilbake</string>
     <string name="theme_dark">Mørk</string>
     <string name="theme_light">Lys</string>

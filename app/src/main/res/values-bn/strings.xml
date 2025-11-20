@@ -19,6 +19,7 @@
     <string name="settings_title">সেটিংস</string>
     <string name="theme_section_title">অ্যাপ থিম</string>
     <string name="temp_unit_section_title">তাপমাত্রা একক</string>
+    <string name="language_section_title">ভাষা</string>
     <string name="button_back">ফিরে যান</string>
     <string name="theme_dark">গাঢ়</string>
     <string name="theme_light">হালকা</string>

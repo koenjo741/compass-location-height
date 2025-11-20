@@ -57,7 +57,7 @@ fun SettingsScreen(
             }
             Spacer(modifier = Modifier.height(32.dp))
 
-            Text(text = "Sprache / Language", fontSize = 20.sp, color = textColor)
+            Text(text = stringResource(R.string.language_section_title), fontSize = 20.sp, color = textColor)
             Spacer(modifier = Modifier.height(16.dp))
 
             var expanded by remember { mutableStateOf(false) }

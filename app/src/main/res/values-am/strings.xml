@@ -19,6 +19,7 @@
     <string name="settings_title">ቅንብሮች</string>
     <string name="theme_section_title">የመተግበሪያ ገጽታ</string>
     <string name="temp_unit_section_title">የሙቀት መለኪያ</string>
+    <string name="language_section_title">ቋንቋ</string>
     <string name="button_back">ወደ ኋላ</string>
     <string name="theme_dark">ጥቁር</string>
     <string name="theme_light">ብርሃን</string>

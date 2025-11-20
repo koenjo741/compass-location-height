@@ -19,6 +19,7 @@
     <string name="settings_title">Postavke</string>
     <string name="theme_section_title">Tema Aplikacije</string>
     <string name="temp_unit_section_title">Jedinica Temperature</string>
+    <string name="language_section_title">Jezik</string>
     <string name="button_back">Nazad</string>
     <string name="theme_dark">Tamna</string>
     <string name="theme_light">Svijetla</string>

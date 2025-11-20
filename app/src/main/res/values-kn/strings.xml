@@ -19,6 +19,7 @@
     <string name="settings_title">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
     <string name="theme_section_title">ಅಪ್ಲಿಕೇಶನ್ ಥೀಮ್</string>
     <string name="temp_unit_section_title">ತಾಪಮಾನದ ಘಟಕ</string>
+    <string name="language_section_title">ಭಾಷೆ</string>
     <string name="button_back">ಹಿಂದೆ</string>
     <string name="theme_dark">ಗಾಢ</string>
     <string name="theme_light">ತಿಳಿ</string>

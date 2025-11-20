@@ -19,6 +19,7 @@
     <string name="settings_title">Asetukset</string>
     <string name="theme_section_title">Sovelluksen teema</string>
     <string name="temp_unit_section_title">Lämpötilayksikkö</string>
+    <string name="language_section_title">Kieli</string>
     <string name="button_back">Takaisin</string>
     <string name="theme_dark">Tumma</string>
     <string name="theme_light">Vaalea</string>

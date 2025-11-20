@@ -19,6 +19,7 @@
     <string name="settings_title">Nastavitve</string>
     <string name="theme_section_title">Tema Aplikacije</string>
     <string name="temp_unit_section_title">Enota Temperature</string>
+    <string name="language_section_title">Jezik</string>
     <string name="button_back">Nazaj</string>
     <string name="theme_dark">Temna</string>
     <string name="theme_light">Svetla</string>

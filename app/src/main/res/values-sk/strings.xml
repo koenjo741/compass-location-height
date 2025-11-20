@@ -19,6 +19,7 @@
     <string name="settings_title">Nastavenia</string>
     <string name="theme_section_title">Téma aplikácie</string>
     <string name="temp_unit_section_title">Jednotka teploty</string>
+    <string name="language_section_title">Jazyk</string>
     <string name="button_back">Späť</string>
     <string name="theme_dark">Tmavá</string>
     <string name="theme_light">Svetlá</string>

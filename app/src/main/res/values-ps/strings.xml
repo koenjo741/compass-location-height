@@ -19,6 +19,7 @@
     <string name="settings_title">تنظیمات</string>
     <string name="theme_section_title">د اپلیکیشن بڼه</string>
     <string name="temp_unit_section_title">د تودوخې واحد</string>
+    <string name="language_section_title">ژبه</string>
     <string name="button_back">شاته</string>
     <string name="theme_dark">تور</string>
     <string name="theme_light">روښانه</string>

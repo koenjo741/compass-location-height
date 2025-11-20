@@ -19,6 +19,7 @@
     <string name="settings_title">सेटिंग्स</string>
     <string name="theme_section_title">ऐप थीम</string>
     <string name="temp_unit_section_title">तापमान इकाई</string>
+    <string name="language_section_title">भाषा</string>
     <string name="button_back">वापस</string>
     <string name="theme_dark">गहरा</string>
     <string name="theme_light">हल्का</string>

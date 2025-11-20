@@ -19,6 +19,7 @@
     <string name="settings_title">Mga Setting</string>
     <string name="theme_section_title">Tema ng App</string>
     <string name="temp_unit_section_title">Yunit ng Temperatura</string>
+    <string name="language_section_title">Wika</string>
     <string name="button_back">Bumalik</string>
     <string name="theme_dark">Madilim</string>
     <string name="theme_light">Maliwanag</string>
