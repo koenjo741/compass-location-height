@@ -74,19 +74,21 @@ fun SettingsScreen(
                         activeGradient = activeGradient
                     )
                 }
-                Box(modifier = Modifier.weight(1f)) {
-                    ThemeButton(
-                        text = stringResource(R.string.theme_light), 
-                        onClick = { settingsViewModel.setTheme(ThemeMode.Light) }, 
-                        isSelected = currentTheme == ThemeMode.Light, 
-                        activeGradient = activeGradient
-                    )
-                }
+                // Geänderte Reihenfolge: Night kommt jetzt nach Dark
                 Box(modifier = Modifier.weight(1f)) {
                     ThemeButton(
                         text = stringResource(R.string.theme_night), 
                         onClick = { settingsViewModel.setTheme(ThemeMode.Night) }, 
                         isSelected = currentTheme == ThemeMode.Night, 
+                        activeGradient = activeGradient
+                    )
+                }
+                // Light kommt jetzt als letztes
+                Box(modifier = Modifier.weight(1f)) {
+                    ThemeButton(
+                        text = stringResource(R.string.theme_light), 
+                        onClick = { settingsViewModel.setTheme(ThemeMode.Light) }, 
+                        isSelected = currentTheme == ThemeMode.Light, 
                         activeGradient = activeGradient
                     )
                 }
