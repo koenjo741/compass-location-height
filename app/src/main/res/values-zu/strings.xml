@@ -19,6 +19,7 @@
     <string name="settings_title">Izilungiselelo</string>
     <string name="theme_section_title">Itimu ye-App</string>
     <string name="temp_unit_section_title">Iyunithi Yokushisa</string>
+    <string name="language_section_title">Ulimi</string>
     <string name="button_back">Emuva</string>
     <string name="theme_dark">Mnyama</string>
     <string name="theme_light">Khanya</string>
