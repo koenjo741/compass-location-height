@@ -31,13 +31,10 @@ fun SettingsScreen(
     val currentTempUnit by settingsViewModel.tempUnit.collectAsState()
     val currentLanguage by settingsViewModel.language.collectAsState()
 
-    // Definieren der Farbverläufe (Gradients)
-    // Ein cooler Blau-Türkis-Verlauf für aktive Elemente
     val activeGradient = Brush.horizontalGradient(
         colors = listOf(Color(0xFF1A2980), Color(0xFF26D0CE))
     )
     
-    // Ein auffälliger Orange-Pink-Verlauf für den Zurück-Button
     val actionGradient = Brush.horizontalGradient(
         colors = listOf(Color(0xFFFF512F), Color(0xFFDD2476))
     )
@@ -52,20 +49,22 @@ fun SettingsScreen(
                 .padding(innerPadding)
                 .padding(16.dp)
         ) {
+            Spacer(modifier = Modifier.height(32.dp))
+
             Text(
                 text = stringResource(R.string.theme_section_title), 
                 fontSize = 20.sp, 
                 color = textColor, 
-                fontWeight = FontWeight.Bold
+                // Reduziert von Bold auf SemiBold (ca. -20% Gewicht)
+                fontWeight = FontWeight.SemiBold
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            // Abstand erhöht von 16.dp auf 24.dp
+            Spacer(modifier = Modifier.height(24.dp))
             
-            // Theme Buttons Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp) // Etwas Abstand zwischen den Buttons
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Wir nutzen 'weight(1f)' damit alle Buttons gleich breit sind
                 Box(modifier = Modifier.weight(1f)) {
                     ThemeButton(
                         text = stringResource(R.string.theme_dark), 
@@ -74,7 +73,6 @@ fun SettingsScreen(
                         activeGradient = activeGradient
                     )
                 }
-                // Geänderte Reihenfolge: Night kommt jetzt nach Dark
                 Box(modifier = Modifier.weight(1f)) {
                     ThemeButton(
                         text = stringResource(R.string.theme_night), 
@@ -83,7 +81,6 @@ fun SettingsScreen(
                         activeGradient = activeGradient
                     )
                 }
-                // Light kommt jetzt als letztes
                 Box(modifier = Modifier.weight(1f)) {
                     ThemeButton(
                         text = stringResource(R.string.theme_light), 
@@ -99,12 +96,13 @@ fun SettingsScreen(
             Text(
                 text = stringResource(R.string.temp_unit_section_title), 
                 fontSize = 20.sp, 
-                color = textColor,
-                fontWeight = FontWeight.Bold
+                color = textColor, 
+                // Reduziert von Bold auf SemiBold
+                fontWeight = FontWeight.SemiBold
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            // Abstand erhöht von 16.dp auf 24.dp
+            Spacer(modifier = Modifier.height(24.dp))
             
-            // Temp Unit Buttons Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -133,9 +131,11 @@ fun SettingsScreen(
                 text = stringResource(R.string.language_section_title), 
                 fontSize = 20.sp, 
                 color = textColor, 
-                fontWeight = FontWeight.Bold
+                // Reduziert von Bold auf SemiBold
+                fontWeight = FontWeight.SemiBold
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            // Abstand erhöht von 16.dp auf 24.dp
+            Spacer(modifier = Modifier.height(24.dp))
 
             var expanded by remember { mutableStateOf(false) }
             val context = LocalContext.current
@@ -213,7 +213,7 @@ fun GradientButton(
             Text(
                 text = text,
                 color = textColor,
-                fontSize = 16.sp,
+                fontSize = 18.5.sp,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -232,24 +232,23 @@ private fun ThemeButton(
             text = text,
             onClick = onClick,
             gradient = activeGradient,
-            modifier = Modifier.fillMaxWidth() // Fülle den verfügbaren Platz in der Box
+            modifier = Modifier.fillMaxWidth()
         )
     } else {
-        // Nicht ausgewählter Button: Solide Farbe, aber sichtbar
         Button(
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF424242), // Dunkelgrau, gut sichtbar
+                containerColor = Color(0xFF424242), 
                 contentColor = Color.LightGray
             ),
             modifier = Modifier
                 .height(48.dp)
-                .fillMaxWidth() // Fülle den verfügbaren Platz
+                .fillMaxWidth() 
                 .clip(CircleShape)
         ) {
             Text(
                 text = text, 
-                fontSize = 16.sp,
+                fontSize = 18.5.sp,
                 fontWeight = FontWeight.Normal
             )
         }
