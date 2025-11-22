@@ -19,6 +19,7 @@
     <string name="settings_title">Tetapan</string>
     <string name="theme_section_title">Tema Aplikasi</string>
     <string name="temp_unit_section_title">Unit Suhu</string>
+    <string name="coord_format_section_title">Format Koordinat</string>
     <string name="language_section_title">Bahasa</string>
     <string name="button_back">Kembali</string>
     <string name="theme_dark">Gelap</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Malam</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Perpuluhan</string>
+    <string name="format_dms">DMS</string>
+    <string name="format_ddm">DDM</string>
 
     <string name="about_title">Mengenai</string>
     <string name="about_placeholder">(dalam pembinaan)</string>

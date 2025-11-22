@@ -19,6 +19,7 @@
     <string name="settings_title">Cilësimet</string>
     <string name="theme_section_title">Tema e Aplikacionit</string>
     <string name="temp_unit_section_title">Njësia e Temperaturës</string>
+    <string name="coord_format_section_title">Formati i Koordinatave</string>
     <string name="language_section_title">Gjuha</string>
     <string name="button_back">Prapa</string>
     <string name="theme_dark">E errët</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Nata</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Dhjetore</string>
+    <string name="format_dms">GMS</string>
+    <string name="format_ddm">GDM</string>
 
     <string name="about_title">Rreth</string>
     <string name="about_placeholder">(në ndërtim)</string>

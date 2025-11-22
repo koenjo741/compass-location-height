@@ -19,6 +19,7 @@
     <string name="settings_title">تنظیمات</string>
     <string name="theme_section_title">تم برنامه</string>
     <string name="temp_unit_section_title">واحد دما</string>
+    <string name="coord_format_section_title">فرمت مختصات</string>
     <string name="language_section_title">زبان</string>
     <string name="button_back">بازگشت</string>
     <string name="theme_dark">تاریک</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">شب</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">اعشاری</string>
+    <string name="format_dms">درجه دقیقه ثانیه</string>
+    <string name="format_ddm">درجه دقیقه اعشاری</string>
 
     <string name="about_title">درباره</string>
     <string name="about_placeholder">(در حال ساخت)</string>

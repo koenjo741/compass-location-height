@@ -19,6 +19,7 @@
     <string name="settings_title">Nastavenia</string>
     <string name="theme_section_title">Téma aplikácie</string>
     <string name="temp_unit_section_title">Jednotka teploty</string>
+    <string name="coord_format_section_title">Formát súradníc</string>
     <string name="language_section_title">Jazyk</string>
     <string name="button_back">Späť</string>
     <string name="theme_dark">Tmavá</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Nočná</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Desiatkový</string>
+    <string name="format_dms">SMS</string>
+    <string name="format_ddm">SDM</string>
 
     <string name="about_title">O aplikácii</string>
     <string name="about_placeholder">(vo výstavbe)</string>

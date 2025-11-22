@@ -19,6 +19,7 @@
     <string name="settings_title">Ntọala</string>
     <string name="theme_section_title">Isiokwu Ngwa</string>
     <string name="temp_unit_section_title">Ngalaba Okpomọkụ</string>
+    <string name="coord_format_section_title">Usoro nhazi</string>
     <string name="language_section_title">Asụsụ</string>
     <string name="button_back">Laghachi azụ</string>
     <string name="theme_dark">Ọchịchịrị</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Abali</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Decimal</string>
+    <string name="format_dms">DMS</string>
+    <string name="format_ddm">DDM</string>
 
     <string name="about_title">Banyere</string>
     <string name="about_placeholder">(na-arụ ọrụ)</string>

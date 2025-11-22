@@ -19,6 +19,7 @@
     <string name="settings_title">Iestatījumi</string>
     <string name="theme_section_title">Lietotnes tēma</string>
     <string name="temp_unit_section_title">Temperatūras mērvienība</string>
+    <string name="coord_format_section_title">Koordinātu formāts</string>
     <string name="language_section_title">Valoda</string>
     <string name="button_back">Atpakaļ</string>
     <string name="theme_dark">Tumšs</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Nakts</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Decimāls</string>
+    <string name="format_dms">GMS</string>
+    <string name="format_ddm">GDM</string>
 
     <string name="about_title">Par</string>
     <string name="about_placeholder">(izstrādes stadijā)</string>

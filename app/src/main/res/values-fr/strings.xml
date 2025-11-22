@@ -22,6 +22,7 @@
     <string name="settings_title">Paramètres</string>
     <string name="theme_section_title">Thème de l\'application</string>
     <string name="temp_unit_section_title">Unité de température</string>
+    <string name="coord_format_section_title">Format des coordonnées</string>
     <string name="language_section_title">Langue</string>
     <string name="button_back">Retour</string>
     <string name="theme_dark">Sombre</string>
@@ -29,6 +30,9 @@
     <string name="theme_night">Nuit</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Décimal</string>
+    <string name="format_dms">DMS</string>
+    <string name="format_ddm">DDM</string>
 
     <!-- Textes pour la page d\'information -->
     <string name="about_title">À propos</string>

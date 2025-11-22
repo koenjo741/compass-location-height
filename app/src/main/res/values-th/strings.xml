@@ -19,6 +19,7 @@
     <string name="settings_title">การตั้งค่า</string>
     <string name="theme_section_title">ธีมแอปพลิเคชัน</string>
     <string name="temp_unit_section_title">หน่วยอุณหภูมิ</string>
+    <string name="coord_format_section_title">รูปแบบพิกัด</string>
     <string name="language_section_title">ภาษา</string>
     <string name="button_back">ย้อนกลับ</string>
     <string name="theme_dark">มืด</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">กลางคืน</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">ทศนิยม</string>
+    <string name="format_dms">องศา ลิปดา วินาที</string>
+    <string name="format_ddm">องศา ทศนิยมลิปดา</string>
 
     <string name="about_title">เกี่ยวกับ</string>
     <string name="about_placeholder">(อยู่ระหว่างการพัฒนา)</string>

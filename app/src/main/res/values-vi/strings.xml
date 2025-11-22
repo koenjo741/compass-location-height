@@ -19,6 +19,7 @@
     <string name="settings_title">Cài đặt</string>
     <string name="theme_section_title">Chủ đề ứng dụng</string>
     <string name="temp_unit_section_title">Đơn vị nhiệt độ</string>
+    <string name="coord_format_section_title">Định dạng tọa độ</string>
     <string name="language_section_title">Ngôn ngữ</string>
     <string name="button_back">Quay lại</string>
     <string name="theme_dark">Tối</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Ban đêm</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Thập phân</string>
+    <string name="format_dms">DMS</string>
+    <string name="format_ddm">DDM</string>
 
     <string name="about_title">Giới thiệu</string>
     <string name="about_placeholder">(đang xây dựng)</string>

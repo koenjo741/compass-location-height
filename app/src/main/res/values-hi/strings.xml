@@ -19,6 +19,7 @@
     <string name="settings_title">सेटिंग्स</string>
     <string name="theme_section_title">ऐप थीम</string>
     <string name="temp_unit_section_title">तापमान इकाई</string>
+    <string name="coord_format_section_title">निर्देशांक प्रारूप</string>
     <string name="language_section_title">भाषा</string>
     <string name="button_back">वापस</string>
     <string name="theme_dark">गहरा</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">रात</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">दशमलव</string>
+    <string name="format_dms">डिग्री मिनट सेकंड</string>
+    <string name="format_ddm">डिग्री दशमलव मिनट</string>
 
     <string name="about_title">जानकारी</string>
     <string name="about_placeholder">(निर्माणधीन)</string>

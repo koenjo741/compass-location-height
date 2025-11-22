@@ -19,6 +19,7 @@
     <string name="settings_title">Setări</string>
     <string name="theme_section_title">Tema Aplicației</string>
     <string name="temp_unit_section_title">Unitatea de Temperatură</string>
+    <string name="coord_format_section_title">Formatul Coordonatelor</string>
     <string name="language_section_title">Limbă</string>
     <string name="button_back">Înapoi</string>
     <string name="theme_dark">Întunecat</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Noapte</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Zecimal</string>
+    <string name="format_dms">GMS</string>
+    <string name="format_ddm">GDM</string>
 
     <string name="about_title">Despre</string>
     <string name="about_placeholder">(în construcție)</string>

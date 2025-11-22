@@ -19,6 +19,7 @@
     <string name="settings_title">அமைப்புகள்</string>
     <string name="theme_section_title">பயன்பாட்டு தீம்</string>
     <string name="temp_unit_section_title">வெப்பநிலை அலகு</string>
+    <string name="coord_format_section_title">ஒருங்கிணைப்பு வடிவம்</string>
     <string name="language_section_title">மொழி</string>
     <string name="button_back">பின் செல்ல</string>
     <string name="theme_dark">இருண்ட</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">இரவு</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">தசமம்</string>
+    <string name="format_dms">பாகை நிமிடம் வினாடி</string>
+    <string name="format_ddm">பாகை தசம நிமிடம்</string>
 
     <string name="about_title">பற்றி</string>
     <string name="about_placeholder">(கட்டுமானத்தில் உள்ளது)</string>

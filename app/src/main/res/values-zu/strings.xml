@@ -19,6 +19,7 @@
     <string name="settings_title">Izilungiselelo</string>
     <string name="theme_section_title">Itimu ye-App</string>
     <string name="temp_unit_section_title">Iyunithi Yokushisa</string>
+    <string name="coord_format_section_title">Ifomethi Yezixhumanisi</string>
     <string name="language_section_title">Ulimi</string>
     <string name="button_back">Emuva</string>
     <string name="theme_dark">Mnyama</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Ebusuku</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Desimali</string>
+    <string name="format_dms">DMS</string>
+    <string name="format_ddm">DDM</string>
 
     <string name="about_title">Eiphathelene</string>
     <string name="about_placeholder">(isakhiwe)</string>

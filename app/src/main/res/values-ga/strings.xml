@@ -19,6 +19,7 @@
     <string name="settings_title">Socruithe</string>
     <string name="theme_section_title">Téama an Aip</string>
     <string name="temp_unit_section_title">Aonad Teochta</string>
+    <string name="coord_format_section_title">Formáid Comhordanáidí</string>
     <string name="language_section_title">Teanga</string>
     <string name="button_back">Ar Ais</string>
     <string name="theme_dark">Dorcha</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Oíche</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Deachúil</string>
+    <string name="format_dms">CMS</string>
+    <string name="format_ddm">CDM</string>
 
     <string name="about_title">Faoi</string>
     <string name="about_placeholder">(á thógáil)</string>

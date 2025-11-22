@@ -29,6 +29,7 @@ fun SettingsScreen(
 ) {
     val currentTheme by settingsViewModel.themeMode.collectAsState()
     val currentTempUnit by settingsViewModel.tempUnit.collectAsState()
+    val currentCoordFormat by settingsViewModel.coordFormat.collectAsState()
     val currentLanguage by settingsViewModel.language.collectAsState()
 
     val activeGradient = Brush.horizontalGradient(
@@ -55,10 +56,8 @@ fun SettingsScreen(
                 text = stringResource(R.string.theme_section_title), 
                 fontSize = 20.sp, 
                 color = textColor, 
-                // Reduziert von Bold auf SemiBold (ca. -20% Gewicht)
                 fontWeight = FontWeight.SemiBold
             )
-            // Abstand erhöht von 16.dp auf 24.dp
             Spacer(modifier = Modifier.height(24.dp))
             
             Row(
@@ -97,10 +96,8 @@ fun SettingsScreen(
                 text = stringResource(R.string.temp_unit_section_title), 
                 fontSize = 20.sp, 
                 color = textColor, 
-                // Reduziert von Bold auf SemiBold
                 fontWeight = FontWeight.SemiBold
             )
-            // Abstand erhöht von 16.dp auf 24.dp
             Spacer(modifier = Modifier.height(24.dp))
             
             Row(
@@ -124,6 +121,46 @@ fun SettingsScreen(
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Text(
+                text = stringResource(R.string.coord_format_section_title), 
+                fontSize = 20.sp, 
+                color = textColor, 
+                fontWeight = FontWeight.SemiBold
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Box(modifier = Modifier.weight(1f)) {
+                    ThemeButton(
+                        text = stringResource(R.string.format_decimal), 
+                        onClick = { settingsViewModel.setCoordinateFormat(CoordinateFormat.Decimal) }, 
+                        isSelected = currentCoordFormat == CoordinateFormat.Decimal, 
+                        activeGradient = activeGradient
+                    )
+                }
+                Box(modifier = Modifier.weight(1f)) {
+                    ThemeButton(
+                        text = stringResource(R.string.format_dms), 
+                        onClick = { settingsViewModel.setCoordinateFormat(CoordinateFormat.DMS) }, 
+                        isSelected = currentCoordFormat == CoordinateFormat.DMS, 
+                        activeGradient = activeGradient
+                    )
+                }
+                Box(modifier = Modifier.weight(1f)) {
+                    ThemeButton(
+                        text = stringResource(R.string.format_ddm), 
+                        onClick = { settingsViewModel.setCoordinateFormat(CoordinateFormat.DDM) }, 
+                        isSelected = currentCoordFormat == CoordinateFormat.DDM, 
+                        activeGradient = activeGradient
+                    )
+                }
+            }
             
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -131,10 +168,8 @@ fun SettingsScreen(
                 text = stringResource(R.string.language_section_title), 
                 fontSize = 20.sp, 
                 color = textColor, 
-                // Reduziert von Bold auf SemiBold
                 fontWeight = FontWeight.SemiBold
             )
-            // Abstand erhöht von 16.dp auf 24.dp
             Spacer(modifier = Modifier.height(24.dp))
 
             var expanded by remember { mutableStateOf(false) }

@@ -15,6 +15,7 @@ class SettingsDataStore(private val context: Context) {
 
     private val THEME_KEY = stringPreferencesKey("theme_mode")
     private val TEMP_UNIT_KEY = stringPreferencesKey("temp_unit")
+    private val COORD_FORMAT_KEY = stringPreferencesKey("coord_format")
     private val LANGUAGE_KEY = stringPreferencesKey("language")
 
     val themeModeFlow: Flow<ThemeMode> = context.dataStore.data
@@ -27,6 +28,12 @@ class SettingsDataStore(private val context: Context) {
         .map { preferences ->
             val unitName = preferences[TEMP_UNIT_KEY] ?: TemperatureUnit.Celsius.name
             TemperatureUnit.valueOf(unitName)
+        }
+
+    val coordFormatFlow: Flow<CoordinateFormat> = context.dataStore.data
+        .map { preferences ->
+            val formatName = preferences[COORD_FORMAT_KEY] ?: CoordinateFormat.Decimal.name
+            CoordinateFormat.valueOf(formatName)
         }
 
     val languageFlow: Flow<String> = context.dataStore.data
@@ -43,6 +50,12 @@ class SettingsDataStore(private val context: Context) {
     suspend fun saveTemperatureUnit(unit: TemperatureUnit) {
         context.dataStore.edit { preferences ->
             preferences[TEMP_UNIT_KEY] = unit.name
+        }
+    }
+
+    suspend fun saveCoordinateFormat(format: CoordinateFormat) {
+        context.dataStore.edit { preferences ->
+            preferences[COORD_FORMAT_KEY] = format.name
         }
     }
 

@@ -19,6 +19,7 @@
     <string name="settings_title">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
     <string name="theme_section_title">ಅಪ್ಲಿಕೇಶನ್ ಥೀಮ್</string>
     <string name="temp_unit_section_title">ತಾಪಮಾನದ ಘಟಕ</string>
+    <string name="coord_format_section_title">ಕಕ್ಷೆಗಳ ಸ್ವರೂಪ</string>
     <string name="language_section_title">ಭಾಷೆ</string>
     <string name="button_back">ಹಿಂದೆ</string>
     <string name="theme_dark">ಗಾಢ</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">ರಾತ್ರಿ</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">ದಶಮಾಂಶ</string>
+    <string name="format_dms">ಡಿಗ್ರಿ ನಿಮಿಷ ಸೆಕೆಂಡ್</string>
+    <string name="format_ddm">ಡಿಗ್ರಿ ದಶಮಾಂಶ ನಿಮಿಷ</string>
 
     <string name="about_title">ಕುರಿತು</string>
     <string name="about_placeholder">(ನಿರ್ಮಾಣ ಹಂತದಲ್ಲಿದೆ)</string>

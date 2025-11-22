@@ -19,6 +19,7 @@
     <string name="settings_title">Saituna</string>
     <string name="theme_section_title">Salon App</string>
     <string name="temp_unit_section_title">Rukuni na Zazzabi</string>
+    <string name="coord_format_section_title">Tsarin Daidaitawa</string>
     <string name="language_section_title">Harshe</string>
     <string name="button_back">Baya</string>
     <string name="theme_dark">Duɗu</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Dare</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Decimal</string>
+    <string name="format_dms">DMS</string>
+    <string name="format_ddm">DDM</string>
 
     <string name="about_title">Game da</string>
     <string name="about_placeholder">(ana ginawa)</string>

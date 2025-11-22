@@ -19,6 +19,7 @@
     <string name="settings_title">Postavke</string>
     <string name="theme_section_title">Tema Aplikacije</string>
     <string name="temp_unit_section_title">Jedinica Temperature</string>
+    <string name="coord_format_section_title">Format koordinata</string>
     <string name="language_section_title">Jezik</string>
     <string name="button_back">Nazad</string>
     <string name="theme_dark">Tamna</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Noćna</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Decimalni</string>
+    <string name="format_dms">SMS</string>
+    <string name="format_ddm">SDM</string>
 
     <string name="about_title">O aplikaciji</string>
     <string name="about_placeholder">(u izradi)</string>

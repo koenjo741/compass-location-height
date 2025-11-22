@@ -21,6 +21,12 @@ class SettingsViewModel(private val dataStore: SettingsDataStore) : ViewModel() 
         initialValue = TemperatureUnit.Celsius
     )
 
+    val coordFormat: StateFlow<CoordinateFormat> = dataStore.coordFormatFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = CoordinateFormat.Decimal
+    )
+
     val language: StateFlow<String> = dataStore.languageFlow.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -36,6 +42,12 @@ class SettingsViewModel(private val dataStore: SettingsDataStore) : ViewModel() 
     fun setTemperatureUnit(newUnit: TemperatureUnit) {
         viewModelScope.launch {
             dataStore.saveTemperatureUnit(newUnit)
+        }
+    }
+
+    fun setCoordinateFormat(newFormat: CoordinateFormat) {
+        viewModelScope.launch {
+            dataStore.saveCoordinateFormat(newFormat)
         }
     }
 

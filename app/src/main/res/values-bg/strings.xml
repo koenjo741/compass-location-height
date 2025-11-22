@@ -19,6 +19,7 @@
     <string name="settings_title">Настройки</string>
     <string name="theme_section_title">Тема на Приложението</string>
     <string name="temp_unit_section_title">Мерна Единица за Температура</string>
+    <string name="coord_format_section_title">Формат на координатите</string>
     <string name="language_section_title">Език</string>
     <string name="button_back">Назад</string>
     <string name="theme_dark">Тъмна</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Нощна</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Десетичен</string>
+    <string name="format_dms">ГМС</string>
+    <string name="format_ddm">ГДМ</string>
 
     <string name="about_title">Относно</string>
     <string name="about_placeholder">(в процес на изграждане)</string>

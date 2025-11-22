@@ -19,6 +19,7 @@
     <string name="settings_title">Instellings</string>
     <string name="theme_section_title">App-tema</string>
     <string name="temp_unit_section_title">Temperatuureenheid</string>
+    <string name="coord_format_section_title">Koördinaatformaat</string>
     <string name="language_section_title">Taal</string>
     <string name="button_back">Terug</string>
     <string name="theme_dark">Donker</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Nag</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Desimaal</string>
+    <string name="format_dms">GMS</string>
+    <string name="format_ddm">GDM</string>
 
     <string name="about_title">Oor</string>
     <string name="about_placeholder">(onder konstruksie)</string>

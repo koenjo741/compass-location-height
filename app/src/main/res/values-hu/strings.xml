@@ -19,6 +19,7 @@
     <string name="settings_title">Beállítások</string>
     <string name="theme_section_title">Alkalmazás téma</string>
     <string name="temp_unit_section_title">Hőmérséklet mértékegysége</string>
+    <string name="coord_format_section_title">Koordináta formátum</string>
     <string name="language_section_title">Nyelv</string>
     <string name="button_back">Vissza</string>
     <string name="theme_dark">Sötét</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Éjszakai</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Decimális</string>
+    <string name="format_dms">FMP</string>
+    <string name="format_ddm">FTM</string>
 
     <string name="about_title">Névjegy</string>
     <string name="about_placeholder">(fejlesztés alatt)</string>

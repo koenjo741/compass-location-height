@@ -19,6 +19,7 @@
     <string name="settings_title">Settings</string>
     <string name="theme_section_title">Tema tal-App</string>
     <string name="temp_unit_section_title">Unità tat-Temperatura</string>
+    <string name="coord_format_section_title">Format tal-Koordinati</string>
     <string name="language_section_title">Lingwa</string>
     <string name="button_back">Lura</string>
     <string name="theme_dark">Skur</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">Lejl</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Deċimali</string>
+    <string name="format_dms">DMS</string>
+    <string name="format_ddm">DDM</string>
 
     <string name="about_title">Dwar</string>
     <string name="about_placeholder">(qed tinbena)</string>

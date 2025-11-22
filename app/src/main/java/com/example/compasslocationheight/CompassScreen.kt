@@ -37,6 +37,7 @@ import com.example.compasslocationheight.ui.theme.CompassLocationHeightTheme
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 import android.hardware.SensorManager
@@ -48,6 +49,7 @@ fun MainActivity.CompassScreen(
 ) {
     val currentTheme by settingsViewModel.themeMode.collectAsState()
     val currentTempUnit by settingsViewModel.tempUnit.collectAsState()
+    val currentCoordFormat by settingsViewModel.coordFormat.collectAsState()
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -149,7 +151,8 @@ fun MainActivity.CompassScreen(
                             pressureTrend = pressureTrend,
                             textColor = textColor,
                             subtleColor = subtleColor,
-                            tempUnit = currentTempUnit
+                            tempUnit = currentTempUnit,
+                            coordFormat = currentCoordFormat
                         )
                     } else {
                         Text(text = stringResource(R.string.location_permission_needed), fontSize = 20.sp, color = textColor)
@@ -225,6 +228,26 @@ fun ThemeSwitcher(currentMode: ThemeMode, onThemeChange: (ThemeMode) -> Unit, mo
 fun degreesToCardinalDirection(degrees: Int): String {
     val directions = arrayOf("N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
     return directions[((degrees + 11.25) / 22.5).toInt() % 16]
+}
+
+// Helper function to format coordinates
+fun formatCoordinate(coordinate: Double, format: CoordinateFormat): String {
+    return when (format) {
+        CoordinateFormat.Decimal -> String.format(Locale.US, "%.6f", coordinate)
+        CoordinateFormat.DMS -> {
+            val absCoord = abs(coordinate)
+            val degrees = absCoord.toInt()
+            val minutes = ((absCoord - degrees) * 60).toInt()
+            val seconds = (absCoord - degrees - minutes / 60.0) * 3600
+            String.format(Locale.US, "%d° %d' %.1f\"", degrees, minutes, seconds)
+        }
+        CoordinateFormat.DDM -> {
+            val absCoord = abs(coordinate)
+            val degrees = absCoord.toInt()
+            val minutes = (absCoord - degrees) * 60
+            String.format(Locale.US, "%d° %.4f'", degrees, minutes)
+        }
+    }
 }
 
 @Composable
@@ -346,7 +369,8 @@ fun LocationDisplay(
     pressureTrend: String,
     textColor: Color,
     subtleColor: Color,
-    tempUnit: TemperatureUnit
+    tempUnit: TemperatureUnit,
+    coordFormat: CoordinateFormat
 ) {
     if (!isLocationAvailable) {
         Text(text = stringResource(R.string.loading_location), fontSize = 20.sp, color = textColor)
@@ -365,11 +389,15 @@ fun LocationDisplay(
                 .clickable { openMaps(context, latitude, longitude) }
                 .padding(horizontal = 24.dp, vertical = 12.dp)
         )
-        val lat = String.format(Locale.US, "%.6f", latitude)
-        val lon = String.format(Locale.US, "%.6f", longitude)
+        
+        // Use the new helper function to format coordinates
+        val latString = formatCoordinate(latitude, coordFormat)
+        val lonString = formatCoordinate(longitude, coordFormat)
+        
         val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
-        Text(text = stringResource(R.string.latitude_label, lat), fontSize = 16.sp, color = subtleColor)
-        Text(text = stringResource(R.string.longitude_label, lon), fontSize = 16.sp, color = subtleColor)
+        
+        Text(text = stringResource(R.string.latitude_label, latString), fontSize = 16.sp, color = subtleColor)
+        Text(text = stringResource(R.string.longitude_label, lonString), fontSize = 16.sp, color = subtleColor)
         Text(text = stringResource(R.string.altitude_label, altBaro), fontSize = 16.sp, color = subtleColor)
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = stringResource(R.string.date_label, currentDate), fontSize = 16.sp, color = subtleColor)

@@ -19,6 +19,7 @@
     <string name="settings_title">הגדרות</string>
     <string name="theme_section_title">ערכת נושא של היישום</string>
     <string name="temp_unit_section_title">יחידת טמפרטורה</string>
+    <string name="coord_format_section_title">פורמט קואורדינטות</string>
     <string name="language_section_title">שפה</string>
     <string name="button_back">חזרה</string>
     <string name="theme_dark">כהה</string>
@@ -26,6 +27,9 @@
     <string name="theme_night">לילה</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">עשרוני</string>
+    <string name="format_dms">מעלות/דקות/שניות</string>
+    <string name="format_ddm">מעלות/דקות</string>
 
     <string name="about_title">אודות</string>
     <string name="about_placeholder">(בבנייה)</string>

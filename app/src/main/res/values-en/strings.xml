@@ -22,6 +22,7 @@
     <string name="settings_title">Settings</string>
     <string name="theme_section_title">App Theme</string>
     <string name="temp_unit_section_title">Temperature Unit</string>
+    <string name="coord_format_section_title">Coordinate Format</string>
     <string name="language_section_title">Language</string>
     <string name="button_back">Back</string>
     <string name="theme_dark">Dark</string>
@@ -29,6 +30,9 @@
     <string name="theme_night">Night</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Decimal</string>
+    <string name="format_dms">DMS</string>
+    <string name="format_ddm">DDM</string>
 
     <!-- NEW: Texts for the info page -->
     <string name="about_title">About the App</string>

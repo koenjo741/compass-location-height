@@ -4,7 +4,7 @@
     <string name="loading_location">Načítání dat o poloze...</string>
     <string name="address_not_found">Adresa nenalezena</string>
     <string name="address_search_error">Chyba při hledání adresy</string>
-    <string name="location_permission_needed">Je vyžadováno povolení k poloze</string>
+    <string name="location_permission_needed">Vyžaduje se oprávnění k poloze</string>
     <string name="searching_address">Hledání adresy...</string>
 
     <string name="latitude_label">Zeměpisná šířka: %1$s</string>
@@ -19,12 +19,17 @@
     <string name="settings_title">Nastavení</string>
     <string name="theme_section_title">Téma aplikace</string>
     <string name="temp_unit_section_title">Jednotka teploty</string>
+    <string name="coord_format_section_title">Formát souřadnic</string>
+    <string name="language_section_title">Jazyk</string>
     <string name="button_back">Zpět</string>
     <string name="theme_dark">Tmavé</string>
     <string name="theme_light">Světlé</string>
     <string name="theme_night">Noční</string>
     <string name="unit_celsius">°C</string>
     <string name="unit_fahrenheit">°F</string>
+    <string name="format_decimal">Desítkový</string>
+    <string name="format_dms">SMS</string>
+    <string name="format_ddm">SDM</string>
 
     <string name="about_title">O aplikaci</string>
     <string name="about_placeholder">(ve výstavbě)</string>
@@ -32,6 +37,6 @@
     <string name="cd_open_settings">Otevřít nastavení</string>
     <string name="cd_open_about">Otevřít stránku O aplikaci</string>
     <string name="cd_back">Zpět</string>
-    <string name="cd_switch_theme">Aktuální režim: %1$s. Klepnutím přepnete na %2$s</string>
+    <string name="cd_switch_theme">Aktuální režim: %1$s. Kliknutím přepnete na %2$s</string>
 
 </resources>
