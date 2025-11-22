@@ -230,22 +230,27 @@ fun degreesToCardinalDirection(degrees: Int): String {
     return directions[((degrees + 11.25) / 22.5).toInt() % 16]
 }
 
-// Helper function to format coordinates
-fun formatCoordinate(coordinate: Double, format: CoordinateFormat): String {
+// Updated helper function with direction support
+fun formatCoordinate(coordinate: Double, format: CoordinateFormat, isLatitude: Boolean): String {
+    val direction = if (isLatitude) {
+        if (coordinate >= 0) "N" else "S"
+    } else {
+        if (coordinate >= 0) "E" else "W"
+    }
+    val absCoord = abs(coordinate)
+
     return when (format) {
         CoordinateFormat.Decimal -> String.format(Locale.US, "%.6f", coordinate)
         CoordinateFormat.DMS -> {
-            val absCoord = abs(coordinate)
             val degrees = absCoord.toInt()
             val minutes = ((absCoord - degrees) * 60).toInt()
             val seconds = (absCoord - degrees - minutes / 60.0) * 3600
-            String.format(Locale.US, "%d° %d' %.1f\"", degrees, minutes, seconds)
+            String.format(Locale.US, "%d° %d' %.1f\" %s", degrees, minutes, seconds, direction)
         }
         CoordinateFormat.DDM -> {
-            val absCoord = abs(coordinate)
             val degrees = absCoord.toInt()
             val minutes = (absCoord - degrees) * 60
-            String.format(Locale.US, "%d° %.4f'", degrees, minutes)
+            String.format(Locale.US, "%d° %.4f' %s", degrees, minutes, direction)
         }
     }
 }
@@ -390,9 +395,9 @@ fun LocationDisplay(
                 .padding(horizontal = 24.dp, vertical = 12.dp)
         )
         
-        // Use the new helper function to format coordinates
-        val latString = formatCoordinate(latitude, coordFormat)
-        val lonString = formatCoordinate(longitude, coordFormat)
+        // Passing true for Latitude, false for Longitude
+        val latString = formatCoordinate(latitude, coordFormat, true)
+        val lonString = formatCoordinate(longitude, coordFormat, false)
         
         val altBaro = String.format(Locale.US, "%.1f", barometricAltitude)
         
