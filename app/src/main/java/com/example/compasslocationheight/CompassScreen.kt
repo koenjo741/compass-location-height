@@ -338,9 +338,9 @@ fun CompassOverlay(pitch: Float, roll: Float, headingColor: Color) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             val canvasWidth = size.width
             val path = Path().apply {
-                moveTo(canvasWidth / 2, -15f)
-                lineTo(canvasWidth / 2 - 35, 60f)
-                lineTo(canvasWidth / 2 + 35, 60f)
+                moveTo(canvasWidth / 2, -30f)       //Verändert die obere Ecke des blauen Dreiecks
+                lineTo(canvasWidth / 2 - 35, 55f)   //Verändert die Basis des blauen Dreiecks
+                lineTo(canvasWidth / 2 + 35, 55f)   //Verändert die Basis des blauen Dreiecks
                 close()
             }
             drawPath(path, color = headingColor)
@@ -453,7 +453,7 @@ fun AccuracyIndicator(accuracy: Int, modifier: Modifier = Modifier) {
         modifier = modifier
             .size(20.dp)
             .background(color, shape = CircleShape)
-            .border(1.dp, Color.White, shape = CircleShape)
+            //.border(1.dp, Color.White, shape = CircleShape)
     )
 }
 
