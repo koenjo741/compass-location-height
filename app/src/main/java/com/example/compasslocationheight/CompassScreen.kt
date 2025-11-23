@@ -41,6 +41,7 @@ import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 import android.hardware.SensorManager
+import android.view.WindowManager
 
 @Composable
 fun MainActivity.CompassScreen(
@@ -63,6 +64,14 @@ fun MainActivity.CompassScreen(
     val context = LocalContext.current
     val window = (context as ComponentActivity).window
     val view = LocalView.current
+
+    // Keep screen on while CompassScreen is active
+    DisposableEffect(Unit) {
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        onDispose {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+    }
 
     val isDarkTheme = when (currentTheme) {
         ThemeMode.Dark, ThemeMode.Night -> true
@@ -338,9 +347,9 @@ fun CompassOverlay(pitch: Float, roll: Float, headingColor: Color) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             val canvasWidth = size.width
             val path = Path().apply {
-                moveTo(canvasWidth / 2, -30f)       //Verändert die obere Ecke des blauen Dreiecks
-                lineTo(canvasWidth / 2 - 35, 55f)   //Verändert die Basis des blauen Dreiecks
-                lineTo(canvasWidth / 2 + 35, 55f)   //Verändert die Basis des blauen Dreiecks
+                moveTo(canvasWidth / 2, -25f)
+                lineTo(canvasWidth / 2 - 35, 50f)
+                lineTo(canvasWidth / 2 + 35, 50f)
                 close()
             }
             drawPath(path, color = headingColor)
@@ -351,7 +360,7 @@ fun CompassOverlay(pitch: Float, roll: Float, headingColor: Color) {
         Box(
             modifier = Modifier
                 .align(Alignment.Center)
-                .offset(x = (-roll * 10).dp, y = (pitch * 10).dp)
+                .offset(x = (-roll * 10).dp, y = (pitch * 10 - 20).dp)
                 .size(25.dp)
                 .background(AppColors.BubbleOrange, shape = CircleShape)
         )
@@ -453,7 +462,7 @@ fun AccuracyIndicator(accuracy: Int, modifier: Modifier = Modifier) {
         modifier = modifier
             .size(20.dp)
             .background(color, shape = CircleShape)
-            //.border(1.dp, Color.White, shape = CircleShape)
+            .border(1.dp, Color.White, shape = CircleShape)
     )
 }
 
