@@ -360,7 +360,7 @@ fun CompassOverlay(pitch: Float, roll: Float, headingColor: Color) {
         Box(
             modifier = Modifier
                 .align(Alignment.Center)
-                .offset(x = (-roll * 10).dp, y = (pitch * 10 - 20).dp)
+                .offset(x = (-roll * 10).dp, y = (pitch * 10).dp)
                 .size(25.dp)
                 .background(AppColors.BubbleOrange, shape = CircleShape)
         )
