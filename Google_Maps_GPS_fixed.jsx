@@ -57,19 +57,26 @@ if (BridgeTalk.appName == "bridge") {
                 var coordString = coordinate.toString();
                 var coordRef = ref ? ref.toString().toUpperCase() : "";
 
-                // Entferne alle nicht-numerischen Zeichen außer Komma, Punkt und Leerzeichen
-                var cleanedString = coordString.replace(/[^\d.,\s]/g, '').replace(/,/g, '.');
-                var parts = cleanedString.split(/\s+/);
+                // 1. Ersetze das Dezimalkomma durch einen Punkt, um die Analyse zu vereinheitlichen
+                var normalizedString = coordString.replace(/,/g, '.');
 
-                if (parts.length === 0) return null;
+                // 2. Extrahiere alle Zahlen (inklusive Dezimalzahlen) aus dem String.
+                //    Diese Methode ist robust gegenüber verschiedenen Formatierungen wie 59° 19' 21.87"
+                var numbers = normalizedString.match(/\d+\.?\d*/g);
 
-                var degrees = parseFloat(parts[0]) || 0;
-                var minutes = parseFloat(parts[1]) || 0;
-                var seconds = parseFloat(parts[2]) || 0;
+                if (!numbers || numbers.length < 1) {
+                    return null; // Keine Zahlen im String gefunden
+                }
 
+                // 3. Wandle die extrahierten Zahlen-Strings in echte Zahlen um
+                var degrees = parseFloat(numbers[0]) || 0;
+                var minutes = (numbers.length > 1) ? parseFloat(numbers[1]) : 0;
+                var seconds = (numbers.length > 2) ? parseFloat(numbers[2]) : 0;
+
+                // 4. Berechne den Dezimalgrad
                 var decimal = degrees + (minutes / 60) + (seconds / 3600);
 
-                // Vorzeichen basierend auf der Himmelsrichtung anpassen (Süd/West sind negativ)
+                // 5. Vorzeichen basierend auf der Himmelsrichtung anpassen (Süd/West sind negativ)
                 if (coordRef === "S" || coordRef === "W") {
                     decimal *= -1;
                 }
