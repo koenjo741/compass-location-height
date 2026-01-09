@@ -50,33 +50,39 @@ if (BridgeTalk.appName == "bridge") {
                 return;
             }
 
-            // Funktion zur Umwandlung von GPS-Koordinaten (Grad, Minuten, Sekunden) in Dezimalgrad
+            // Funktion zur Umwandlung von GPS-Koordinaten (Grad, Minuten, Sekunden) in Dezimalgrad (FINAL v3)
             function parseCoordinates(coordinate, ref) {
                 if (!coordinate) return null;
 
                 var coordString = coordinate.toString();
                 var coordRef = ref ? ref.toString().toUpperCase() : "";
 
-                // 1. Ersetze das Dezimalkomma durch einen Punkt, um die Analyse zu vereinheitlichen
-                var normalizedString = coordString.replace(/,/g, '.');
+                // 1. Bereinige den String von typischen GPS-Symbolen
+                var sanitized = coordString.replace(/[°'"]/g, "").trim();
 
-                // 2. Extrahiere alle Zahlen (inklusive Dezimalzahlen) aus dem String.
-                //    Diese Methode ist robust gegenüber verschiedenen Formatierungen wie 59° 19' 21.87"
-                var numbers = normalizedString.match(/\d+\.?\d*/g);
-
-                if (!numbers || numbers.length < 1) {
-                    return null; // Keine Zahlen im String gefunden
+                // 2. Ersetze das letzte Komma (Dezimalkomma) durch einen Punkt.
+                //    Dies ist der entscheidende Schritt, um deutsche Formate wie "4,15" korrekt zu verarbeiten,
+                //    ohne die Kommas zwischen Grad, Minuten und Sekunden zu zerstören.
+                var lastCommaIndex = sanitized.lastIndexOf(',');
+                if (lastCommaIndex > -1) {
+                    sanitized = sanitized.substring(0, lastCommaIndex) + '.' + sanitized.substring(lastCommaIndex + 1);
                 }
 
-                // 3. Wandle die extrahierten Zahlen-Strings in echte Zahlen um
-                var degrees = parseFloat(numbers[0]) || 0;
-                var minutes = (numbers.length > 1) ? parseFloat(numbers[1]) : 0;
-                var seconds = (numbers.length > 2) ? parseFloat(numbers[2]) : 0;
+                // 3. Teile den String nun anhand der verbleibenden Kommas oder Leerzeichen auf.
+                //    Das Ergebnis ist ein Array aus [Grad, Minuten, Sekunden].
+                var parts = sanitized.split(/[, ]+/);
 
-                // 4. Berechne den Dezimalgrad
+                if (parts.length === 0) return null;
+
+                // 4. Wandle die Teile in Zahlen um.
+                var degrees = parseFloat(parts[0]) || 0;
+                var minutes = (parts.length > 1) ? parseFloat(parts[1]) : 0;
+                var seconds = (parts.length > 2) ? parseFloat(parts[2]) : 0;
+
+                // 5. Berechne den korrekten Dezimalwert.
                 var decimal = degrees + (minutes / 60) + (seconds / 3600);
 
-                // 5. Vorzeichen basierend auf der Himmelsrichtung anpassen (Süd/West sind negativ)
+                // 6. Passe das Vorzeichen basierend auf der Himmelsrichtung an.
                 if (coordRef === "S" || coordRef === "W") {
                     decimal *= -1;
                 }
