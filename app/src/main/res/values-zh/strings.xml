@@ -10,6 +10,8 @@
     <string name="latitude_label">纬度: %1$s</string>
     <string name="longitude_label">经度: %1$s</string>
     <string name="altitude_label">海拔: %1$s 米</string>
+    <string name="altitude_gps_label">海拔 (GPS): %1$s 米</string>
+    <string name="altitude_baro_label">海拔 (Baro): %1$s 米</string>
     <string name="date_label">日期: %1$s</string>
     <string name="time_label">时间: %1$s</string>
     <string name="temperature_label">温度: </string>

@@ -10,6 +10,8 @@
     <string name="latitude_label">Laiuskraad: %1$s</string>
     <string name="longitude_label">Pikkuskraad: %1$s</string>
     <string name="altitude_label">Kõrgus: %1$s m</string>
+    <string name="altitude_gps_label">Kõrgus (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Kõrgus (Baro): %1$s m</string>
     <string name="date_label">Kuupäev: %1$s</string>
     <string name="time_label">Kellaaeg: %1$s</string>
     <string name="temperature_label">Temperatuur: </string>

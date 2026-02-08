@@ -10,6 +10,8 @@
     <string name="latitude_label">خط العرض: %1$s</string>
     <string name="longitude_label">خط الطول: %1$s</string>
     <string name="altitude_label">الارتفاع: %1$s م</string>
+    <string name="altitude_gps_label">الارتفاع (GPS): %1$s م</string>
+    <string name="altitude_baro_label">الارتفاع (Baro): %1$s م</string>
     <string name="date_label">التاريخ: %1$s</string>
     <string name="time_label">الوقت: %1$s</string>
     <string name="temperature_label">درجة الحرارة: </string>

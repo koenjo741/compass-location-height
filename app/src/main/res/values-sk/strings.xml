@@ -10,6 +10,8 @@
     <string name="latitude_label">Zemepisná šírka: %1$s</string>
     <string name="longitude_label">Zemepisná dĺžka: %1$s</string>
     <string name="altitude_label">Nadmorská výška: %1$s m</string>
+    <string name="altitude_gps_label">Nadmorská výška (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Nadmorská výška (Baro): %1$s m</string>
     <string name="date_label">Dátum: %1$s</string>
     <string name="time_label">Čas: %1$s</string>
     <string name="temperature_label">Teplota: </string>

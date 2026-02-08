@@ -10,6 +10,8 @@
     <string name="latitude_label">Lattiɗi: %1$s</string>
     <string name="longitude_label">Loonɗi: %1$s</string>
     <string name="altitude_label">Tsayi: %1$s m</string>
+    <string name="altitude_gps_label">Tsayi (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Tsayi (Baro): %1$s m</string>
     <string name="date_label">Kwanan wata: %1$s</string>
     <string name="time_label">Lokaci: %1$s</string>
     <string name="temperature_label">Zazzabi: </string>

@@ -12,6 +12,8 @@
     <string name="latitude_label">Latitude : %1$s</string>
     <string name="longitude_label">Longitude : %1$s</string>
     <string name="altitude_label">Altitude : %1$s m</string>
+    <string name="altitude_gps_label">Altitude  (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Altitude  (Baro): %1$s m</string>
     <string name="date_label">Date : %1$s</string>
     <string name="time_label">Heure : %1$s</string>
     <string name="temperature_label">Température : </string>

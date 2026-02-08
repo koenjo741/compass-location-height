@@ -10,6 +10,8 @@
     <string name="latitude_label">קו רוחב: %1$s</string>
     <string name="longitude_label">קו אורך: %1$s</string>
     <string name="altitude_label">גובה: %1$s מ׳</string>
+    <string name="altitude_gps_label">גובה (GPS): %1$s מ׳</string>
+    <string name="altitude_baro_label">גובה (Baro): %1$s מ׳</string>
     <string name="date_label">תאריך: %1$s</string>
     <string name="time_label">שעה: %1$s</string>
     <string name="temperature_label">טמפרטורה: </string>

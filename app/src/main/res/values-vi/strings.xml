@@ -10,6 +10,8 @@
     <string name="latitude_label">Vĩ độ: %1$s</string>
     <string name="longitude_label">Kinh độ: %1$s</string>
     <string name="altitude_label">Độ cao: %1$s m</string>
+    <string name="altitude_gps_label">Độ cao (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Độ cao (Baro): %1$s m</string>
     <string name="date_label">Ngày: %1$s</string>
     <string name="time_label">Thời gian: %1$s</string>
     <string name="temperature_label">Nhiệt độ: </string>

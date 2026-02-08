@@ -10,6 +10,8 @@
     <string name="latitude_label">Platuma: %1$s</string>
     <string name="longitude_label">Ilguma: %1$s</string>
     <string name="altitude_label">Aukštis: %1$s m</string>
+    <string name="altitude_gps_label">Aukštis (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Aukštis (Baro): %1$s m</string>
     <string name="date_label">Data: %1$s</string>
     <string name="time_label">Laikas: %1$s</string>
     <string name="temperature_label">Temperatūra: </string>

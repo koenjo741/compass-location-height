@@ -10,6 +10,8 @@
     <string name="latitude_label">Latitude: %1$s</string>
     <string name="longitude_label">Longitude: %1$s</string>
     <string name="altitude_label">Kukwirira: %1$s m</string>
+    <string name="altitude_gps_label">Kukwirira (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Kukwirira (Baro): %1$s m</string>
     <string name="date_label">Zuva: %1$s</string>
     <string name="time_label">Nguva: %1$s</string>
     <string name="temperature_label">Kupisa: </string>

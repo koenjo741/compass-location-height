@@ -10,6 +10,8 @@
     <string name="latitude_label">I-Latitude: %1$s</string>
     <string name="longitude_label">I-Longitude: %1$s</string>
     <string name="altitude_label">Ukuphakama: %1$s m</string>
+    <string name="altitude_gps_label">Ukuphakama (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Ukuphakama (Baro): %1$s m</string>
     <string name="date_label">Usuku: %1$s</string>
     <string name="time_label">Isikhathi: %1$s</string>
     <string name="temperature_label">Izinga lokushisa: </string>

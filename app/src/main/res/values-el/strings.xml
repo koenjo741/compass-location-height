@@ -10,6 +10,8 @@
     <string name="latitude_label">Γεωγραφικό Πλάτος: %1$s</string>
     <string name="longitude_label">Γεωγραφικό Μήκος: %1$s</string>
     <string name="altitude_label">Υψόμετρο: %1$s μ</string>
+    <string name="altitude_gps_label">Υψόμετρο (GPS): %1$s μ</string>
+    <string name="altitude_baro_label">Υψόμετρο (Baro): %1$s μ</string>
     <string name="date_label">Ημερομηнία: %1$s</string>
     <string name="time_label">Ώρα: %1$s</string>
     <string name="temperature_label">Θερμοκρασία: </string>

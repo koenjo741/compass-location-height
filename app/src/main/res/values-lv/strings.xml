@@ -10,6 +10,8 @@
     <string name="latitude_label">Platuma grādi: %1$s</string>
     <string name="longitude_label">Garuma grādi: %1$s</string>
     <string name="altitude_label">Augstums: %1$s m</string>
+    <string name="altitude_gps_label">Augstums (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Augstums (Baro): %1$s m</string>
     <string name="date_label">Datums: %1$s</string>
     <string name="time_label">Laiks: %1$s</string>
     <string name="temperature_label">Temperatūra: </string>

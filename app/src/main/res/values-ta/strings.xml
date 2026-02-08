@@ -10,6 +10,8 @@
     <string name="latitude_label">அகலக்கோடு: %1$s</string>
     <string name="longitude_label">நெடுங்கோடு: %1$s</string>
     <string name="altitude_label">உயரம்: %1$s மீ</string>
+    <string name="altitude_gps_label">உயரம் (GPS): %1$s மீ</string>
+    <string name="altitude_baro_label">உயரம் (Baro): %1$s மீ</string>
     <string name="date_label">தேதி: %1$s</string>
     <string name="time_label">நேரம்: %1$s</string>
     <string name="temperature_label">வெப்பநிலை: </string>

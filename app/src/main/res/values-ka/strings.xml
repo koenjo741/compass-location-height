@@ -10,6 +10,8 @@
     <string name="latitude_label">განედი: %1$s</string>
     <string name="longitude_label">გრძედი: %1$s</string>
     <string name="altitude_label">სიმაღლე: %1$s მ</string>
+    <string name="altitude_gps_label">სიმაღლე (GPS): %1$s მ</string>
+    <string name="altitude_baro_label">სიმაღლე (Baro): %1$s მ</string>
     <string name="date_label">თარიღი: %1$s</string>
     <string name="time_label">დრო: %1$s</string>
     <string name="temperature_label">ტემპერატურა: </string>

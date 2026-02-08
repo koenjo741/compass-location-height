@@ -10,6 +10,8 @@
     <string name="latitude_label">ಅಕ್ಷಾಂಶ: %1$s</string>
     <string name="longitude_label">ರೇಖಾಂಶ: %1$s</string>
     <string name="altitude_label">ಎತ್ತರ: %1$s ಮೀ</string>
+    <string name="altitude_gps_label">ಎತ್ತರ (GPS): %1$s ಮೀ</string>
+    <string name="altitude_baro_label">ಎತ್ತರ (Baro): %1$s ಮೀ</string>
     <string name="date_label">ದಿನಾಂಕ: %1$s</string>
     <string name="time_label">ಸಮಯ: %1$s</string>
     <string name="temperature_label">ತಾಪಮಾನ: </string>

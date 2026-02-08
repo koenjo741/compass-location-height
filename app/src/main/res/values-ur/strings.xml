@@ -10,6 +10,8 @@
     <string name="latitude_label">عرض البلد: %1$s</string>
     <string name="longitude_label">طول البلد: %1$s</string>
     <string name="altitude_label">بلندی: %1$s میٹر</string>
+    <string name="altitude_gps_label">بلندی (GPS): %1$s میٹر</string>
+    <string name="altitude_baro_label">بلندی (Baro): %1$s میٹر</string>
     <string name="date_label">تاریخ: %1$s</string>
     <string name="time_label">وقت: %1$s</string>
     <string name="temperature_label">درجہ حرارت: </string>

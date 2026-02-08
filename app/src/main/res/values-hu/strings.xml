@@ -10,6 +10,8 @@
     <string name="latitude_label">Szélesség: %1$s</string>
     <string name="longitude_label">Hosszúság: %1$s</string>
     <string name="altitude_label">Magasság: %1$s m</string>
+    <string name="altitude_gps_label">Magasság (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Magasság (Baro): %1$s m</string>
     <string name="date_label">Dátum: %1$s</string>
     <string name="time_label">Idő: %1$s</string>
     <string name="temperature_label">Hőmérséklet: </string>

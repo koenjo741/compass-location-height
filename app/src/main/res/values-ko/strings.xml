@@ -10,6 +10,8 @@
     <string name="latitude_label">위도: %1$s</string>
     <string name="longitude_label">경도: %1$s</string>
     <string name="altitude_label">고도: %1$s m</string>
+    <string name="altitude_gps_label">고도 (GPS): %1$s m</string>
+    <string name="altitude_baro_label">고도 (Baro): %1$s m</string>
     <string name="date_label">날짜: %1$s</string>
     <string name="time_label">시간: %1$s</string>
     <string name="temperature_label">온도: </string>

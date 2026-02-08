@@ -10,6 +10,8 @@
     <string name="latitude_label">Широта: %1$s</string>
     <string name="longitude_label">Довгота: %1$s</string>
     <string name="altitude_label">Висота: %1$s м</string>
+    <string name="altitude_gps_label">Висота (GPS): %1$s м</string>
+    <string name="altitude_baro_label">Висота (Baro): %1$s м</string>
     <string name="date_label">Дата: %1$s</string>
     <string name="time_label">Час: %1$s</string>
     <string name="temperature_label">Температура: </string>

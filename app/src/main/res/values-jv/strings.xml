@@ -10,6 +10,8 @@
     <string name="latitude_label">Lintang: %1$s</string>
     <string name="longitude_label">Bujur: %1$s</string>
     <string name="altitude_label">Dhuwur: %1$s m</string>
+    <string name="altitude_gps_label">Dhuwur (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Dhuwur (Baro): %1$s m</string>
     <string name="date_label">Tanggal: %1$s</string>
     <string name="time_label">Wektu: %1$s</string>
     <string name="temperature_label">Suhu: </string>

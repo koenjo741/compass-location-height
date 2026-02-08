@@ -10,6 +10,8 @@
     <string name="latitude_label">Latitud: %1$s</string>
     <string name="longitude_label">Longitud: %1$s</string>
     <string name="altitude_label">Ketinggian: %1$s m</string>
+    <string name="altitude_gps_label">Ketinggian (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Ketinggian (Baro): %1$s m</string>
     <string name="date_label">Tarikh: %1$s</string>
     <string name="time_label">Masa: %1$s</string>
     <string name="temperature_label">Suhu: </string>

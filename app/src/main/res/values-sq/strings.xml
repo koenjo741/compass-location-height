@@ -10,6 +10,8 @@
     <string name="latitude_label">Gjerësia gjeografike: %1$s</string>
     <string name="longitude_label">Gjatësia gjeografike: %1$s</string>
     <string name="altitude_label">Lartësia: %1$s m</string>
+    <string name="altitude_gps_label">Lartësia (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Lartësia (Baro): %1$s m</string>
     <string name="date_label">Data: %1$s</string>
     <string name="time_label">Ora: %1$s</string>
     <string name="temperature_label">Temperatura: </string>

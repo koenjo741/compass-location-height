@@ -10,6 +10,8 @@
     <string name="latitude_label">Breddegrad: %1$s</string>
     <string name="longitude_label">Lengdegrad: %1$s</string>
     <string name="altitude_label">Høyde: %1$s m</string>
+    <string name="altitude_gps_label">Høyde (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Høyde (Baro): %1$s m</string>
     <string name="date_label">Dato: %1$s</string>
     <string name="time_label">Tid: %1$s</string>
     <string name="temperature_label">Temperatur: </string>

@@ -10,6 +10,8 @@
     <string name="latitude_label">Latitudo: %1$s</string>
     <string name="longitude_label">Longitudo: %1$s</string>
     <string name="altitude_label">Elu: %1$s m</string>
+    <string name="altitude_gps_label">Elu (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Elu (Baro): %1$s m</string>
     <string name="date_label">Ụbọchị: %1$s</string>
     <string name="time_label">Oge: %1$s</string>
     <string name="temperature_label">Okpomọkụ: </string>

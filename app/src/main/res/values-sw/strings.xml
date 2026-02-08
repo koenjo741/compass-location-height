@@ -10,6 +10,8 @@
     <string name="latitude_label">Latitudo: %1$s</string>
     <string name="longitude_label">Longitudo: %1$s</string>
     <string name="altitude_label">Mwinuko: %1$s m</string>
+    <string name="altitude_gps_label">Mwinuko (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Mwinuko (Baro): %1$s m</string>
     <string name="date_label">Tarehe: %1$s</string>
     <string name="time_label">Muda: %1$s</string>
     <string name="temperature_label">Joto: </string>

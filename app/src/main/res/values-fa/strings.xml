@@ -10,6 +10,8 @@
     <string name="latitude_label">عرض جغرافیایی: %1$s</string>
     <string name="longitude_label">طول جغرافیایی: %1$s</string>
     <string name="altitude_label">ارتفاع: %1$s متر</string>
+    <string name="altitude_gps_label">ارتفاع (GPS): %1$s متر</string>
+    <string name="altitude_baro_label">ارتفاع (Baro): %1$s متر</string>
     <string name="date_label">تاریخ: %1$s</string>
     <string name="time_label">زمان: %1$s</string>
     <string name="temperature_label">دما: </string>

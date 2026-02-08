@@ -10,6 +10,8 @@
     <string name="latitude_label">ኬክሮስ: %1$s</string>
     <string name="longitude_label">ኬንትሮስ: %1$s</string>
     <string name="altitude_label">ከፍታ: %1$s ሜ</string>
+    <string name="altitude_gps_label">ከፍታ (GPS): %1$s ሜ</string>
+    <string name="altitude_baro_label">ከፍታ (Baro): %1$s ሜ</string>
     <string name="date_label">ቀን: %1$s</string>
     <string name="time_label">ሰዓት: %1$s</string>
     <string name="temperature_label">ሙቀት: </string>

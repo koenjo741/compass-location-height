@@ -10,6 +10,8 @@
     <string name="latitude_label">عرض البلد: %1$s</string>
     <string name="longitude_label">طول البلد: %1$s</string>
     <string name="altitude_label">لوړوالی: %1$s م</string>
+    <string name="altitude_gps_label">لوړوالی (GPS): %1$s م</string>
+    <string name="altitude_baro_label">لوړوالی (Baro): %1$s م</string>
     <string name="date_label">نېټه: %1$s</string>
     <string name="time_label">وخت: %1$s</string>
     <string name="temperature_label">تودوخه: </string>

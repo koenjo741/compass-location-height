@@ -10,6 +10,8 @@
     <string name="latitude_label">Domhanleithead: %1$s</string>
     <string name="longitude_label">Domhanfhad: %1$s</string>
     <string name="altitude_label">Airde: %1$s m</string>
+    <string name="altitude_gps_label">Airde (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Airde (Baro): %1$s m</string>
     <string name="date_label">Dáta: %1$s</string>
     <string name="time_label">Am: %1$s</string>
     <string name="temperature_label">Teocht: </string>

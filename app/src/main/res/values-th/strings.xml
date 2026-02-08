@@ -10,6 +10,8 @@
     <string name="latitude_label">ละติจูด: %1$s</string>
     <string name="longitude_label">ลองจิจูด: %1$s</string>
     <string name="altitude_label">ระดับความสูง: %1$s ม.</string>
+    <string name="altitude_gps_label">ระดับความสูง (GPS): %1$s ม.</string>
+    <string name="altitude_baro_label">ระดับความสูง (Baro): %1$s ม.</string>
     <string name="date_label">วันที่: %1$s</string>
     <string name="time_label">เวลา: %1$s</string>
     <string name="temperature_label">อุณหภูมิ: </string>

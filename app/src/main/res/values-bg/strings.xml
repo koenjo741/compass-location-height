@@ -10,6 +10,8 @@
     <string name="latitude_label">Географска ширина: %1$s</string>
     <string name="longitude_label">Географска дължина: %1$s</string>
     <string name="altitude_label">Надморска височина: %1$s м</string>
+    <string name="altitude_gps_label">Надморска височина (GPS): %1$s м</string>
+    <string name="altitude_baro_label">Надморска височина (Baro): %1$s м</string>
     <string name="date_label">Дата: %1$s</string>
     <string name="time_label">Час: %1$s</string>
     <string name="temperature_label">Температура: </string>
