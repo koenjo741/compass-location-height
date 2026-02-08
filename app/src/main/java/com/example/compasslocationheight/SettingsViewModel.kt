@@ -33,6 +33,18 @@ class SettingsViewModel(private val dataStore: SettingsDataStore) : ViewModel() 
         initialValue = "system"
     )
 
+    val hasSeenConsent: StateFlow<Boolean> = dataStore.hasSeenConsentFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = true // Default true prevents flickering if loading, will update quickly
+    )
+
+    val consentGiven: StateFlow<Boolean> = dataStore.consentFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = false
+    )
+
     fun setTheme(newTheme: ThemeMode) {
         viewModelScope.launch {
             dataStore.saveThemeMode(newTheme)
@@ -54,6 +66,16 @@ class SettingsViewModel(private val dataStore: SettingsDataStore) : ViewModel() 
     fun setLanguage(newLanguage: String) {
         viewModelScope.launch {
             dataStore.saveLanguage(newLanguage)
+        }
+    }
+
+    fun setConsent(agreed: Boolean) {
+        viewModelScope.launch {
+            dataStore.saveConsent(agreed)
+            // Hier würde man den Ländercode senden, wenn agreed == true
+            if (agreed) {
+                // z.B. logCountry(Locale.getDefault().country)
+            }
         }
     }
 }

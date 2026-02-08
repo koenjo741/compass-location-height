@@ -12,13 +12,15 @@
     <string name="latitude_label">Breite: %1$s</string>
     <string name="longitude_label">Länge: %1$s</string>
     <string name="altitude_label">Höhe: %1$s m</string>
+    <string name="altitude_gps_label">Höhe (GPS): %1$s m</string>
+    <string name="altitude_baro_label">Höhe (Baro): %1$s m</string>
     <string name="date_label">Datum: %1$s</string>
     <string name="time_label">Zeit: %1$s</string>
     <string name="temperature_label">Temperatur: </string> <!-- Suffix wird im Code hinzugefügt -->
     <string name="humidity_label">Luftfeuchtigkeit:</string>
     <string name="pressure_label">Luftdruck: %1$s hPa %2$s</string>
 
-    <!-- NEU: Texte für die Einstellungsseite -->
+    <!-- Texte für die Einstellungsseite -->
     <string name="settings_title">Einstellungen</string>
     <string name="theme_section_title">App-Theme</string>
     <string name="temp_unit_section_title">Temperatureinheit</string>
@@ -34,11 +36,42 @@
     <string name="format_dms">GMS</string>
     <string name="format_ddm">GDM</string>
 
-    <!-- NEU: Texte für die Info-Seite -->
-    <string name="about_title">Über die App</string>
-    <string name="about_placeholder">(wird noch gebaut)</string>
+    <!-- Texte für die Info-Seite -->
+    <string name="about_title">Über diese App</string>
 
-    <!-- NEU: Texte für Barrierefreiheit (Content Descriptions) -->
+    <string name="about_section_functions">Funktionen</string>
+    <string name="about_desc_north">Geografischer Norden: Der Kompass zeigt zum echten (geografischen) Norden, nicht zum magnetischen Norden.</string>
+    <string name="about_desc_maps">Kartenintegration: Ein Tippen auf die Adresse öffnet den Standort direkt in Google Maps.</string>
+    <string name="about_desc_accuracy">Genauigkeit: Für beste Ergebnisse aktiviere bitte die hohe Standortgenauigkeit in den Android-Einstellungen.</string>
+    <string name="about_desc_themes">Design: Wähle aus verschiedenen Farb-Themes.</string>
+    <string name="about_desc_languages">Sprache: Die App passt sich deiner Sprache an.</string>
+    <string name="about_desc_ads">Werbefrei: Diese App ist und bleibt 100% werbefrei.</string>
+
+    <string name="about_section_contact">Kontakt</string>
+    <string name="about_desc_email">Fragen, Feedback oder Probleme? Schreib uns an:\nkoenjo1@gmail.com</string>
+
+    <string name="about_section_credits">Danksagung &amp; Daten</string>
+    <string name="about_desc_open_meteo">Wetterdaten: Bereitgestellt von Open-Meteo.com</string>
+
+    <string name="about_section_privacy">Datenschutz</string>
+    <string name="about_desc_privacy_policy">Deine Privatsphäre ist uns wichtig. Wir speichern keine persönlichen Bewegungsprofile. Zur statistischen Auswertung wird lediglich einmalig und anonymisiert das Land erfasst, in dem die App installiert wurde. Standortdaten werden nur lokal auf dem Gerät zur Berechnung der Himmelsrichtung und des Wetters verwendet.</string>
+
+    <string name="about_section_disclaimer">Haftungsausschluss</string>
+    <string name="about_desc_risk">Verwendung auf eigene Gefahr: Verlasse dich in kritischen Situationen nicht ausschließlich auf diese App.</string>
+    <string name="about_desc_compass_interference">Störungen: Der Kompass kann durch magnetische Hüllen oder elektronische Geräte gestört werden.</string>
+    <string name="about_desc_gps_interference">GPS-Signal: GPS-Signale sind nicht überall verfügbar (z.B. in Gebäuden) und können abweichen.</string>
+    <string name="about_desc_weather_data">Datenqualität: Die Wetterdaten stammen von Drittanbietern und können ungenau sein.</string>
+    <string name="about_desc_software_error">Software: Trotz sorgfältiger Entwicklung kann Software Fehler enthalten.</string>
+
+    <string name="about_version">Version: %1$s</string>
+
+    <!-- Texte für Consent Dialog -->
+    <string name="consent_title">Statistik-Erlaubnis</string>
+    <string name="consent_message">Wir möchten gerne wissen, in welchem Land unsere App genutzt wird, um sie weiter zu verbessern. Dürfen wir diese Information einmalig und anonymisiert erfassen?</string>
+    <string name="consent_yes">Ja, gerne</string>
+    <string name="consent_no">Nein, danke</string>
+
+    <!-- Texte für Barrierefreiheit (Content Descriptions) -->
     <string name="cd_open_settings">Einstellungen öffnen</string>
     <string name="cd_open_about">Info-Seite öffnen</string>
     <string name="cd_back">Zurück</string>

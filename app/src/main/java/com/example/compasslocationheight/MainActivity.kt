@@ -103,6 +103,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
     var currentHumidity by mutableStateOf<Int?>(null)
     var currentPressure by mutableFloatStateOf(0f)
     var pressureTrend by mutableStateOf("→")
+    var seaLevelPressure by mutableFloatStateOf(SensorManager.PRESSURE_STANDARD_ATMOSPHERE)
     private var lastWeatherApiCall: Long = 0
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
@@ -255,10 +256,14 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 }.body()
                 val trend = calculatePressureTrend(response.hourly)
                 val humidity = getCurrentHumidity(response.hourly)
+                val mslPressure = getCurrentSeaLevelPressure(response.hourly)
                 withContext(Dispatchers.Main) {
                     currentTemperature = response.current_weather.temperature
                     pressureTrend = trend
                     currentHumidity = humidity
+                    if (mslPressure != null) {
+                        seaLevelPressure = mslPressure
+                    }
                 }
                 client.close()
             } catch (e: Exception) {
@@ -272,6 +277,16 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         val currentIndex = hourlyData.time.indexOf(now)
         return if (currentIndex != -1 && currentIndex < hourlyData.relativehumidity_2m.size) {
             hourlyData.relativehumidity_2m[currentIndex]
+        } else {
+            null
+        }
+    }
+
+    private fun getCurrentSeaLevelPressure(hourlyData: HourlyData): Float? {
+        val now = SimpleDateFormat("yyyy-MM-dd'T'HH:00", resources.configuration.locales[0]).format(Date())
+        val currentIndex = hourlyData.time.indexOf(now)
+        return if (currentIndex != -1 && currentIndex < hourlyData.pressure_msl.size) {
+            hourlyData.pressure_msl[currentIndex].toFloat()
         } else {
             null
         }
@@ -365,7 +380,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             }
             Sensor.TYPE_PRESSURE -> {
                 val pressureValue = event.values[0]
-                val altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue)
+                val altitude = SensorManager.getAltitude(seaLevelPressure, pressureValue)
                 barometricAltitude = altitude.toDouble()
                 currentPressure = pressureValue
             }

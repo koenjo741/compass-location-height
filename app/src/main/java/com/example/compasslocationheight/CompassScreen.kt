@@ -51,6 +51,17 @@ fun MainActivity.CompassScreen(
     val currentTheme by settingsViewModel.themeMode.collectAsState()
     val currentTempUnit by settingsViewModel.tempUnit.collectAsState()
     val currentCoordFormat by settingsViewModel.coordFormat.collectAsState()
+    
+    // Dialog State
+    val hasSeenConsent by settingsViewModel.hasSeenConsent.collectAsState()
+    var showConsentDialog by remember { mutableStateOf(false) }
+
+    // Sync with DataStore state
+    LaunchedEffect(hasSeenConsent) {
+        if (!hasSeenConsent) {
+            showConsentDialog = true
+        }
+    }
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -196,6 +207,19 @@ fun MainActivity.CompassScreen(
                             onThemeChange = { newTheme -> settingsViewModel.setTheme(newTheme) }
                         )
                     }
+                }
+
+                if (showConsentDialog) {
+                    PrivacyDialog(
+                        onConfirm = {
+                            settingsViewModel.setConsent(true)
+                            showConsentDialog = false
+                        },
+                        onDismiss = {
+                            settingsViewModel.setConsent(false)
+                            showConsentDialog = false
+                        }
+                    )
                 }
             }
         }
@@ -412,7 +436,14 @@ fun LocationDisplay(
         
         Text(text = stringResource(R.string.latitude_label, latString), fontSize = 16.sp, color = subtleColor)
         Text(text = stringResource(R.string.longitude_label, lonString), fontSize = 16.sp, color = subtleColor)
-        Text(text = stringResource(R.string.altitude_label, altBaro), fontSize = 16.sp, color = subtleColor)
+
+        if (isLocationAvailable) {
+            val altGps = String.format(Locale.US, "%.1f", gpsAltitude)
+            Text(text = stringResource(R.string.altitude_gps_label, altGps), fontSize = 16.sp, color = subtleColor, fontWeight = FontWeight.Bold)
+            Text(text = stringResource(R.string.altitude_baro_label, altBaro), fontSize = 16.sp, color = subtleColor)
+        } else {
+            Text(text = stringResource(R.string.altitude_label, altBaro), fontSize = 16.sp, color = subtleColor)
+        }
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = stringResource(R.string.date_label, currentDate), fontSize = 16.sp, color = subtleColor)
         Text(text = stringResource(R.string.time_label, currentTime), fontSize = 16.sp, color = subtleColor)
@@ -462,7 +493,7 @@ fun AccuracyIndicator(accuracy: Int, modifier: Modifier = Modifier) {
         modifier = modifier
             .size(20.dp)
             .background(color, shape = CircleShape)
-            .border(1.dp, Color.White, shape = CircleShape)
+            //.border(1.dp, Color.White, shape = CircleShape)
     )
 }
 

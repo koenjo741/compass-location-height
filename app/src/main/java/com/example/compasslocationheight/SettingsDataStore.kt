@@ -3,6 +3,7 @@ package com.example.compasslocationheight
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -17,6 +18,7 @@ class SettingsDataStore(private val context: Context) {
     private val TEMP_UNIT_KEY = stringPreferencesKey("temp_unit")
     private val COORD_FORMAT_KEY = stringPreferencesKey("coord_format")
     private val LANGUAGE_KEY = stringPreferencesKey("language")
+    private val CONSENT_KEY = booleanPreferencesKey("country_consent")
 
     val themeModeFlow: Flow<ThemeMode> = context.dataStore.data
         .map { preferences ->
@@ -41,6 +43,16 @@ class SettingsDataStore(private val context: Context) {
             preferences[LANGUAGE_KEY] ?: "system"
         }
 
+    val consentFlow: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            preferences[CONSENT_KEY] ?: false
+        }
+    
+    val hasSeenConsentFlow: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            preferences.contains(CONSENT_KEY)
+        }
+
     suspend fun saveThemeMode(themeMode: ThemeMode) {
         context.dataStore.edit { preferences ->
             preferences[THEME_KEY] = themeMode.name
@@ -62,6 +74,12 @@ class SettingsDataStore(private val context: Context) {
     suspend fun saveLanguage(language: String) {
         context.dataStore.edit { preferences ->
             preferences[LANGUAGE_KEY] = language
+        }
+    }
+
+    suspend fun saveConsent(agreed: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[CONSENT_KEY] = agreed
         }
     }
 }
