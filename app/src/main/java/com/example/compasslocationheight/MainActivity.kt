@@ -336,7 +336,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         super.onResume()
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
         sensorManager.registerListener(this, pressureSensor, SensorManager.SENSOR_DELAY_UI)
-        sensorManager.registerListener(this, rotationVectorSensor, SensorManager.SENSOR_DELAY_UI)
+        sensorManager.registerListener(this, rotationVectorSensor, SensorManager.SENSOR_DELAY_GAME)
         sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI)
         if (hasLocationPermission) { startLocationUpdates() }
     }
@@ -370,7 +370,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                     var diff = currentAzimuth - smoothedAzimuth
                     if (diff > 180f) diff -= 360f
                     else if (diff < -180f) diff += 360f
-                    smoothedAzimuth = (smoothedAzimuth + diff * 0.1f + 360) % 360f
+                    smoothedAzimuth = (smoothedAzimuth + diff * 0.07f + 360) % 360f
                 }
                 azimuth = smoothedAzimuth
             }
